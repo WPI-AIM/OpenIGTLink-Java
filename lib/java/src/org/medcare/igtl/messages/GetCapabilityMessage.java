@@ -27,6 +27,7 @@ import org.medcare.igtl.util.Header;
  */
 public class GetCapabilityMessage extends OpenIGTMessage {
 
+	
         /**
          *** Constructor to be used to create message to send them with this
          * constructor you must use method CreateBody and then
