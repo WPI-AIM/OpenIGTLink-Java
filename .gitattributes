@@ -1,4 +1,16 @@
 * text=auto !eol
+HaosOpenIGTTestCode/.classpath -text
+HaosOpenIGTTestCode/.project -text
+HaosOpenIGTTestCode/lib/nr-sdk-0.3.6-jar-with-dependencies.jar -text
+HaosOpenIGTTestCode/lib/nrsdk-0.3.7-with-dependencies.jar -text
+HaosOpenIGTTestCode/src/org/medcare/igtl/tests/client/Client.java -text
+HaosOpenIGTTestCode/src/org/medcare/igtl/tests/client/MyClientErrorManager.java -text
+HaosOpenIGTTestCode/src/org/medcare/igtl/tests/client/MyOpenIGTClient.java -text
+HaosOpenIGTTestCode/src/org/medcare/igtl/tests/client/MyResponseHandler.java -text
+HaosOpenIGTTestCode/src/org/medcare/igtl/tests/server/HaosOpenIGTServer.java -text
+HaosOpenIGTTestCode/src/org/medcare/igtl/tests/server/MyMessageHandler.java -text
+HaosOpenIGTTestCode/src/org/medcare/igtl/tests/server/MyServerErrorManager.java -text
+HaosOpenIGTTestCode/src/org/medcare/igtl/tests/server/Server.java -text
 lib/java/.classpath -text
 lib/java/.project -text
 lib/java/LICENSE.txt -text
