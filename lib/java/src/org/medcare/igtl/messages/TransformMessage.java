@@ -100,7 +100,7 @@ public class TransformMessage extends OpenIGTMessage {
                 body = new byte[transform_data.length];
                 System.arraycopy(transform_data, 0, body, 0, transform_data.length);
                 header = new Header(VERSION, "TRANSFORM", deviceName, body);
-                return body;
+                return getBytes();
         }
 
         /**
