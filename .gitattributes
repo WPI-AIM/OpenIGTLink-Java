@@ -4,6 +4,8 @@ HaosOpenIGTTestCode/.project -text
 HaosOpenIGTTestCode/lib/nr-sdk-0.3.6-jar-with-dependencies.jar -text
 HaosOpenIGTTestCode/lib/nrsdk-0.3.7-with-dependencies.jar -text
 HaosOpenIGTTestCode/src/org/medcare/igtl/tests/client/Client.java -text
+HaosOpenIGTTestCode/src/org/medcare/igtl/tests/client/ClientReceivePosition.java -text
+HaosOpenIGTTestCode/src/org/medcare/igtl/tests/client/ClientReceiveTransform.java -text
 HaosOpenIGTTestCode/src/org/medcare/igtl/tests/client/MyClientErrorManager.java -text
 HaosOpenIGTTestCode/src/org/medcare/igtl/tests/client/MyOpenIGTClient.java -text
 HaosOpenIGTTestCode/src/org/medcare/igtl/tests/client/MyResponseHandler.java -text

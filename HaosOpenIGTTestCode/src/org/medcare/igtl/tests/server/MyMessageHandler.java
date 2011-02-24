@@ -26,8 +26,6 @@ public class MyMessageHandler extends MessageHandler {
 	        capabilityList.add("POSITION");
 	        capabilityList.add("IMAGE");
 	        capabilityList.add("STATUS");
-	        if(d == null)
-	        	throw new RuntimeException("PID device is null!!");
 	        dyio = d;
         }
 
@@ -54,9 +52,9 @@ public class MyMessageHandler extends MessageHandler {
                         System.out.println("##############Setting BowlerDevice Position: "+position[1]);
                         System.out.println("Byte data: "+pos);
                         try{
-                        	if(dyio == null)
-                	        	throw new RuntimeException("PID device is null!!");
-                        	dyio.SetPIDSetPoint(0, (int) position[1], 0.0);
+                        	if(dyio != null){
+                        		dyio.SetPIDSetPoint(0, (int) position[1], 0.0);
+                        	}
                         }catch(Exception e){
                         	System.err.println("#*#*#*#*Failed to set position");
                         	e.printStackTrace();
