@@ -91,7 +91,7 @@ public class StatusMessage extends OpenIGTMessage {
                 body = new byte[status_data.length];
                 System.arraycopy(status_data, 0, body, 0, status_data.length);
                 header = new Header(VERSION, "STATUS", deviceName, body);
-                return body;
+                return getBytes();
         }
 
         /**

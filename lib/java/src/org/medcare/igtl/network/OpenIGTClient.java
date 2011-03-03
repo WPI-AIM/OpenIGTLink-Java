@@ -71,7 +71,19 @@ public abstract class OpenIGTClient extends Thread {
                 this.port = port;
                 this.errorManager = errorManager;
                 setSocketFactory(SocketFactory.getDefault());
-                this.socket = socketFactory.createSocket(host, port);
+                
+                // not sure if there is better exception method
+                try {
+                	this.socket = socketFactory.createSocket(host, port);
+                }
+                catch (Exception e)
+                {
+                	System.out.println("exception happened");
+                	e.printStackTrace(); 
+                	System.exit(0);
+                }
+                
+                
                 this.responseQueue = new ResponseQueueManager(errorManager);
                 this.responseQueue.start();
                 this.outstr = socket.getOutputStream();

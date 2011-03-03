@@ -87,7 +87,7 @@ public class PositionMessage extends OpenIGTMessage {
          * 
          *** 
          * @return the bytes array containing the message
-         */
+         */ 
         @Override
         public byte[] PackBody() {
                 body = new byte[position_data.length];

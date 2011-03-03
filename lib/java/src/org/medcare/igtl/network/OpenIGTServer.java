@@ -31,7 +31,8 @@ import org.medcare.igtl.util.Header;
  * will be queued and proceed
  * <p>
  * 
- * @author <a href="mailto:andleg@osfe.org">Andre Charles Legendre </a>
+ * @author <a href="mailto:andleg@osfe.org"> 
+ * Andre Charles Legendre </a>
  * @version 0.1a (09/06/2010)
  * 
  */

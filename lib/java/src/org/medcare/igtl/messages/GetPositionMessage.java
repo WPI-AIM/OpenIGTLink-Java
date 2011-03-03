@@ -60,7 +60,7 @@ public class GetPositionMessage extends OpenIGTMessage {
         public byte[] PackBody() {
                 body = new byte[0];
                 header = new Header(VERSION, "GET_POSITION", deviceName, body);
-                return body;
+                return getBytes();
         }
 
         /**

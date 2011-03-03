@@ -60,7 +60,7 @@ public class GetTransformMessage extends OpenIGTMessage {
         public byte[] PackBody() {
                 body = new byte[0];
                 header = new Header(VERSION, "GET_TRANS", deviceName, body);
-                return body;
+                return getBytes();
         }
 
         /**

@@ -16,6 +16,8 @@
 
 package org.medcare.igtl.util;
 
+import com.neuronrobotics.sdk.common.ByteList;
+
 /**
  *** For reading/writing OpenIGTLink headers
  * 
@@ -32,6 +34,8 @@ public class Header {
         long body_size; // unsigned int 64 bits
         long crc; // unsigned int 64 bits
         BytesArray bytesArray;
+        String type="";
+        String name="";
 
         // ------------------------------------------------------------------------
 
@@ -54,7 +58,9 @@ public class Header {
         public Header(long version, String _type, String _name, long timestamp,
                         long body_size, long crc) {
                 bytesArray = new BytesArray();
+                this.type=_type;
                 this.version = version;
+                this.name=_name;
                 bytesArray.putLong(version, 2);
                 byte typeArray[] = new byte[12];
                 for (int m = 0; m < 12; m++) {
@@ -184,7 +190,7 @@ public class Header {
         /**
          *** TimeStamp or 0 if unused.
          *** 
-         * @return The timestamp at the creation of the header
+         * @return The time stamp at the creation of the header
          **/
         public double getTimeStamp() {
                 return this.timestamp;
@@ -232,6 +238,19 @@ public class Header {
          **/
         public byte[] getBytes() {
                 return this.bytesArray.getBytes();
+        }
+        
+        @Override
+        public String toString(){
+        	String s="";
+        	s+="Version: "+getVersion();
+        	s+=" Type: "+type;
+        	s+=" Name: "+name;
+        	s+=" Timestamp: "+getTimeStamp();
+        	s+=" Body Size:"+getBody_size();
+        	s+=" CRC: "+getCrc();
+        	s+=" bytes: "+new ByteList(getBytes());
+        	return s;
         }
 }
 
