@@ -17,7 +17,7 @@
 package org.medcare.igtl.messages;
 
 import org.medcare.igtl.util.BytesArray;
-import org.medcare.igtl.util.CrcException;
+//import org.medcare.igtl.util.CrcException;
 import org.medcare.igtl.util.Header;
 
 //import com.neuronrobotics.sdk.common.ByteList;

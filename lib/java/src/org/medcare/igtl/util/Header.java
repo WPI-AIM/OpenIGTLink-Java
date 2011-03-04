@@ -228,7 +228,6 @@ public class Header {
         public BytesArray getBytesArray() {
                 return this.bytesArray;
         }
-
         // ------------------------------------------------------------------------
 
         /**

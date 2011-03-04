@@ -20,7 +20,7 @@ import java.nio.ByteBuffer;
 import java.nio.CharBuffer;
 import java.nio.charset.Charset;
 
-import com.neuronrobotics.sdk.common.ByteList;
+//import com.neuronrobotics.sdk.common.ByteList;
 
 /**
  *** For reading/writing binary fields
@@ -381,6 +381,7 @@ public class BytesArray {
 	 *            The number of bytes from which the value is decoded
 	 *** @return The decoded double value, or 0L
 	 **/
+	
 	public double getDouble(int length) {
 		// 'length' must be at least 4
 		int maxLen = ((this.index + length) <= this.size) ? length

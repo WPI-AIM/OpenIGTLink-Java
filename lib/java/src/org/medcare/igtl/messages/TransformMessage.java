@@ -18,7 +18,6 @@ package org.medcare.igtl.messages;
 
 import org.medcare.igtl.util.BytesArray;
 import org.medcare.igtl.util.Header;
-
 import com.neuronrobotics.sdk.common.ByteList;
 
 /**
@@ -73,8 +72,7 @@ public class TransformMessage extends OpenIGTMessage {
          */
         public TransformMessage(Header header, byte body[]) throws Exception {
                 super(header, body);
-                
-        }
+                }
 
         /**
          *** To create body from body array
@@ -117,16 +115,23 @@ public class TransformMessage extends OpenIGTMessage {
          */
         public byte[] SetTransformData(double origin[], double normals[][]) {
                 bytesArray = new BytesArray();
-                SetOrigin(origin);
-                bytesArray.putDouble(origin[0], 4);
-                bytesArray.putDouble(origin[1], 4);
-                bytesArray.putDouble(origin[2], 4);
+                                           
+                // the 3x3 rotation matrix
                 SetNormals(normals);
                 for (int i = 0; i < 3; i++)
                         for (int j = 0; j < 3; j++)
                                 bytesArray.putDouble(normals[i][j], 4);
                 SetMatrix(origin, normals);
+                               
+             // the position vector
+                SetOrigin(origin);
+                bytesArray.putDouble(origin[0], 4);
+                bytesArray.putDouble(origin[1], 4);
+                bytesArray.putDouble(origin[2], 4);
+                
                 transform_data = bytesArray.getBytes();
+                
+             //   System.out.println("++++++++++++++++++++++++++++++++++++++");
                 return transform_data;
         }
 
@@ -139,11 +144,8 @@ public class TransformMessage extends OpenIGTMessage {
                 this.transform_data = transform_data;
                 bytesArray = new BytesArray();
                 bytesArray.putBytes(transform_data);
-                double[] o = new double[3];
-                for(int i=0;i<3;i++){
-                	o[i] = bytesArray.getDouble(4); // float32
-                	System.out.println("Origin "+i+": "+o[i]);
-                }
+                
+                // the 3x3 rotation matrix
                 normals = new double[3][3];
                 for (int i = 0; i < 3; i++){
                         for (int j = 0; j < 3; j++){
@@ -151,6 +153,15 @@ public class TransformMessage extends OpenIGTMessage {
                                 System.out.println("Normals ["+i+","+j+"] : "+normals[i][j]);
                         }      
                 }
+                // the position vector
+                double[] o = new double[3];                
+                for(int i=0;i<3;i++){
+                	o[i] = bytesArray.getDouble(4); // float32
+                	System.out.println("Origin "+i+": "+o[i]);
+                }
+                
+                System.out.println("++++++++++++++++++++++++++++++++++++++");
+                
                 SetOrigin(o);
                 SetNormals(normals);
                 //SetMatrix(origin, normals);        
