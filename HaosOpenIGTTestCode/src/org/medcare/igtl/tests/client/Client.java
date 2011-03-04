@@ -21,7 +21,8 @@ public class Client {
 	public static void main(String[] args) {
 		String host = "localhost"; // Default value for host name
 		// String host="130.215.48.47";
-		int port = 18944; // Default value for port number
+		//int port = 18944; // Default value for port number
+		int port = 8001; //Default value for port number
 		// boolean loop_flag=true;
 		if (args.length > 0) {
 			for (int index = 0; index < args.length; index++) {
@@ -49,7 +50,7 @@ public class Client {
 				positionMessage.setPositionData(position, quaternion, quaternionSize);
 				//HaoTransformMessage.SetTransformData(position, quaternion, quaternionSize);
 				double[] origin = { 0.0, 0.0, 0.0, 0.0 };
-				double normals[][] = { { 1, 0, 0, 12 }, { 0, 1, 0, 0 },
+				double normals[][] = { { 1, 0, 0, 12 }, { 0, 1, 0, 5 },
 						{ 0, 0, 1, 0 }, { 0, 0, 0, 1 } };
 				HaoTransformMessage.SetTransformData(origin, normals);
 				// TransformMessage

@@ -10,15 +10,19 @@ import org.medcare.igtl.network.MessageHandler;
 import org.medcare.igtl.network.ServerThread;
 import org.medcare.igtl.util.Header;
 
+//import com.neuronrobotics.sdk.common.ByteList;
+//import com.neuronrobotics.sdk.dyio.DyIO;
+//import com.neuronrobotics.sdk.dyio.DyIO;
 import com.neuronrobotics.sdk.common.ByteList;
-import com.neuronrobotics.sdk.dyio.DyIO;
 import com.neuronrobotics.sdk.pid.IPIDControl;
 //GET_CAPABIL, GET_IMAGE, GET_IMGMETA, GET_LBMETA, GET_STATUS, GET_TRAJ, CAPABILITY, COLORTABLE, IMAGE, IMGMETA, POINT, POSITION, STATUS, STP_TDATA, STT_TDATA, TDATA, TRAJ, TRANSFORM
+//import com.neuronrobotics.sdk.serial.SerialConnection;
 
 public class MyMessageHandler extends MessageHandler {
         public OpenIGTMessage openIGTMessage;
         private IPIDControl dyio;
 
+        
         public MyMessageHandler(Header header, byte[] body,ServerThread serverThread,IPIDControl d) {
 	        super(header, body, serverThread);
 	        capabilityList.add("GET_CAPABIL");
@@ -26,6 +30,7 @@ public class MyMessageHandler extends MessageHandler {
 	        capabilityList.add("POSITION");
 	        capabilityList.add("IMAGE");
 	        capabilityList.add("STATUS");
+	        capabilityList.add("MOVE_TO");
 	        dyio = d;
         }
 
@@ -42,13 +47,40 @@ public class MyMessageHandler extends MessageHandler {
                         openIGTMessage = new GetCapabilityMessage(header, body);
                 } else if  (messageType.equals("TRANSFORM")) {
                         openIGTMessage = new TransformMessage(header, body);
+                        TransformMessage transfm= (TransformMessage) openIGTMessage;
+                        transfm.Unpack();
+                       // double[][] position=transfm.GetMatrix();
+                        double[] position=transfm.GetOrigin();
+                       // double[][] rotation=transfm.GetNormals();
+                        System.out.println("#@# Body data: "+ new ByteList(openIGTMessage.body));
+                        System.out.println("reading transform matrix from the client");
+                        for (int i=0; i<position.length; i++){
+                        	System.out.println("XYZ Byte data: "+position[i]);
+                        }
+                        
+                        System.out.println("Transform body Byte data: "+ transfm);
+                  
+                        try{
+                        	if(dyio != null){
+                        		dyio.SetPIDSetPoint(0, (int) position[0], 0.0);
+                        		System.out.println("\n X position"+position[0]);
+                        	}
+                        	else {
+                        		System.out.println("NO DIYO");
+                        	}
+                        }catch(Exception e){
+                        	System.err.println("#*#*#*#*Failed to set position");
+                        	e.printStackTrace();
+                        }
+                        System.out.println("##############Setting BowlerDevice Position ok");
+                        
                 } else if (messageType.equals("POSITION")) {
                         System.out.println("perform trouve POSITION");
                         openIGTMessage= new PositionMessage(header, body);
                         PositionMessage pos = (PositionMessage) openIGTMessage;
                         pos.UnpackBody();
                         double [] position = pos.getPosition();
-                        double [] quad = pos.getQuaternion();
+           //             double [] quad = pos.getQuaternion();
                         System.out.println("##############Setting BowlerDevice Position: "+position[1]);
                         System.out.println("Byte data: "+pos);
                         try{

@@ -7,9 +7,12 @@ import org.medcare.igtl.util.ErrorManager;
 
 //import /com.neuronrobotics.sdk.dyio.DyIO;
 import com.neuronrobotics.sdk.common.Log;
+import com.neuronrobotics.sdk.genericdevice.GenericPIDDevice;
 //import com.neuronrobotics.sdk.genericdevice.GenericPIDDevice;
 // import com.neuronrobotics.sdk.serial.SerialConnection;
 //import com.neuronrobotics.sdk.ui.ConnectionDialog;
+//import com.neuronrobotics.sdk.serial.SerialConnection;
+import com.neuronrobotics.sdk.ui.ConnectionDialog;
 
 public class Server {
 
@@ -21,15 +24,12 @@ public class Server {
         public static void main(String[] args) {
         	try{
         		Log.enableDebugPrint(true);
-        		//GenericPIDDevice d = new GenericPIDDevice(new SerialConnection("COM5"));
-	        	//if(!d.connect()){
-	        	//	throw new RuntimeException("Failed to connect");
-	        	//}
+        		GenericPIDDevice d = new GenericPIDDevice();
+	        	if(!ConnectionDialog.getBowlerDevice(d)){
+	        		throw new RuntimeException("Failed to connect");
+	        	}
+	        	
 	        	System.out.println("Starting with PID device");
-//	        	GenericPIDDevice d = new GenericPIDDevice();
-//	        	if(!ConnectionDialog.getBowlerDevice(d)){
-//	        		System.exit(1);
-//	        	}
 	            int port = 8001; //Default value for port number
 	            if (args.length > 0) {
 	                  for (int index = 0; index < args.length; index++) {

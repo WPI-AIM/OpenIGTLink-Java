@@ -14,7 +14,7 @@ public class HaosOpenIGTServer extends OpenIGTServer {
 		private IPIDControl dyio;
         public HaosOpenIGTServer(int port, ErrorManager errorManager,IPIDControl d) throws Exception {
                 super(port, errorManager);
-                System.out.println("Starting Haos server");
+                System.out.println("Starting Hao's server");
                 dyio = d;
         }
 
