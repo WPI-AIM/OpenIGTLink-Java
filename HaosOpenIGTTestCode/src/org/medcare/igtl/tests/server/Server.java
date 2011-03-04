@@ -25,10 +25,14 @@ public class Server {
         	try{
         		Log.enableDebugPrint(true);
         		GenericPIDDevice d = new GenericPIDDevice();
+        		
 	        	if(!ConnectionDialog.getBowlerDevice(d)){
 	        		throw new RuntimeException("Failed to connect");
 	        	}
-	        	
+        		// d.setConnection("COM5");
+        		
+        	//	DyIO dyio = new DyIO(new SerialConnection("COM5"));
+        		
 	        	System.out.println("Starting with PID device");
 	            int port = 8001; //Default value for port number
 	            if (args.length > 0) {
@@ -42,7 +46,7 @@ public class Server {
 	            try {
 	            	System.out.println("Starting IGT server");
 	                // MessageHandler.perform can a answer by using ServerThread.sendBytes in perform method of MessageHandler
-	               openIGTServer = new HaosOpenIGTServer(port, errorManager, null);
+	               openIGTServer = new HaosOpenIGTServer(port, errorManager, d);
 	               System.out.println("Started IGT server");  
 	            }catch (Exception e) {
 	            	e.printStackTrace();
