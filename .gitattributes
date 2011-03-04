@@ -43,3 +43,7 @@ lib/java/src/org/medcare/igtl/util/ErrorManager.java -text
 lib/java/src/org/medcare/igtl/util/Header.java -text
 lib/java/src/org/medcare/igtl/util/Status.java -text
 lib/java/src/org/medcare/igtl/util/Tests.java -text
+lib/java/src/org/medcare/robot/CartesianSpacePosition.java -text
+lib/java/src/org/medcare/robot/FrameTransformation.java -text
+lib/java/src/org/medcare/robot/IKinematicsModel.java -text
+lib/java/src/org/medcare/robot/RasSpacePosition.java -text
