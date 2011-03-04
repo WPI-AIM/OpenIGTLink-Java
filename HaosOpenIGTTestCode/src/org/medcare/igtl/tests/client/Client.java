@@ -42,11 +42,11 @@ public class Client {
 		try {
 			requestQueueManager = new RequestQueueManager(new MyOpenIGTClient( host, port, errorManager));
 			requestQueueManager.start();
-			for (int i = 0; i < 5; i++) {
+			for (int i = 0; i < 1; i++) {
 				
 				double[] quaternion = { 0.0, 0.6666666666,0.577350269189626,0.6666666666 }; 
 				int quaternionSize =PositionMessage.ALL; 
-				double[] position = { i*8, 0.0, 0.0}; 
+				double[] position = { 12, 0.0, 0.0}; 
 				positionMessage.setPositionData(position, quaternion, quaternionSize);
 				//HaoTransformMessage.SetTransformData(position, quaternion, quaternionSize);
 				double[] origin = { 0.0, 0.0, 0.0, 0.0 };

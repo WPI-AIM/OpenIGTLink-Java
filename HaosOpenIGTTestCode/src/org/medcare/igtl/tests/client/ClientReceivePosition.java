@@ -20,7 +20,7 @@ public class ClientReceivePosition {
 	 */
 	public static void main(String[] args) {
 		String host = "localhost"; // Default value for host name
-		int port = 18944; // Default value for port number
+		int port = 8001; // Default value for port number
 		// boolean loop_flag=true;
 		if (args.length > 0) {
 			for (int index = 0; index < args.length; index++) {
@@ -38,10 +38,10 @@ public class ClientReceivePosition {
 		try {
 			requestQueueManager = new RequestQueueManager(new MyOpenIGTClient( host, port, errorManager));
 			requestQueueManager.start();
-			for (int i = 0; i < 2; i++) {
+			for (int i = 0; i < 1; i++) {
 				double[] quaternion = { 0.0, 0.6666666666,0.577350269189626,0.6666666666 }; 
 				int quaternionSize =PositionMessage.ALL; 
-				double[] position = { i*8, 0.0, 0.0}; 
+				double[] position = { 18, 0.0, 0.0}; 
 				positionMessage.setPositionData(position, quaternion, quaternionSize);
 				
 				ByteList b = new ByteList(positionMessage.PackBody());
