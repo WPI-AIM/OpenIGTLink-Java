@@ -16,47 +16,53 @@ import com.neuronrobotics.sdk.ui.ConnectionDialog;
 
 public class Server {
 
-        public static HaosOpenIGTServer openIGTServer;
-        private static MyClientErrorManager errorManager;
-        /**
-         * @param args
-         */
-        public static void main(String[] args) {
-        	try{
-        		Log.enableDebugPrint(true);
-        		GenericPIDDevice d = new GenericPIDDevice();
-        		
-	        	if(!ConnectionDialog.getBowlerDevice(d)){
-	        		throw new RuntimeException("Failed to connect");
-	        	}
-        		// d.setConnection("COM5");
-        		
-        	//	DyIO dyio = new DyIO(new SerialConnection("COM5"));
-        		
-	        	System.out.println("Starting with PID device");
-	            int port = 8001; //Default value for port number
-	            if (args.length > 0) {
-	                  for (int index = 0; index < args.length; index++) {
-	                          String arg = args[index].trim();
-	                          if (index == 0)
-	                                  port = Integer.parseInt(arg);
-	                  }
-	            }
-	            errorManager = new MyClientErrorManager();
-	            try {
-	            	System.out.println("Starting IGT server");
-	                // MessageHandler.perform can a answer by using ServerThread.sendBytes in perform method of MessageHandler
-	               openIGTServer = new HaosOpenIGTServer(port, errorManager, d);
-	               System.out.println("Started IGT server");  
-	            }catch (Exception e) {
-	            	e.printStackTrace();
-	                errorManager.error("Server on port : " + port + " Get an exception", e, ErrorManager.APPLICATION_EXCEPTION);
-	            }
-	            
-        	}catch (Exception e){
-        		e.printStackTrace();
-        		System.err.println("Exiting..");
-        		System.exit(2);
-        	}
-        }
+	public static HaosOpenIGTServer openIGTServer;
+	private static MyClientErrorManager errorManager;
+
+	/**
+	 * @param args
+	 */
+	public static void main(String[] args) {
+		try {
+			Log.enableDebugPrint(true);
+			GenericPIDDevice d = new GenericPIDDevice();
+
+			if (!ConnectionDialog.getBowlerDevice(d)) {
+				throw new RuntimeException("Failed to connect");
+			}
+			HaosKinematicModel m=new HaosKinematicModel();
+			m.setDevice(d);
+			// d.setConnection("COM5");
+
+			// DyIO dyio = new DyIO(new SerialConnection("COM5"));
+
+			System.out.println("Starting with PID device");
+			int port = 18944; // Default value for port number
+			if (args.length > 0) {
+				for (int index = 0; index < args.length; index++) {
+					String arg = args[index].trim();
+					if (index == 0)
+						port = Integer.parseInt(arg);
+				}
+			}
+			errorManager = new MyClientErrorManager();
+			try {
+				System.out.println("Starting IGT server");
+				// MessageHandler.perform can a answer by using
+				// ServerThread.sendBytes in perform method of MessageHandler
+				openIGTServer = new HaosOpenIGTServer(port, errorManager, m);
+				System.out.println("Started IGT server");
+			} catch (Exception e) {
+				e.printStackTrace();
+				errorManager.error("Server on port : " + port
+						+ " Get an exception", e,
+						ErrorManager.APPLICATION_EXCEPTION);
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			System.err.println("Exiting..");
+			System.exit(2);
+		}
+	}
 }

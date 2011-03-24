@@ -9,21 +9,29 @@ import org.medcare.igtl.messages.TransformMessage;
 import org.medcare.igtl.network.MessageHandler;
 import org.medcare.igtl.network.ServerThread;
 import org.medcare.igtl.util.Header;
+import org.medcare.robot.FrameTransformation;
+//import org.medcare.robot.IKinematicsModel;
+import org.medcare.robot.RasSpacePosition;
 
 //import com.neuronrobotics.sdk.common.ByteList;
 //import com.neuronrobotics.sdk.dyio.DyIO;
 //import com.neuronrobotics.sdk.dyio.DyIO;
 import com.neuronrobotics.sdk.common.ByteList;
-import com.neuronrobotics.sdk.pid.IPIDControl;
+//import com.neuronrobotics.sdk.dyio.DyIOChannelMode;
+//import com.neuronrobotics.sdk.dyio.dypid.DyPIDConfiguration;
+//import com.neuronrobotics.sdk.pid.IPIDControl;
+//import com.neuronrobotics.sdk.pid.*;
+
 //GET_CAPABIL, GET_IMAGE, GET_IMGMETA, GET_LBMETA, GET_STATUS, GET_TRAJ, CAPABILITY, COLORTABLE, IMAGE, IMGMETA, POINT, POSITION, STATUS, STP_TDATA, STT_TDATA, TDATA, TRAJ, TRANSFORM
 //import com.neuronrobotics.sdk.serial.SerialConnection;
+//import com.neuronrobotics.sdk.pid.PIDConfiguration;
 
 public class MyMessageHandler extends MessageHandler {
 	public OpenIGTMessage openIGTMessage;
-	private IPIDControl dyio;
-
+	private HaosKinematicModel model;
+	
 	public MyMessageHandler(Header header, byte[] body,
-			ServerThread serverThread, IPIDControl d) {
+		ServerThread serverThread, HaosKinematicModel m) {
 		super(header, body, serverThread);
 		capabilityList.add("GET_CAPABIL");
 		capabilityList.add("TRANSFORM");
@@ -31,13 +39,25 @@ public class MyMessageHandler extends MessageHandler {
 		capabilityList.add("IMAGE");
 		capabilityList.add("STATUS");
 		capabilityList.add("MOVE_TO");
-
-		if (d == null)
+		// important commands
+		capabilityList.add("INITIALIZE");
+		capabilityList.add("HOME");
+		capabilityList.add("GET_COORDINATE");
+		capabilityList.add("GET_STATUS");
+		// commands to be implemented
+		capabilityList.add("SET_Z_FRAME");
+		capabilityList.add("START_UP");
+		capabilityList.add("TARGETING "); 
+		capabilityList.add("INSERT"); 
+		capabilityList.add("BIOPSY"); 
+		capabilityList.add("EMERGENCY");
+				 
+		if (m == null)
 			System.out.println("PID device is null!!");
-		dyio = d;
-	}
+		model = m;
+		}
 
-	@Override
+	@Override 
 	public void manageError(String message, Exception exception, int errorCode) {
 		serverThread.errorManager.error(message, exception, errorCode);
 	}
@@ -61,9 +81,12 @@ public class MyMessageHandler extends MessageHandler {
 				for (int i = 0; i < position.length; i++) {
 					System.out.println("XYZ Byte data: " + position[i]);
 				}
-
+				double[][] rotation=transfm.GetNormals();
 				System.out.println("Transform body Byte data: " + transfm);
-			               
+				System.out.println("Rotation data: " + rotation);
+				
+			    model.setFrameTransformation(new FrameTransformation(null));    
+			    
 				/*try {
 					if (dyio != null) {
 						dyio.SetPIDSetPoint(0, (int) position[0], 0.0);
@@ -91,13 +114,22 @@ public class MyMessageHandler extends MessageHandler {
 				System.out.println("Byte data: " + pos);
 
 				try {
-					if (dyio == null)
+					if (model == null)
 						System.out.println("PID device is null!!!!!!!!!!!!!!!!!");
 					if(position[1]>1023)
 						position[1] = 1023;
 					if(position[1]<0)
 						position[1] = 0;
-					dyio.SetPIDSetPoint(0, (int) position[1], 0.0);
+					
+//					DyPIDConfiguration dypid = new DyPIDConfiguration(0,12,DyIOChannelMode.ANALOG_IN,11,DyIOChannelMode.SERVO_OUT);
+//					PIDConfiguration pid =new PIDConfiguration (0,true,true,true,1,0,0);
+					//dyio.ConfigureDynamicPIDChannels(dypid);
+//					dyio.ConfigurePIDController(pid);
+//					
+					//dyio.SetPIDSetPoint(0, (int) position[1], 0.0);
+					RasSpacePosition ras= new RasSpacePosition(null,position);
+					model.setPosition(ras);
+					
 					System.out.println(" PID device Servoing to "+position[1] );
 				} catch (Exception e) {
 					System.err.println("#*#*#*#*Failed to set position");
