@@ -39,7 +39,7 @@ public class ServerThread extends Thread {
         private InputStream instr;
         private MessageQueueManager messageQueue = null;
         private boolean alive;
-                public ErrorManager errorManager;
+        public ErrorManager errorManager;
 
         /***************************************************************************
          * Default ServerThread constructor.
