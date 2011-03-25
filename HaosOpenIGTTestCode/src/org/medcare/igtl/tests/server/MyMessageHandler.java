@@ -16,6 +16,8 @@ import org.medcare.robot.RasSpacePosition;
 //import com.neuronrobotics.sdk.common.ByteList;
 //import com.neuronrobotics.sdk.dyio.DyIO;
 //import com.neuronrobotics.sdk.dyio.DyIO;
+import Jama.Matrix;
+
 import com.neuronrobotics.sdk.common.ByteList;
 //import com.neuronrobotics.sdk.dyio.DyIOChannelMode;
 //import com.neuronrobotics.sdk.dyio.dypid.DyPIDConfiguration;
@@ -73,6 +75,7 @@ public class MyMessageHandler extends MessageHandler {
 				TransformMessage transfm = (TransformMessage) openIGTMessage;
 				transfm.Unpack();
 				// double[][] position=transfm.GetMatrix();
+			
 				double[] position = transfm.GetOrigin();
 				// double[][] rotation=transfm.GetNormals();
 				System.out.println("#@# Body data: "
@@ -82,10 +85,19 @@ public class MyMessageHandler extends MessageHandler {
 					System.out.println("XYZ Byte data: " + position[i]);
 				}
 				double[][] rotation=transfm.GetNormals();
+				System.out.println("*********" + transfm.deviceName);
 				System.out.println("Transform body Byte data: " + transfm);
 				System.out.println("Rotation data: " + rotation);
 				
-			    model.setFrameTransformation(new FrameTransformation(null));    
+				if (transfm.deviceName.equals("ZFrameTransform"))
+				{
+					model.setzFrameFlag(true);
+				//	model.setFrameTransformation(new FrameTransformation(null));   
+					model.setZFrameTransformMatrix(transfm.GetMatrix());
+				
+				}
+			   
+			    
 			    
 				/*try {
 					if (dyio != null) {
@@ -127,8 +139,24 @@ public class MyMessageHandler extends MessageHandler {
 //					dyio.ConfigurePIDController(pid);
 //					
 					//dyio.SetPIDSetPoint(0, (int) position[1], 0.0);
-					RasSpacePosition ras= new RasSpacePosition(null,position);
-					model.setPosition(ras);
+					//RasSpacePosition ras= new RasSpacePosition(null,position);
+					//model.setPosition(ras);
+					
+					model.setTargetFlag(true);
+					model.setRasTargetVector(position);
+					
+					//TODO 
+					if ((model.isTargetFlag()==true)&&(model.iszFrameFlag()==true)){
+						 double[][] matrixAArray =  model.getZFrameTransformMatrix();
+						 double[][] matrixBArray =  {{2.,0.,0.},{0.,3.,0.},{0.,0.,4.}};
+						 Matrix A = new Matrix(matrixAArray);
+						 Matrix B = new Matrix(matrixBArray);
+						 Matrix Binv=B.inverse();
+						 System.out.println("B inverse is" +Binv);
+						 Matrix AB= A.times(B);
+						 System.out.println("A times B is" + AB);
+						
+					}
 					
 					System.out.println(" PID device Servoing to "+position[1] );
 				} catch (Exception e) {
