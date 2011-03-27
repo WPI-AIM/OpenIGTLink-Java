@@ -9,9 +9,9 @@ import org.medcare.igtl.messages.TransformMessage;
 import org.medcare.igtl.network.MessageHandler;
 import org.medcare.igtl.network.ServerThread;
 import org.medcare.igtl.util.Header;
-import org.medcare.robot.FrameTransformation;
+//import org.medcare.robot.FrameTransformation;
 //import org.medcare.robot.IKinematicsModel;
-import org.medcare.robot.RasSpacePosition;
+//import org.medcare.robot.RasSpacePosition;
 
 //import com.neuronrobotics.sdk.common.ByteList;
 //import com.neuronrobotics.sdk.dyio.DyIO;
@@ -41,7 +41,7 @@ public class MyMessageHandler extends MessageHandler {
 		capabilityList.add("IMAGE");
 		capabilityList.add("STATUS");
 		capabilityList.add("MOVE_TO");
-		// important commands
+		/*// important commands
 		capabilityList.add("INITIALIZE");
 		capabilityList.add("HOME");
 		capabilityList.add("GET_COORDINATE");
@@ -52,7 +52,7 @@ public class MyMessageHandler extends MessageHandler {
 		capabilityList.add("TARGETING "); 
 		capabilityList.add("INSERT"); 
 		capabilityList.add("BIOPSY"); 
-		capabilityList.add("EMERGENCY");
+		capabilityList.add("EMERGENCY");*/
 				 
 		if (m == null)
 			System.out.println("PID device is null!!");
@@ -94,12 +94,10 @@ public class MyMessageHandler extends MessageHandler {
 					model.setzFrameFlag(true);
 				//	model.setFrameTransformation(new FrameTransformation(null));   
 					model.setZFrameTransformMatrix(transfm.GetMatrix());
+					System.out.println("Z Frame transform initilized");
 				
 				}
-			   
-			    
-			    
-				/*try {
+			  	/*try {
 					if (dyio != null) {
 						dyio.SetPIDSetPoint(0, (int) position[0], 0.0);
 						System.out.println("\n X position" + position[0]);
@@ -120,9 +118,7 @@ public class MyMessageHandler extends MessageHandler {
 				pos.UnpackBody();
 				double[] position = pos.getPosition();
 				// double [] quad = pos.getQuaternion();
-				System.out
-						.println("##############Setting BowlerDevice Position: "
-								+ position[0]);
+				System.out.println("##############Setting BowlerDevice Position: "+ position[0]);
 				System.out.println("Byte data: " + pos);
 
 				try {
@@ -147,17 +143,33 @@ public class MyMessageHandler extends MessageHandler {
 					
 					//TODO 
 					if ((model.isTargetFlag()==true)&&(model.iszFrameFlag()==true)){
-						 double[][] matrixAArray =  model.getZFrameTransformMatrix();
-						 double[][] matrixBArray =  {{2.,0.,0.},{0.,3.,0.},{0.,0.,4.}};
-						 Matrix A = new Matrix(matrixAArray);
-						 Matrix B = new Matrix(matrixBArray);
-						 Matrix Binv=B.inverse();
-						 System.out.println("B inverse is" +Binv);
-						 Matrix AB= A.times(B);
-						 System.out.println("A times B is" + AB);
+						// construct the matrix
+						 double[][] zFrameMatrixArray =  model.getZFrameTransformMatrix();
+						 model.setRasTargetMatrix(position);
+						 double[][] rasTargetMatrixArray =  model.getRasTargetMatrix();
+						
+						 // construct the matrix array
+						 Matrix rasTargetMatrix = new Matrix(rasTargetMatrixArray);
+						 Matrix zFrameMatrix = new Matrix(zFrameMatrixArray);		
+						 Matrix baseInZFrameMatrix= new Matrix(model.baseinZFrameMatrix);
+						
+						 //multiplication and inverse
+						 Matrix baseInImgMatrix= zFrameMatrix.times(baseInZFrameMatrix);
+						 Matrix tipInBaseMatrix= rasTargetMatrix.times(baseInImgMatrix.inverse());
+						 double[][] tipInBaseMatrixArray= tipInBaseMatrix.getArray();
+						 
+						 // find the tip in base vector
+						 model.setTipInBaseMatrix(tipInBaseMatrixArray);
+						 double[] tipInBaseVector= model.getPositionVector(model.getTipInBaseMatrix());
+						 System.out.println("Robot motion vector is "+ tipInBaseVector);
+						 double[] jointSpaceVector= model.Cartesian2JointSpace(tipInBaseVector);
+						 double [] encoderTickVector = model.JointSpace2EncoderTicks(jointSpaceVector);
+						 
+						 model.sendToMotors((int) encoderTickVector[0],(int) encoderTickVector[1],(int) encoderTickVector[2],1,10.0);
+						 
+						// double[] cartesianPositionVector =robotMotionVector; 
 						
 					}
-					
 					System.out.println(" PID device Servoing to "+position[1] );
 				} catch (Exception e) {
 					System.err.println("#*#*#*#*Failed to set position");
