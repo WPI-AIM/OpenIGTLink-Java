@@ -21,7 +21,6 @@ public class HaosKinematicModel implements IKinematicsModel {
 	private double[] tipInBaseVector= new double[3];
 	private double[][] TipInBaseMatrix = new double[4][4];
 	 
-	
 	private boolean targetFlag=false;
 	private boolean zFrameFlag=false;
 	

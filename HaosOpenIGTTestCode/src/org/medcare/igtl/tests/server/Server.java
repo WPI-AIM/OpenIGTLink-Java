@@ -15,7 +15,6 @@ import com.neuronrobotics.sdk.genericdevice.GenericPIDDevice;
 import com.neuronrobotics.sdk.ui.ConnectionDialog;
 
 public class Server {
-
 	public static HaosOpenIGTServer openIGTServer;
 	private static MyClientErrorManager errorManager;
 
@@ -33,7 +32,6 @@ public class Server {
 			HaosKinematicModel m=new HaosKinematicModel();
 			m.setDevice(d);
 			// d.setConnection("COM5");
-
 			// DyIO dyio = new DyIO(new SerialConnection("COM5"));
 
 			System.out.println("Starting with PID device");
