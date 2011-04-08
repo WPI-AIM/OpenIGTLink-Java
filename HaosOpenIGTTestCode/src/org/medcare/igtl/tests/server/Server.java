@@ -35,7 +35,8 @@ public class Server {
 			// DyIO dyio = new DyIO(new SerialConnection("COM5"));
 
 			System.out.println("Starting with PID device");
-			int port = 18944; // Default value for port number
+			int port = 18944; 
+			// Default value for port number
 			if (args.length > 0) {
 				for (int index = 0; index < args.length; index++) {
 					String arg = args[index].trim();

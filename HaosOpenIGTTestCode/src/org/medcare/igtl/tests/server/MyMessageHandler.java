@@ -37,7 +37,7 @@ public class MyMessageHandler extends MessageHandler {
 		super(header, body, serverThread);
 		capabilityList.add("GET_CAPABIL");
 		capabilityList.add("TRANSFORM");
-		// capabilityList.add("POSITION");
+		capabilityList.add("POSITION");
 		capabilityList.add("IMAGE");
 		capabilityList.add("STATUS");
 		capabilityList.add("MOVE_TO");
@@ -112,7 +112,7 @@ public class MyMessageHandler extends MessageHandler {
 						.println("##############Setting BowlerDevice Position ok");*/
 
 			} else if (messageType.equals("MOVE_TO")) {
-				System.out.println("perform  POSITION");
+				System.out.println("perform  MOVE_TO");
 				openIGTMessage = new PositionMessage(header, body);
 				PositionMessage pos = (PositionMessage) openIGTMessage;
 				pos.UnpackBody();
@@ -167,6 +167,8 @@ public class MyMessageHandler extends MessageHandler {
 						 
 						 model.sendToMotors((int) encoderTickVector[0],(int) encoderTickVector[1],(int) encoderTickVector[2],1,10.0);
 						 
+						 model.setzFrameFlag(false);
+						 model.setTargetFlag(false);
 						// double[] cartesianPositionVector =robotMotionVector; 
 						
 					}
