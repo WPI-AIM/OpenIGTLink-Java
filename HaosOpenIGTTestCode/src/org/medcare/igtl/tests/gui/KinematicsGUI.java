@@ -9,6 +9,8 @@ import javax.swing.JFrame;
 
 //import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.awt.Toolkit;
+
 import javax.swing.JTabbedPane;
 import javax.swing.JButton;
 
@@ -110,6 +112,16 @@ public class KinematicsGUI implements IPIDEventListener{
 		frame.setSize(new Dimension(1024, 768));
 		frame.setPreferredSize(new Dimension(1024, 768));
 		frame.setMaximumSize(new Dimension(2147, 2147));
+		//
+		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+	//	frame.setSize(new Dimension( 300,  300));
+		Dimension windowSize = frame.getSize();
+
+		int windowX = Math.max(0, (screenSize.width  - windowSize.width ) / 2);
+		int windowY = Math.max(0, (screenSize.height - windowSize.height) / 2);
+		frame.setLocation(windowX, windowY);  // Don't use "f." inside constructor.
+		//
+		
 		frame.setTitle("Kinematics GUI");
 		// Kevin close when windows is closed
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
