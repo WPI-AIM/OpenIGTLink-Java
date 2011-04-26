@@ -27,8 +27,9 @@ public class SlicerPanel extends JPanel {
 	private static final long serialVersionUID = 3485775714533234856L;
 	private JLabel jLabel = null;
 	private JSlider jSlider = null;
-
-	private JButton jButton = null;
+	//jButton
+	
+	private JButton jButtonCalculcateInvKinematics = null;
 	private JTable tableZFrameRegistration;
 	private JTextField textFieldXAxisDesiredJointPosition;
 	private JTextField textFieldYAxisDesiredJointPosition;
@@ -78,6 +79,7 @@ public class SlicerPanel extends JPanel {
 	private JButton jButtonRetractNeedle = null;
 	private JButton jButtonRetractStylet = null;
 	private JButton jButtonHomePosition = null;
+	private JButton jButtonZFrameRegistration = null;
 
 	private KinematicsGUI kinematicsGUI;
 
@@ -310,7 +312,7 @@ public class SlicerPanel extends JPanel {
 		separator_1 = new JSeparator();
 		separator_1.setForeground(Color.BLACK);
 		separator_1.setBackground(Color.WHITE);
-		separator_1.setBounds(15, 184, 615, 20);
+		separator_1.setBounds(13, 192, 615, 20);
 		this.add(getTextFieldRetractionJointError(), null);
 
 		lblZFrameRegistrition = new JLabel("Z Frame Registration");
@@ -337,6 +339,7 @@ public class SlicerPanel extends JPanel {
 			Class[] columnTypes = new Class[] {
 					Double.class, Double.class, Double.class, Double.class
 			};
+			
 			public Class getColumnClass(int columnIndex) {
 				return columnTypes[columnIndex];
 			}
@@ -380,7 +383,7 @@ public class SlicerPanel extends JPanel {
 			Class[] columnTypes = new Class[] {
 				Double.class, Double.class, Double.class, Double.class
 			};
-			@SuppressWarnings("unchecked")
+			@SuppressWarnings({ "unchecked", "rawtypes" })
 			public Class getColumnClass(int columnIndex) {
 				return columnTypes[columnIndex];
 			}
@@ -422,6 +425,8 @@ public class SlicerPanel extends JPanel {
 		this.add(getJButtonRetractStylet(), null);
 		this.add(getJButtonHomePosition(), null);
 		this.add(separator, separator.getName());
+		this.add(getJButtonZFrameRegistration(), null);
+
 	}
 
 
@@ -448,17 +453,17 @@ public class SlicerPanel extends JPanel {
 		return jSlider;
 	}
 	/**
-	 * This method initializes jButton	
+	 * This method initializes jButtonCalculcateInvKinematics	
 	 * 	
 	 * @return javax.swing.JButton	
 	 */
 	private JButton getJButton() {
-		if (jButton == null) {
-			jButton = new JButton();
-			jButton.setText("Calculate Robot Joint Position");
-			jButton.setBounds(new Rectangle(128, 466, 210, 35));
+		if (jButtonCalculcateInvKinematics == null) {
+			jButtonCalculcateInvKinematics = new JButton();
+			jButtonCalculcateInvKinematics.setText("Calculate Robot Joint Position");
+			jButtonCalculcateInvKinematics.setBounds(new Rectangle(128, 466, 210, 35));
 		}
-		return jButton;
+		return jButtonCalculcateInvKinematics;
 	}
 	private JTextField getTextFieldXAxisJointPosition() {
 		if (textFieldXAxisJointPosition == null) {
@@ -738,6 +743,33 @@ public class SlicerPanel extends JPanel {
 			jButtonHomePosition.setText("Home Position");
 		}
 		return jButtonHomePosition;
+	}
+	
+	
+	private JButton getJButtonZFrameRegistration() {
+		if (jButtonZFrameRegistration == null) {
+			jButtonZFrameRegistration = new JButton();
+			jButtonZFrameRegistration.setBounds(new Rectangle(26, 161, 155, 27));
+			jButtonZFrameRegistration.setText("Confirm Registration");
+			//TODO list
+		
+			jButtonZFrameRegistration.addActionListener(new ActionListener() {
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					// TODO Auto-generated method stub
+					tableZFrameRegistration.setEnabled(false);
+				}
+			});
+//			jButtonStop.addActionListener(new ActionListener() {
+//				public void actionPerformed(ActionEvent e) {
+//					
+//					System.out.println("Stopping all motors!");
+//					getDevice().SetAllPIDSetPoint(getKinematicsGUI().getValues(), 0);
+//				}
+//			});
+			
+		}
+		return jButtonZFrameRegistration;
 	}
 
 	

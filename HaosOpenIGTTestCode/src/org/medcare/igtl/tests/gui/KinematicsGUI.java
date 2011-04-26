@@ -45,9 +45,6 @@ public class KinematicsGUI implements IPIDEventListener{
 		//application.initialize();
 	}
 
-
-
-	
 	private static final long serialVersionUID = 1L;
 	private JTabbedPane jTabbedPane = null;  //  @jve:decl-index=0:visual-constraint="10,10"
 	private SlicerPanel slicerPanel = null;
