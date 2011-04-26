@@ -11,6 +11,9 @@ HaosOpenIGTTestCode/src/org/medcare/igtl/tests/client/ClientReceiveTransform.jav
 HaosOpenIGTTestCode/src/org/medcare/igtl/tests/client/MyClientErrorManager.java -text
 HaosOpenIGTTestCode/src/org/medcare/igtl/tests/client/MyOpenIGTClient.java -text
 HaosOpenIGTTestCode/src/org/medcare/igtl/tests/client/MyResponseHandler.java -text
+HaosOpenIGTTestCode/src/org/medcare/igtl/tests/gui/KinematicsGUI.java -text
+HaosOpenIGTTestCode/src/org/medcare/igtl/tests/gui/SlicerPanel.java -text
+HaosOpenIGTTestCode/src/org/medcare/igtl/tests/gui/middle.gif -text
 HaosOpenIGTTestCode/src/org/medcare/igtl/tests/server/HaosKinematicModel.java -text
 HaosOpenIGTTestCode/src/org/medcare/igtl/tests/server/HaosOpenIGTServer.java -text
 HaosOpenIGTTestCode/src/org/medcare/igtl/tests/server/MyMessageHandler.java -text
