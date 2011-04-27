@@ -33,6 +33,7 @@ public class GetRowsAndCols{
 		System.out.println("Name of column:");
 		
 		
+		
 		panel.add(table);
 		frame.add(panel);
 		frame.setSize(300,300);
