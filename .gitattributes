@@ -9,6 +9,7 @@ HaosOpenIGTTestCode/src/com/neuronrobotics/aim/gui/KinematicsGUI.java -text
 HaosOpenIGTTestCode/src/com/neuronrobotics/aim/gui/SlicerPanel.java -text
 HaosOpenIGTTestCode/src/com/neuronrobotics/aim/gui/middle.gif -text
 HaosOpenIGTTestCode/src/haosu/test/codes/GetRowsAndCols.java -text
+HaosOpenIGTTestCode/src/haosu/test/codes/TableModelListenerDemo.java -text
 HaosOpenIGTTestCode/src/org/medcare/igtl/tests/client/Client.java -text
 HaosOpenIGTTestCode/src/org/medcare/igtl/tests/client/ClientReceivePosition.java -text
 HaosOpenIGTTestCode/src/org/medcare/igtl/tests/client/ClientReceiveTransform.java -text
