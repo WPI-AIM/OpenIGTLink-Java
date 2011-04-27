@@ -3,6 +3,7 @@ HaosOpenIGTTestCode/.classpath -text
 HaosOpenIGTTestCode/.project -text
 HaosOpenIGTTestCode/lib/Jama-1.0.2.jar -text
 HaosOpenIGTTestCode/lib/miglayout-3.7.2-swing.jar -text
+HaosOpenIGTTestCode/lib/nr-console.jar -text
 HaosOpenIGTTestCode/src/com/neuronrobotics/aim/gui/KinematicsGUI.java -text
 HaosOpenIGTTestCode/src/com/neuronrobotics/aim/gui/SlicerPanel.java -text
 HaosOpenIGTTestCode/src/com/neuronrobotics/aim/gui/middle.gif -text
