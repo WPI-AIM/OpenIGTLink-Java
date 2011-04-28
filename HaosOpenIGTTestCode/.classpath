@@ -5,7 +5,7 @@
 	<classpathentry combineaccessrules="false" kind="src" path="/NRSDK"/>
 	<classpathentry kind="lib" path="lib/Jama-1.0.2.jar"/>
 	<classpathentry kind="lib" path="lib/miglayout-3.7.2-swing.jar"/>
-	<classpathentry kind="lib" path="lib/nr-console.jar"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/OpenIGTLink"/>
+	<classpathentry kind="lib" path="C:/Program Files/Neuron Robotics Development Kit/nrdk-3.7.4/bin/nr-console.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
