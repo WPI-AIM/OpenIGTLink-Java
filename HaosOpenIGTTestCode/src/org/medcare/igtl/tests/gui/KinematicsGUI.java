@@ -76,40 +76,35 @@ public class KinematicsGUI implements IPIDEventListener{
 	 */
 	private void initialize() {
 		JPanel content = new JPanel(new MigLayout());
-			
-//		connect.addActionListener(new ActionListener() {
-//			public void actionPerformed(ActionEvent e) {
-//				if(!connected){
-//					if (!ConnectionDialog.getBowlerDevice(getDevice())) {
-//						throw new RuntimeException("Failed to connect");
-//					}
-//					setValues(device.GetAllPIDPosition());
-//					device.addPIDEventListener(getKinematicsGUI());
-//					pidControl = new PIDControlGui(getDevice());
-//					pidControl.setSize(new Dimension(1024, 768));
-//					motionPanel.add(pidControl);
-//				}else{
-//					getDevice().disconnect();
-//				}
-//				connected=getDevice().isAvailable();
-//				if(connected){
-//					connect.setText("Disconnect");
-//				}else{
-//					connect.setText("Connect");
-//				}
-//				
-//				getJTabbedPane().setVisible(connected);
-//				
-//				frame.setVisible(true);
-//			}
-//		});
+		
+		connect.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if(!connected){
+					if (!ConnectionDialog.getBowlerDevice(getDevice())) {
+					//	throw new RuntimeException("Failed to connect");
+					}
+					setValues(device.GetAllPIDPosition());
+					device.addPIDEventListener(getKinematicsGUI());
+					pidControl = new PIDControlGui(getDevice());
+					pidControl.setSize(new Dimension(1024, 768));
+					motionPanel.add(pidControl);
+				}else{
+					getDevice().disconnect();
+				}
+				connected=getDevice().isAvailable();
+				if(connected){
+					connect.setText("Disconnect");
+				}else{
+					connect.setText("Connect");
+				}
+				getJTabbedPane().setVisible(connected);
+				frame.setVisible(true);
+			}
+		});
 		
 		content.add(connect,"wrap");
 		content.add(getJTabbedPane(),"wrap");
-		getJTabbedPane().setVisible(true);
-	//	getJTabbedPane().setSize(new Dimension(1024, 768));
-		// uncomment this line
-		// getJTabbedPane().setVisible(false);
+		getJTabbedPane().setVisible(false);
 		
 		
 		frame = new JFrame();
@@ -118,13 +113,13 @@ public class KinematicsGUI implements IPIDEventListener{
 		frame.setPreferredSize(new Dimension(1024, 768));
 		frame.setMaximumSize(new Dimension(2147, 2147));
 		//
-//		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-//	//	frame.setSize(new Dimension( 300,  300));
-//		Dimension windowSize = frame.getSize();
-//
-//		int windowX = Math.max(0, (screenSize.width  - windowSize.width ) / 2);
-//		int windowY = Math.max(0, (screenSize.height - windowSize.height) / 2);
-//		frame.setLocation(windowX, windowY);  // Don't use "f." inside constructor.
+		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+	//	frame.setSize(new Dimension( 300,  300));
+		Dimension windowSize = frame.getSize();
+
+		int windowX = Math.max(0, (screenSize.width  - windowSize.width ) / 2);
+		int windowY = Math.max(0, (screenSize.height - windowSize.height) / 2);
+		frame.setLocation(windowX, windowY);  // Don't use "f." inside constructor.
 		//
 		
 		frame.setTitle("Kinematics GUI");
@@ -148,7 +143,7 @@ public class KinematicsGUI implements IPIDEventListener{
 			//jTabbedPane
 		//	ImageIcon icon = createImageIcon("middle.gif");
 			jTabbedPane.addTab("Slicer", new ImageIcon(KinematicsGUI.class.getResource("middle.gif")), getSlicerPanel(), null);
-		//	jTabbedPane.addTab("Motion Control", new ImageIcon(KinematicsGUI.class.getResource("middle.gif")), getMotionPanel(), null);
+			jTabbedPane.addTab("Motion Control", new ImageIcon(KinematicsGUI.class.getResource("middle.gif")), getMotionPanel(), null);
 		}
 		return jTabbedPane;
 	}
