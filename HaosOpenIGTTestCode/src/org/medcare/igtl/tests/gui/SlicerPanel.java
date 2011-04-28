@@ -30,7 +30,7 @@ public class SlicerPanel extends JPanel {
 	//jButton
 	
 	private JButton jButtonCalculcateInvKinematics = null;
-	private JTable tableZFrameRegistration;
+	private EventResponseTable tableZFrameRegistration;
 	private JTextField textFieldXAxisDesiredJointPosition;
 	private JTextField textFieldYAxisDesiredJointPosition;
 	private JTextField textFieldZAxisDesiredJointPosition;
@@ -139,40 +139,40 @@ public class SlicerPanel extends JPanel {
 		// make a separator
 		//this.add(new JSeparator(JSeparator.HORIZONTAL),BorderLayout.LINE_START);
 
-		tableZFrameRegistration = new JTable();
-		tableZFrameRegistration.setBorder(new CompoundBorder());
-		tableZFrameRegistration.setModel(new DefaultTableModel(
-				new Object[][] {
-						{new Double(1.0), new Double(0.0), new Double(0.0), new Double(0.1)},
-						{new Double(0.0), new Double(1.0), new Double(0.0), new Double(0.1)},
-						{new Double(0.0), new Double(0.0), new Double(1.0), new Double(0.1)},
-						{new Double(0.0), new Double(0.0), new Double(0.0), new Double(1.0)},
-				},
-				new String[] {
-						"t", "s", "n", "Position"
-				}
-		)
-		
-		{
-			/**
-			 * 
-			 */
-			private static final long serialVersionUID = -2115861646443740429L;
-			Class[] columnTypes = new Class[] {
-					Double.class, Double.class, Double.class, Double.class
-			};
-
-			public Class getColumnClass(int columnIndex) {
-				return columnTypes[columnIndex];
-			}
-		});
-		tableZFrameRegistration.getColumnModel().getColumn(0).setResizable(false);
-		tableZFrameRegistration.getColumnModel().getColumn(0).setMaxWidth(100);
-		tableZFrameRegistration.getColumnModel().getColumn(1).setResizable(false);
-		tableZFrameRegistration.getColumnModel().getColumn(2).setResizable(false);
-		tableZFrameRegistration.getColumnModel().getColumn(3).setResizable(false);
-		tableZFrameRegistration.getColumnModel().getColumn(3).setMaxWidth(100);
-		tableZFrameRegistration.setBounds(10, 94, 200, 62);
+		tableZFrameRegistration = new EventResponseTable();
+		//tableZFrameRegistration.setBorder(new CompoundBorder());
+//         tableZFrameRegistration.setModel(new DefaultTableModel(
+//				new Object[][] {
+//						{new Double(1.0), new Double(0.0), new Double(0.0), new Double(0.1)},
+//						{new Double(0.0), new Double(1.0), new Double(0.0), new Double(0.1)},
+//						{new Double(0.0), new Double(0.0), new Double(1.0), new Double(0.1)},
+//						{new Double(0.0), new Double(0.0), new Double(0.0), new Double(1.0)},
+//				},
+//				new String[] {
+//						"t", "s", "n", "Position"
+//				}
+//		)
+//		
+//		{
+//			/**
+//			 * 
+//			 */
+//			private static final long serialVersionUID = -2115861646443740429L;
+//			Class[] columnTypes = new Class[] {
+//					Double.class, Double.class, Double.class, Double.class
+//			};
+//
+//			public Class getColumnClass(int columnIndex) {
+//				return columnTypes[columnIndex];
+//			}
+//		});
+//		tableZFrameRegistration.getColumnModel().getColumn(0).setResizable(false);
+//		tableZFrameRegistration.getColumnModel().getColumn(0).setMaxWidth(100);
+//		tableZFrameRegistration.getColumnModel().getColumn(1).setResizable(false);
+//		tableZFrameRegistration.getColumnModel().getColumn(2).setResizable(false);
+//		tableZFrameRegistration.getColumnModel().getColumn(3).setResizable(false);
+//		tableZFrameRegistration.getColumnModel().getColumn(3).setMaxWidth(100);
+//		tableZFrameRegistration.setBounds(10, 94, 200, 62);
 		
 		this.add(tableZFrameRegistration);
 
