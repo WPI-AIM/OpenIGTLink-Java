@@ -138,8 +138,11 @@ public class SlicerPanel extends JPanel {
 
 		// make a separator
 		//this.add(new JSeparator(JSeparator.HORIZONTAL),BorderLayout.LINE_START);
-
-		tableZFrameRegistration = new EventResponseTable();
+		double[][] tableZFrameRegistrationElements = { { 2, 3, 5, 2.2 }, 
+													   { 2, 4, 7, 9 } , 
+													   { 2, 4, 7, 9 }, 
+													   { 2, 4, 7, 9 }};
+		tableZFrameRegistration = new EventResponseTable(tableZFrameRegistrationElements);
 		//tableZFrameRegistration.setBorder(new CompoundBorder());
 //         tableZFrameRegistration.setModel(new DefaultTableModel(
 //				new Object[][] {
