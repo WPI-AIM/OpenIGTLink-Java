@@ -1,4 +1,4 @@
-package org.medcare.igtl.tests.examples;
+package org.medcare.igtl.tests.gui;
 
 import java.awt.Color;
 import java.awt.Font;
