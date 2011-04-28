@@ -1,4 +1,4 @@
-package org.medcare.igtl.tests.gui;
+package org.medcare.igtl.tests.examples;
 
 import javax.swing.JTable;
 import javax.swing.border.CompoundBorder;
