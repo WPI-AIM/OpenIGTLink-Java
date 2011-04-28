@@ -151,7 +151,8 @@ public class SlicerPanel extends JPanel {
 				new String[] {
 						"t", "s", "n", "Position"
 				}
-		) 
+		)
+		
 		{
 			/**
 			 * 
@@ -172,6 +173,7 @@ public class SlicerPanel extends JPanel {
 		tableZFrameRegistration.getColumnModel().getColumn(3).setResizable(false);
 		tableZFrameRegistration.getColumnModel().getColumn(3).setMaxWidth(100);
 		tableZFrameRegistration.setBounds(10, 94, 200, 62);
+		
 		this.add(tableZFrameRegistration);
 
 		textFieldXAxisDesiredJointPosition = new JTextField();
