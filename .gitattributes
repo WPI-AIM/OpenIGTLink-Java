@@ -5,12 +5,12 @@ HaosOpenIGTTestCode/.settings/org.eclipse.jdt.core.prefs -text
 HaosOpenIGTTestCode/lib/Jama-1.0.2.jar -text
 HaosOpenIGTTestCode/lib/miglayout-3.7.2-swing.jar -text
 HaosOpenIGTTestCode/lib/nr-console.jar -text
-HaosOpenIGTTestCode/src/haosu/test/codes/GetRowsAndCols.java -text
-HaosOpenIGTTestCode/src/haosu/test/codes/TableModelListenerDemo.java -text
 HaosOpenIGTTestCode/src/haosu/test/examples/ArrayDemo.java -text
 HaosOpenIGTTestCode/src/haosu/test/examples/GetRowsAndCols.java -text
 HaosOpenIGTTestCode/src/haosu/test/examples/TableModelListenerDemo.java -text
 HaosOpenIGTTestCode/src/haosu/test/examples/TestNumberArray.java -text
+HaosOpenIGTTestCode/src/haosu/test/examples/codes/GetRowsAndCols.java -text
+HaosOpenIGTTestCode/src/haosu/test/examples/codes/TableModelListenerDemo.java -text
 HaosOpenIGTTestCode/src/org/medcare/igtl/tests/client/Client.java -text
 HaosOpenIGTTestCode/src/org/medcare/igtl/tests/client/ClientReceivePosition.java -text
 HaosOpenIGTTestCode/src/org/medcare/igtl/tests/client/ClientReceiveTransform.java -text
