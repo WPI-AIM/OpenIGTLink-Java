@@ -1,6 +1,7 @@
 package haosu.test.examples;
 
 class ArrayDemo {
+	
     public static void main(String[] args) {
          int[] anArray;              // declares an array of integers
 
@@ -27,6 +28,29 @@ class ArrayDemo {
          // move char array from copyFrom to copyTo
          System.arraycopy(copyFrom, 2, copyTo, 0, 7);
          System.out.println(new String(copyTo));
+         
+         System.out.println( Character.isDigit('c'));
+         
+         //inline test
+         String testString="aa1";
+         try{
+ 			Double.parseDouble(testString);
+ 			}catch(NumberFormatException e){
+ 			  System.out.println("The "+testString+" isn't a number");
+ 			}
+ 			
+ 		//	boolean stringTest=isDouble(testString);
+ 			
+ 			//test as a function
 
     }
+    public boolean isDouble(String string){
+    	 try{
+  			Double.parseDouble(string);
+  			}catch(NumberFormatException e){
+  			  System.out.println("The "+string+" isn't a number");
+  		   	return false;
+  			}
+  			return true;
+       }
 } 
