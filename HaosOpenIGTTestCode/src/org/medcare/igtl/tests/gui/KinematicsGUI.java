@@ -122,7 +122,7 @@ public class KinematicsGUI implements IPIDEventListener{
 		frame.setLocation(windowX, windowY);  // Don't use "f." inside constructor.
 		//
 		
-		frame.setTitle("Kinematics GUI");
+		frame.setTitle("MRI Needle Robot Controller");
 		// Kevin close when windows is closed
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.pack();
@@ -137,13 +137,13 @@ public class KinematicsGUI implements IPIDEventListener{
 	private JTabbedPane getJTabbedPane() {
 		if (jTabbedPane == null) {
 			jTabbedPane = new JTabbedPane();
-			jTabbedPane.setName("MRI Needle Robot Controller");
+			jTabbedPane.setName("MRI Needle Robot Controller Tabs");
 			jTabbedPane.setSize(new Dimension(1024, 768));
 			jTabbedPane.setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
 			//jTabbedPane
 		//	ImageIcon icon = createImageIcon("middle.gif");
-			jTabbedPane.addTab("Slicer", new ImageIcon(KinematicsGUI.class.getResource("middle.gif")), getSlicerPanel(), null);
-			jTabbedPane.addTab("Motion Control", new ImageIcon(KinematicsGUI.class.getResource("middle.gif")), getMotionPanel(), null);
+			jTabbedPane.addTab("Slicer Panel", new ImageIcon(KinematicsGUI.class.getResource("middle.gif")), getSlicerPanel(), null);
+			jTabbedPane.addTab("Motion Control Panel", new ImageIcon(KinematicsGUI.class.getResource("middle.gif")), getMotionPanel(), null);
 		}
 		return jTabbedPane;
 	}
