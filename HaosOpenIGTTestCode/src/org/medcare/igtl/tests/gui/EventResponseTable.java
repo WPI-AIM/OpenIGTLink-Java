@@ -13,6 +13,17 @@ public class EventResponseTable extends JTable {
 
 	private static final long serialVersionUID = 1L;
 
+	public boolean isDouble(String string){
+   	 try{
+ 			Double.parseDouble(string);
+ 			}catch(NumberFormatException e){
+ 			  System.out.println("The "+string+" isn't a number");
+ 		   	return false;
+ 			}
+ 			System.out.println("The "+string+" is a number");
+ 			return true;	
+      }
+	
 	public EventResponseTable(double[][] tableElements) {
 		this.setBorder(new CompoundBorder());
 		this.setModel(new DefaultTableModel(new Object[][] {
@@ -55,23 +66,35 @@ public class EventResponseTable extends JTable {
 				
 				System.out.println(data);
 				
-				boolean allStringAreNumbers = true; 
+			//	boolean allStringAreNumbers = true; 
 				// If we find a non-digit character
-				for (int i = 0; i < dataString.length(); i++) {
-					if (!Character.isDigit(dataString.charAt(i))) {
-						allStringAreNumbers = false;
-						String message = "\"The Comedy of Errors\"\n";
-						JOptionPane.showMessageDialog(new JFrame(), message,
-								"Dialog", JOptionPane.YES_NO_OPTION);
-						break;
-					}
+//				for (int i = 0; i < dataString.length(); i++) {
+//					if (!Character.isDigit(dataString.charAt(i))) {
+//						allStringAreNumbers = false;
+//						String message = "\"The Comedy of Errors\"\n";
+//						JOptionPane.showMessageDialog(new JFrame(), message,
+//								"Dialog", JOptionPane.YES_NO_OPTION);
+//						break;
+//					}
+//				}
+//				allStringAreNumbers = true;
+//				if (allStringAreNumbers) {
+//					double aDouble = Double.parseDouble(dataString);
+//					System.out.println("Column " + column + "  Row " + row
+//							+ "  " + aDouble);
+//				}
+				boolean isDouble = isDouble(dataString);
+				if (isDouble==false)
+				{
+					String message = "\"The Comedy of Errors\"\n";
+					JOptionPane.showMessageDialog(new JFrame(), message,
+							"Dialog", JOptionPane.YES_NO_OPTION);
 				}
-				allStringAreNumbers = true;
-				if (allStringAreNumbers) {
+				else {
 					double aDouble = Double.parseDouble(dataString);
-					System.out.println("Column " + column + "  Row " + row
-							+ "  " + aDouble);
+					System.out.println("Column "  + "  Row " + "  " + aDouble);
 				}
+				
 			}
 		});
 		// end of table event listener
