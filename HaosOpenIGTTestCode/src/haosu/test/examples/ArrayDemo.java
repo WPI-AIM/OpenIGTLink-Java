@@ -32,25 +32,27 @@ class ArrayDemo {
          System.out.println( Character.isDigit('c'));
          
          //inline test
-         String testString="aa1";
+         String testString="22.50";
          try{
  			Double.parseDouble(testString);
  			}catch(NumberFormatException e){
  			  System.out.println("The "+testString+" isn't a number");
  			}
  			
- 		//	boolean stringTest=isDouble(testString);
- 			
+ 			System.out.println("++++++++++++++++++++++++++++");
+ 			boolean stringTest=isDouble(testString);
+ 			System.out.println("is "+ stringTest);
  			//test as a function
 
     }
-    public boolean isDouble(String string){
+    public static boolean isDouble(String string){
     	 try{
   			Double.parseDouble(string);
   			}catch(NumberFormatException e){
   			  System.out.println("The "+string+" isn't a number");
   		   	return false;
   			}
-  			return true;
+  			System.out.println("The "+string+" is a number");
+  			return true;	
        }
 } 
