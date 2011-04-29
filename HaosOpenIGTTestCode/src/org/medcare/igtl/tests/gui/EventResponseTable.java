@@ -24,7 +24,7 @@ public class EventResponseTable extends JTable {
  			return true;	
       }
 	
-	public EventResponseTable(double[][] tableElements) {
+	public EventResponseTable(double[][] tableElements, int[] bounds) {
 		this.setBorder(new CompoundBorder());
 		this.setModel(new DefaultTableModel(new Object[][] {
 				{ tableElements[0][0], tableElements[0][1],
@@ -52,8 +52,8 @@ public class EventResponseTable extends JTable {
 		this.getColumnModel().getColumn(2).setResizable(false);
 		this.getColumnModel().getColumn(3).setResizable(false);
 		this.getColumnModel().getColumn(3).setMaxWidth(100);
-		this.setBounds(10, 94, 200, 62);
-
+		//this.setBounds(10, 94, 200, 62);
+		this.setBounds(bounds[0], bounds[1], bounds[2], bounds[3]);
 		// begin table event listener
 		this.getModel().addTableModelListener(new TableModelListener() {
 			public void tableChanged(TableModelEvent e) {
@@ -64,8 +64,7 @@ public class EventResponseTable extends JTable {
 				Object data = model.getValueAt(row, column);
 				String dataString = data.toString();
 				
-				System.out.println(data);
-				
+			//	System.out.println(data);	
 			//	boolean allStringAreNumbers = true; 
 				// If we find a non-digit character
 //				for (int i = 0; i < dataString.length(); i++) {
@@ -86,7 +85,7 @@ public class EventResponseTable extends JTable {
 				boolean isDouble = isDouble(dataString);
 				if (isDouble==false)
 				{
-					String message = "\"The Comedy of Errors\"\n";
+					String message = "\"The table element must be numbers\"\n";
 					JOptionPane.showMessageDialog(new JFrame(), message,
 							"Dialog", JOptionPane.YES_NO_OPTION);
 				}

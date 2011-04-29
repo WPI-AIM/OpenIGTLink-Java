@@ -44,9 +44,11 @@ public class SlicerPanel extends JPanel {
 	private JSeparator separator;
 	private JSeparator separator_1;
 	private JLabel lblZFrameRegistrition;
-	private JTable tableDesiredNeedleRAS;
+	
+	private EventResponseTable tableDesiredNeedleRAS;
 	private JLabel lblDesiredNeedleRas;
-	private JTable tableActualNeedleRAS;
+	
+	private EventResponseTable tableActualNeedleRAS;
 	private JLabel lblActualNeedleRas;
 
 	private JLabel lblRoll = null;
@@ -138,11 +140,13 @@ public class SlicerPanel extends JPanel {
 
 		// make a separator
 		//this.add(new JSeparator(JSeparator.HORIZONTAL),BorderLayout.LINE_START);
-		double[][] tableZFrameRegistrationElements = { { 2, 3, 5, 2.2 }, 
+		double[][] tableZFrameRegistrationElements = { { 2, 3, 5, 258.5 }, 
 													   { 2, 4, 7, 9 } , 
 													   { 2, 4, 7, 9 }, 
 													   { 2, 4, 7, 9 }};
-		tableZFrameRegistration = new EventResponseTable(tableZFrameRegistrationElements);
+		int[] boundsZFrameRegistration={10, 94, 200, 62};
+		tableZFrameRegistration = new EventResponseTable(tableZFrameRegistrationElements, boundsZFrameRegistration);
+		System.out.println(boundsZFrameRegistration[0]);
 		//tableZFrameRegistration.setBorder(new CompoundBorder());
 //         tableZFrameRegistration.setModel(new DefaultTableModel(
 //				new Object[][] {
@@ -249,8 +253,6 @@ public class SlicerPanel extends JPanel {
 		this.add(textFieldZAxisDesiredJointPosition);
 		textFieldZAxisDesiredJointPosition.setColumns(10);
 
-
-
 		textFieldZAxisJointPosition = new JTextField();
 		textFieldZAxisJointPosition.setText("0");
 		textFieldZAxisJointPosition.setEditable(false);
@@ -325,41 +327,48 @@ public class SlicerPanel extends JPanel {
 		lblZFrameRegistrition.setFont(new Font("Tahoma", Font.BOLD, 15));
 		lblZFrameRegistrition.setBounds(20, 67, 157, 25);
 
-		tableDesiredNeedleRAS = new JTable();
-		tableDesiredNeedleRAS.setModel(new DefaultTableModel(
-				new Object[][] {
-						{new Double(1.0), new Double(0.0), new Double(0.0), new Double(0.1)},
-						{new Double(0.0), new Double(1.0), new Double(0.0), new Double(0.1)},
-						{new Double(0.0), new Double(0.0), new Double(1.0), new Double(0.1)},
-						{new Double(0.0), new Double(0.0), new Double(0.0), new Double(1.0)},
-				},
-				new String[] {
-						"s", "r", "t", "Position"
-				}
-		) {
-			/**
-			 * 
-			 */
-			private static final long serialVersionUID = -1919192436306365374L;
-			Class[] columnTypes = new Class[] {
-					Double.class, Double.class, Double.class, Double.class
-			};
-			
-			public Class getColumnClass(int columnIndex) {
-				return columnTypes[columnIndex];
-			}
-		});
-		tableDesiredNeedleRAS.getColumnModel().getColumn(0).setResizable(false);
-		tableDesiredNeedleRAS.getColumnModel().getColumn(0).setMaxWidth(100);
-		tableDesiredNeedleRAS.getColumnModel().getColumn(1).setResizable(false);
-		tableDesiredNeedleRAS.getColumnModel().getColumn(1).setMaxWidth(100);
-		tableDesiredNeedleRAS.getColumnModel().getColumn(2).setResizable(false);
-		tableDesiredNeedleRAS.getColumnModel().getColumn(2).setMaxWidth(100);
-		tableDesiredNeedleRAS.getColumnModel().getColumn(3).setResizable(false);
-		tableDesiredNeedleRAS.getColumnModel().getColumn(3).setMaxWidth(100);
-		tableDesiredNeedleRAS.setBounds(220, 94, 200, 62);
+		//tableDesiredNeedleRAS = new JTable();
+		double[][] tableDesiredNeedleRASElements = { { 2, 3, 5, 19.2 }, 
+				   { 2, 4, 7, 9 } , 
+				   { 2, 4, 7, 125 }, 
+				   { 2, 4, 7, 58 }};
+		int[] boundsTableDesiredNeedleRAS={220, 94, 200, 62};
+		tableDesiredNeedleRAS = new EventResponseTable(tableDesiredNeedleRASElements, boundsTableDesiredNeedleRAS);
 
-
+//		tableDesiredNeedleRAS.setModel.setModel(new DefaultTableModel(
+//				new Object[][] {
+//						{new Double(1.0), new Double(0.0), new Double(0.0), new Double(0.1)},
+//						{new Double(0.0), new Double(1.0), new Double(0.0), new Double(0.1)},
+//						{new Double(0.0), new Double(0.0), new Double(1.0), new Double(0.1)},
+//						{new Double(0.0), new Double(0.0), new Double(0.0), new Double(1.0)},
+//				},
+//				new String[] {
+//						"s", "r", "t", "Position"
+//				}
+//		) {
+//			/**
+//			 * 
+//			 */
+//			private static final long serialVersionUID = -1919192436306365374L;
+//			Class[] columnTypes = new Class[] {
+//					Double.class, Double.class, Double.class, Double.class
+//			};
+//			
+//			public Class getColumnClass(int columnIndex) {
+//				return columnTypes[columnIndex];
+//			}
+//		});
+//		
+//		tableDesiredNeedleRAS.getColumnModel().getColumn(0).setResizable(false);
+//		tableDesiredNeedleRAS.getColumnModel().getColumn(0).setMaxWidth(100);
+//		tableDesiredNeedleRAS.getColumnModel().getColumn(1).setResizable(false);
+//		tableDesiredNeedleRAS.getColumnModel().getColumn(1).setMaxWidth(100);
+//		tableDesiredNeedleRAS.getColumnModel().getColumn(2).setResizable(false);
+//		tableDesiredNeedleRAS.getColumnModel().getColumn(2).setMaxWidth(100);
+//		tableDesiredNeedleRAS.getColumnModel().getColumn(3).setResizable(false);
+//		tableDesiredNeedleRAS.getColumnModel().getColumn(3).setMaxWidth(100);
+//		tableDesiredNeedleRAS.setBounds(220, 94, 200, 62);
+		
 		lblDesiredNeedleRas = new JLabel("Desired Needle RAS");
 		lblDesiredNeedleRas.setForeground(Color.BLUE);
 		lblDesiredNeedleRas.setFont(new Font("Tahoma", Font.BOLD, 15));
@@ -368,40 +377,47 @@ public class SlicerPanel extends JPanel {
 		this.add(tableDesiredNeedleRAS, tableDesiredNeedleRAS.getName());
 		this.add(lblZFrameRegistrition, lblZFrameRegistrition.getName());
 
-		tableActualNeedleRAS = new JTable();
-		tableActualNeedleRAS.setModel(new DefaultTableModel(
-				new Object[][] {
-						{new Double(1.0), new Double(0.0), new Double(0.0), new Double(0.1)},
-						{new Double(0.0), new Double(1.0), new Double(0.0), new Double(0.1)},
-						{new Double(0.0), new Double(1.0), new Double(1.0), new Double(0.1)},
-						{new Double(0.0), new Double(0.0), new Double(0.0), new Double(1.0)},
-				},
-				new String[] {
-						"s", "t", "r", "Position"
-				}
-		) {
-			/**
-			 * 
-			 */
-			private static final long serialVersionUID = 5881532877939470175L;
-			@SuppressWarnings("rawtypes")
-			Class[] columnTypes = new Class[] {
-				Double.class, Double.class, Double.class, Double.class
-			};
-			@SuppressWarnings({ "unchecked", "rawtypes" })
-			public Class getColumnClass(int columnIndex) {
-				return columnTypes[columnIndex];
-			}
-		});
-		tableActualNeedleRAS.getColumnModel().getColumn(0).setResizable(false);
-		tableActualNeedleRAS.getColumnModel().getColumn(0).setMaxWidth(100);
-		tableActualNeedleRAS.getColumnModel().getColumn(1).setResizable(false);
-		tableActualNeedleRAS.getColumnModel().getColumn(1).setMaxWidth(100);
-		tableActualNeedleRAS.getColumnModel().getColumn(2).setResizable(false);
-		tableActualNeedleRAS.getColumnModel().getColumn(2).setMaxWidth(100);
-		tableActualNeedleRAS.getColumnModel().getColumn(3).setResizable(false);
-		tableActualNeedleRAS.getColumnModel().getColumn(3).setMaxWidth(100);
-		tableActualNeedleRAS.setBounds(443, 94, 200, 59);
+		double[][] tableActualNeedleRASElements = { { 2, 3, 5, 2.85 }, 
+				   { 2, 4, 7, 99 } , 
+				   { 2, 4, 7, 33 }, 
+				   { 2, 4, 7, 9 }};
+		int[] boundsTableActualNeedleRAS={443, 94, 200, 59};
+		tableActualNeedleRAS = new EventResponseTable(tableActualNeedleRASElements, boundsTableActualNeedleRAS);
+
+//		
+//		tableActualNeedleRAS.setModel(new DefaultTableModel(
+//				new Object[][] {
+//						{new Double(1.0), new Double(0.0), new Double(0.0), new Double(0.1)},
+//						{new Double(0.0), new Double(1.0), new Double(0.0), new Double(0.1)},
+//						{new Double(0.0), new Double(1.0), new Double(1.0), new Double(0.1)},
+//						{new Double(0.0), new Double(0.0), new Double(0.0), new Double(1.0)},
+//				},
+//				new String[] {
+//						"s", "t", "r", "Position"
+//				}
+//		) {
+//			/**
+//			 * 
+//			 */
+//			private static final long serialVersionUID = 5881532877939470175L;
+//			@SuppressWarnings("rawtypes")
+//			Class[] columnTypes = new Class[] {
+//				Double.class, Double.class, Double.class, Double.class
+//			};
+//			@SuppressWarnings({ "unchecked", "rawtypes" })
+//			public Class getColumnClass(int columnIndex) {
+//				return columnTypes[columnIndex];
+//			}
+//		});
+//		tableActualNeedleRAS.getColumnModel().getColumn(0).setResizable(false);
+//		tableActualNeedleRAS.getColumnModel().getColumn(0).setMaxWidth(100);
+//		tableActualNeedleRAS.getColumnModel().getColumn(1).setResizable(false);
+//		tableActualNeedleRAS.getColumnModel().getColumn(1).setMaxWidth(100);
+//		tableActualNeedleRAS.getColumnModel().getColumn(2).setResizable(false);
+//		tableActualNeedleRAS.getColumnModel().getColumn(2).setMaxWidth(100);
+//		tableActualNeedleRAS.getColumnModel().getColumn(3).setResizable(false);
+//		tableActualNeedleRAS.getColumnModel().getColumn(3).setMaxWidth(100);
+//		tableActualNeedleRAS.setBounds(443, 94, 200, 59);
 
 		lblActualNeedleRas = new JLabel("Actual Needle RAS");
 		lblActualNeedleRas.setForeground(Color.BLUE);
@@ -409,6 +425,7 @@ public class SlicerPanel extends JPanel {
 		lblActualNeedleRas.setBounds(471, 68, 167, 25);
 		this.add(lblActualNeedleRas, lblActualNeedleRas.getName());
 		this.add(tableActualNeedleRAS, tableActualNeedleRAS.getName());
+		
 		this.add(separator_1, separator_1.getName());
 		this.add(lblCartesianError, null);
 		this.add(lblPosX, null);
