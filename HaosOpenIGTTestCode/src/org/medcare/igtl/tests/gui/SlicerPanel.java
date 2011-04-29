@@ -12,11 +12,11 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JSeparator;
 import javax.swing.JSlider;
-import javax.swing.JTable;
+//import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.border.BevelBorder;
-import javax.swing.border.CompoundBorder;
-import javax.swing.table.DefaultTableModel;
+//import javax.swing.border.CompoundBorder;
+//import javax.swing.table.DefaultTableModel;
 
 import com.neuronrobotics.sdk.genericdevice.GenericPIDDevice;
 
@@ -27,8 +27,8 @@ public class SlicerPanel extends JPanel {
 	private static final long serialVersionUID = 3485775714533234856L;
 	private JLabel jLabel = null;
 	private JSlider jSlider = null;
-	//jButton
-	
+	// jButton
+
 	private JButton jButtonCalculcateInvKinematics = null;
 	private EventResponseTable tableZFrameRegistration;
 	private JTextField textFieldXAxisDesiredJointPosition;
@@ -44,10 +44,10 @@ public class SlicerPanel extends JPanel {
 	private JSeparator separator;
 	private JSeparator separator_1;
 	private JLabel lblZFrameRegistrition;
-	
+
 	private EventResponseTable tableDesiredNeedleRAS;
 	private JLabel lblDesiredNeedleRas;
-	
+
 	private EventResponseTable tableActualNeedleRAS;
 	private JLabel lblActualNeedleRas;
 
@@ -82,6 +82,7 @@ public class SlicerPanel extends JPanel {
 	private JButton jButtonRetractStylet = null;
 	private JButton jButtonHomePosition = null;
 	private JButton jButtonZFrameRegistration = null;
+	private JButton jButtonDesiredNeedleRAS = null;
 
 	private KinematicsGUI kinematicsGUI;
 
@@ -139,48 +140,48 @@ public class SlicerPanel extends JPanel {
 		add(getJSlider(), null);
 
 		// make a separator
-		//this.add(new JSeparator(JSeparator.HORIZONTAL),BorderLayout.LINE_START);
-		double[][] tableZFrameRegistrationElements = { { 2, 3, 5, 258.5 }, 
-													   { 2, 4, 7, 9 } , 
-													   { 2, 4, 7, 9 }, 
-													   { 2, 4, 7, 9 }};
-		int[] boundsZFrameRegistration={10, 94, 200, 62};
-		tableZFrameRegistration = new EventResponseTable(tableZFrameRegistrationElements, boundsZFrameRegistration);
+		// this.add(new
+		// JSeparator(JSeparator.HORIZONTAL),BorderLayout.LINE_START);
+		double[][] tableZFrameRegistrationElements = { { 2, 3, 5, 258.5 },
+				{ 2, 4, 7, 9 }, { 2, 4, 7, 9 }, { 2, 4, 7, 9 } };
+		int[] boundsZFrameRegistration = { 10, 94, 200, 62 };
+		tableZFrameRegistration = new EventResponseTable(
+				tableZFrameRegistrationElements, boundsZFrameRegistration);
 		System.out.println(boundsZFrameRegistration[0]);
-		//tableZFrameRegistration.setBorder(new CompoundBorder());
-//         tableZFrameRegistration.setModel(new DefaultTableModel(
-//				new Object[][] {
-//						{new Double(1.0), new Double(0.0), new Double(0.0), new Double(0.1)},
-//						{new Double(0.0), new Double(1.0), new Double(0.0), new Double(0.1)},
-//						{new Double(0.0), new Double(0.0), new Double(1.0), new Double(0.1)},
-//						{new Double(0.0), new Double(0.0), new Double(0.0), new Double(1.0)},
-//				},
-//				new String[] {
-//						"t", "s", "n", "Position"
-//				}
-//		)
-//		
-//		{
-//			/**
-//			 * 
-//			 */
-//			private static final long serialVersionUID = -2115861646443740429L;
-//			Class[] columnTypes = new Class[] {
-//					Double.class, Double.class, Double.class, Double.class
-//			};
-//
-//			public Class getColumnClass(int columnIndex) {
-//				return columnTypes[columnIndex];
-//			}
-//		});
-//		tableZFrameRegistration.getColumnModel().getColumn(0).setResizable(false);
-//		tableZFrameRegistration.getColumnModel().getColumn(0).setMaxWidth(100);
-//		tableZFrameRegistration.getColumnModel().getColumn(1).setResizable(false);
-//		tableZFrameRegistration.getColumnModel().getColumn(2).setResizable(false);
-//		tableZFrameRegistration.getColumnModel().getColumn(3).setResizable(false);
-//		tableZFrameRegistration.getColumnModel().getColumn(3).setMaxWidth(100);
-//		tableZFrameRegistration.setBounds(10, 94, 200, 62);
-		
+		// tableZFrameRegistration.setBorder(new CompoundBorder());
+		// tableZFrameRegistration.setModel(new DefaultTableModel(
+		// new Object[][] {
+		// {new Double(1.0), new Double(0.0), new Double(0.0), new Double(0.1)},
+		// {new Double(0.0), new Double(1.0), new Double(0.0), new Double(0.1)},
+		// {new Double(0.0), new Double(0.0), new Double(1.0), new Double(0.1)},
+		// {new Double(0.0), new Double(0.0), new Double(0.0), new Double(1.0)},
+		// },
+		// new String[] {
+		// "t", "s", "n", "Position"
+		// }
+		// )
+		//
+		// {
+		// /**
+		// *
+		// */
+		// private static final long serialVersionUID = -2115861646443740429L;
+		// Class[] columnTypes = new Class[] {
+		// Double.class, Double.class, Double.class, Double.class
+		// };
+		//
+		// public Class getColumnClass(int columnIndex) {
+		// return columnTypes[columnIndex];
+		// }
+		// });
+		// tableZFrameRegistration.getColumnModel().getColumn(0).setResizable(false);
+		// tableZFrameRegistration.getColumnModel().getColumn(0).setMaxWidth(100);
+		// tableZFrameRegistration.getColumnModel().getColumn(1).setResizable(false);
+		// tableZFrameRegistration.getColumnModel().getColumn(2).setResizable(false);
+		// tableZFrameRegistration.getColumnModel().getColumn(3).setResizable(false);
+		// tableZFrameRegistration.getColumnModel().getColumn(3).setMaxWidth(100);
+		// tableZFrameRegistration.setBounds(10, 94, 200, 62);
+
 		this.add(tableZFrameRegistration);
 
 		textFieldXAxisDesiredJointPosition = new JTextField();
@@ -248,8 +249,10 @@ public class SlicerPanel extends JPanel {
 		textFieldZAxisDesiredJointPosition.setEditable(false);
 		textFieldZAxisDesiredJointPosition.setBounds(125, 319, 120, 20);
 		this.add(lblDesiredJointPosition, lblDesiredJointPosition.getName());
-		this.add(textFieldXAxisDesiredJointPosition, textFieldXAxisDesiredJointPosition.getName());
-		this.add(textFieldYAxisDesiredJointPosition, textFieldYAxisDesiredJointPosition.getName());
+		this.add(textFieldXAxisDesiredJointPosition,
+				textFieldXAxisDesiredJointPosition.getName());
+		this.add(textFieldYAxisDesiredJointPosition,
+				textFieldYAxisDesiredJointPosition.getName());
 		this.add(textFieldZAxisDesiredJointPosition);
 		textFieldZAxisDesiredJointPosition.setColumns(10);
 
@@ -281,7 +284,8 @@ public class SlicerPanel extends JPanel {
 		this.add(lblJointPosition, lblJointPosition.getName());
 		this.add(getTextFieldXAxisJointPosition(), null);
 		this.add(getTextFieldYAxisJointPosition(), null);
-		this.add(textFieldZAxisJointPosition, textFieldZAxisJointPosition.getName());
+		this.add(textFieldZAxisJointPosition,
+				textFieldZAxisJointPosition.getName());
 		this.add(textFieldInsertionJointPosition);
 
 		textFieldRotationJointPosition = new JTextField();
@@ -302,7 +306,8 @@ public class SlicerPanel extends JPanel {
 		textFieldRetractionJointPosition.setEditable(false);
 		textFieldRetractionJointPosition.setColumns(10);
 		textFieldRetractionJointPosition.setBounds(270, 414, 92, 20);
-		this.add(textFieldRetractionDesiredJointPosition, textFieldRetractionDesiredJointPosition.getName());
+		this.add(textFieldRetractionDesiredJointPosition,
+				textFieldRetractionDesiredJointPosition.getName());
 		this.add(textFieldRetractionJointPosition);
 
 		separator = new JSeparator();
@@ -327,48 +332,47 @@ public class SlicerPanel extends JPanel {
 		lblZFrameRegistrition.setFont(new Font("Tahoma", Font.BOLD, 15));
 		lblZFrameRegistrition.setBounds(20, 67, 157, 25);
 
-		//tableDesiredNeedleRAS = new JTable();
-		double[][] tableDesiredNeedleRASElements = { { 2, 3, 5, 19.2 }, 
-				   { 2, 4, 7, 9 } , 
-				   { 2, 4, 7, 125 }, 
-				   { 2, 4, 7, 58 }};
-		int[] boundsTableDesiredNeedleRAS={220, 94, 200, 62};
-		tableDesiredNeedleRAS = new EventResponseTable(tableDesiredNeedleRASElements, boundsTableDesiredNeedleRAS);
+		// tableDesiredNeedleRAS = new JTable();
+		double[][] tableDesiredNeedleRASElements = { { 2, 3, 5, 19.2 },
+				{ 2, 4, 7, 9 }, { 2, 4, 7, 125 }, { 2, 4, 7, 58 } };
+		int[] boundsTableDesiredNeedleRAS = { 220, 94, 200, 62 };
+		tableDesiredNeedleRAS = new EventResponseTable(
+				tableDesiredNeedleRASElements, boundsTableDesiredNeedleRAS);
 
-//		tableDesiredNeedleRAS.setModel.setModel(new DefaultTableModel(
-//				new Object[][] {
-//						{new Double(1.0), new Double(0.0), new Double(0.0), new Double(0.1)},
-//						{new Double(0.0), new Double(1.0), new Double(0.0), new Double(0.1)},
-//						{new Double(0.0), new Double(0.0), new Double(1.0), new Double(0.1)},
-//						{new Double(0.0), new Double(0.0), new Double(0.0), new Double(1.0)},
-//				},
-//				new String[] {
-//						"s", "r", "t", "Position"
-//				}
-//		) {
-//			/**
-//			 * 
-//			 */
-//			private static final long serialVersionUID = -1919192436306365374L;
-//			Class[] columnTypes = new Class[] {
-//					Double.class, Double.class, Double.class, Double.class
-//			};
-//			
-//			public Class getColumnClass(int columnIndex) {
-//				return columnTypes[columnIndex];
-//			}
-//		});
-//		
-//		tableDesiredNeedleRAS.getColumnModel().getColumn(0).setResizable(false);
-//		tableDesiredNeedleRAS.getColumnModel().getColumn(0).setMaxWidth(100);
-//		tableDesiredNeedleRAS.getColumnModel().getColumn(1).setResizable(false);
-//		tableDesiredNeedleRAS.getColumnModel().getColumn(1).setMaxWidth(100);
-//		tableDesiredNeedleRAS.getColumnModel().getColumn(2).setResizable(false);
-//		tableDesiredNeedleRAS.getColumnModel().getColumn(2).setMaxWidth(100);
-//		tableDesiredNeedleRAS.getColumnModel().getColumn(3).setResizable(false);
-//		tableDesiredNeedleRAS.getColumnModel().getColumn(3).setMaxWidth(100);
-//		tableDesiredNeedleRAS.setBounds(220, 94, 200, 62);
-		
+		// tableDesiredNeedleRAS.setModel.setModel(new DefaultTableModel(
+		// new Object[][] {
+		// {new Double(1.0), new Double(0.0), new Double(0.0), new Double(0.1)},
+		// {new Double(0.0), new Double(1.0), new Double(0.0), new Double(0.1)},
+		// {new Double(0.0), new Double(0.0), new Double(1.0), new Double(0.1)},
+		// {new Double(0.0), new Double(0.0), new Double(0.0), new Double(1.0)},
+		// },
+		// new String[] {
+		// "s", "r", "t", "Position"
+		// }
+		// ) {
+		// /**
+		// *
+		// */
+		// private static final long serialVersionUID = -1919192436306365374L;
+		// Class[] columnTypes = new Class[] {
+		// Double.class, Double.class, Double.class, Double.class
+		// };
+		//
+		// public Class getColumnClass(int columnIndex) {
+		// return columnTypes[columnIndex];
+		// }
+		// });
+		//
+		// tableDesiredNeedleRAS.getColumnModel().getColumn(0).setResizable(false);
+		// tableDesiredNeedleRAS.getColumnModel().getColumn(0).setMaxWidth(100);
+		// tableDesiredNeedleRAS.getColumnModel().getColumn(1).setResizable(false);
+		// tableDesiredNeedleRAS.getColumnModel().getColumn(1).setMaxWidth(100);
+		// tableDesiredNeedleRAS.getColumnModel().getColumn(2).setResizable(false);
+		// tableDesiredNeedleRAS.getColumnModel().getColumn(2).setMaxWidth(100);
+		// tableDesiredNeedleRAS.getColumnModel().getColumn(3).setResizable(false);
+		// tableDesiredNeedleRAS.getColumnModel().getColumn(3).setMaxWidth(100);
+		// tableDesiredNeedleRAS.setBounds(220, 94, 200, 62);
+
 		lblDesiredNeedleRas = new JLabel("Desired Needle RAS");
 		lblDesiredNeedleRas.setForeground(Color.BLUE);
 		lblDesiredNeedleRas.setFont(new Font("Tahoma", Font.BOLD, 15));
@@ -377,47 +381,46 @@ public class SlicerPanel extends JPanel {
 		this.add(tableDesiredNeedleRAS, tableDesiredNeedleRAS.getName());
 		this.add(lblZFrameRegistrition, lblZFrameRegistrition.getName());
 
-		double[][] tableActualNeedleRASElements = { { 2, 3, 5, 2.85 }, 
-				   { 2, 4, 7, 99 } , 
-				   { 2, 4, 7, 33 }, 
-				   { 2, 4, 7, 9 }};
-		int[] boundsTableActualNeedleRAS={443, 94, 200, 59};
-		tableActualNeedleRAS = new EventResponseTable(tableActualNeedleRASElements, boundsTableActualNeedleRAS);
+		double[][] tableActualNeedleRASElements = { { 2, 3, 5, 2.85 },
+				{ 2, 4, 7, 99 }, { 2, 4, 7, 33 }, { 2, 4, 7, 9 } };
+		int[] boundsTableActualNeedleRAS = { 443, 94, 200, 59 };
+		tableActualNeedleRAS = new EventResponseTable(
+				tableActualNeedleRASElements, boundsTableActualNeedleRAS);
 
-//		
-//		tableActualNeedleRAS.setModel(new DefaultTableModel(
-//				new Object[][] {
-//						{new Double(1.0), new Double(0.0), new Double(0.0), new Double(0.1)},
-//						{new Double(0.0), new Double(1.0), new Double(0.0), new Double(0.1)},
-//						{new Double(0.0), new Double(1.0), new Double(1.0), new Double(0.1)},
-//						{new Double(0.0), new Double(0.0), new Double(0.0), new Double(1.0)},
-//				},
-//				new String[] {
-//						"s", "t", "r", "Position"
-//				}
-//		) {
-//			/**
-//			 * 
-//			 */
-//			private static final long serialVersionUID = 5881532877939470175L;
-//			@SuppressWarnings("rawtypes")
-//			Class[] columnTypes = new Class[] {
-//				Double.class, Double.class, Double.class, Double.class
-//			};
-//			@SuppressWarnings({ "unchecked", "rawtypes" })
-//			public Class getColumnClass(int columnIndex) {
-//				return columnTypes[columnIndex];
-//			}
-//		});
-//		tableActualNeedleRAS.getColumnModel().getColumn(0).setResizable(false);
-//		tableActualNeedleRAS.getColumnModel().getColumn(0).setMaxWidth(100);
-//		tableActualNeedleRAS.getColumnModel().getColumn(1).setResizable(false);
-//		tableActualNeedleRAS.getColumnModel().getColumn(1).setMaxWidth(100);
-//		tableActualNeedleRAS.getColumnModel().getColumn(2).setResizable(false);
-//		tableActualNeedleRAS.getColumnModel().getColumn(2).setMaxWidth(100);
-//		tableActualNeedleRAS.getColumnModel().getColumn(3).setResizable(false);
-//		tableActualNeedleRAS.getColumnModel().getColumn(3).setMaxWidth(100);
-//		tableActualNeedleRAS.setBounds(443, 94, 200, 59);
+		//
+		// tableActualNeedleRAS.setModel(new DefaultTableModel(
+		// new Object[][] {
+		// {new Double(1.0), new Double(0.0), new Double(0.0), new Double(0.1)},
+		// {new Double(0.0), new Double(1.0), new Double(0.0), new Double(0.1)},
+		// {new Double(0.0), new Double(1.0), new Double(1.0), new Double(0.1)},
+		// {new Double(0.0), new Double(0.0), new Double(0.0), new Double(1.0)},
+		// },
+		// new String[] {
+		// "s", "t", "r", "Position"
+		// }
+		// ) {
+		// /**
+		// *
+		// */
+		// private static final long serialVersionUID = 5881532877939470175L;
+		// @SuppressWarnings("rawtypes")
+		// Class[] columnTypes = new Class[] {
+		// Double.class, Double.class, Double.class, Double.class
+		// };
+		// @SuppressWarnings({ "unchecked", "rawtypes" })
+		// public Class getColumnClass(int columnIndex) {
+		// return columnTypes[columnIndex];
+		// }
+		// });
+		// tableActualNeedleRAS.getColumnModel().getColumn(0).setResizable(false);
+		// tableActualNeedleRAS.getColumnModel().getColumn(0).setMaxWidth(100);
+		// tableActualNeedleRAS.getColumnModel().getColumn(1).setResizable(false);
+		// tableActualNeedleRAS.getColumnModel().getColumn(1).setMaxWidth(100);
+		// tableActualNeedleRAS.getColumnModel().getColumn(2).setResizable(false);
+		// tableActualNeedleRAS.getColumnModel().getColumn(2).setMaxWidth(100);
+		// tableActualNeedleRAS.getColumnModel().getColumn(3).setResizable(false);
+		// tableActualNeedleRAS.getColumnModel().getColumn(3).setMaxWidth(100);
+		// tableActualNeedleRAS.setBounds(443, 94, 200, 59);
 
 		lblActualNeedleRas = new JLabel("Actual Needle RAS");
 		lblActualNeedleRas.setForeground(Color.BLUE);
@@ -425,7 +428,7 @@ public class SlicerPanel extends JPanel {
 		lblActualNeedleRas.setBounds(471, 68, 167, 25);
 		this.add(lblActualNeedleRas, lblActualNeedleRas.getName());
 		this.add(tableActualNeedleRAS, tableActualNeedleRAS.getName());
-		
+
 		this.add(separator_1, separator_1.getName());
 		this.add(lblCartesianError, null);
 		this.add(lblPosX, null);
@@ -448,13 +451,14 @@ public class SlicerPanel extends JPanel {
 		this.add(getJButtonHomePosition(), null);
 		this.add(separator, separator.getName());
 		this.add(getJButtonZFrameRegistration(), null);
+		this.add(getjButtonDesiredNeedleRAS(), null);
 
 	}
 
-
 	/**
-	 * This method initializes jSlider	
-	 * @return javax.swing.JSlider	
+	 * This method initializes jSlider
+	 * 
+	 * @return javax.swing.JSlider
 	 */
 	private JSlider getJSlider() {
 		if (jSlider == null) {
@@ -462,60 +466,68 @@ public class SlicerPanel extends JPanel {
 			jSlider.setBounds(new Rectangle(406, 23, 247, 32));
 			jSlider.addChangeListener(new javax.swing.event.ChangeListener() {
 				public void stateChanged(javax.swing.event.ChangeEvent e) {
-					System.out.println("stateChanged()"); 
+					System.out.println("stateChanged()");
 					int frequency = jSlider.getValue();
 					jLabel.setText(Integer.toString(frequency));
 
-					//					String labelText=jLabel.getText();
-					//					int newLabelText=Integer.parseInt(labelText)+5;
-					//					jLabel.setText(Integer.toString(newLabelText));
+					// String labelText=jLabel.getText();
+					// int newLabelText=Integer.parseInt(labelText)+5;
+					// jLabel.setText(Integer.toString(newLabelText));
 				}
 			});
 		}
 		return jSlider;
 	}
+
 	/**
-	 * This method initializes jButtonCalculcateInvKinematics	
-	 * 	
-	 * @return javax.swing.JButton	
+	 * This method initializes jButtonCalculcateInvKinematics
+	 * 
+	 * @return javax.swing.JButton
 	 */
 	private JButton getJButton() {
 		if (jButtonCalculcateInvKinematics == null) {
 			jButtonCalculcateInvKinematics = new JButton();
-			jButtonCalculcateInvKinematics.setText("Calculate Robot Joint Position");
-			jButtonCalculcateInvKinematics.setBounds(new Rectangle(128, 466, 210, 35));
+			jButtonCalculcateInvKinematics
+					.setText("Calculate Robot Joint Position");
+			jButtonCalculcateInvKinematics.setBounds(new Rectangle(128, 466,
+					210, 35));
 		}
 		return jButtonCalculcateInvKinematics;
 	}
+
 	private JTextField getTextFieldXAxisJointPosition() {
 		if (textFieldXAxisJointPosition == null) {
 			textFieldXAxisJointPosition = new JTextField();
-			textFieldXAxisJointPosition.setBounds(new Rectangle(269, 239, 86, 20));
+			textFieldXAxisJointPosition.setBounds(new Rectangle(269, 239, 86,
+					20));
 			textFieldXAxisJointPosition.setEditable(false);
 			textFieldXAxisJointPosition.setColumns(10);
 			textFieldXAxisJointPosition.setText("0");
 		}
 		return textFieldXAxisJointPosition;
 	}
+
 	/**
-	 * This method initializes textFieldYAxisJointPosition	
-	 * 	
-	 * @return javax.swing.JTextField	
+	 * This method initializes textFieldYAxisJointPosition
+	 * 
+	 * @return javax.swing.JTextField
 	 */
 	private JTextField getTextFieldYAxisJointPosition() {
 		if (textFieldYAxisJointPosition == null) {
 			textFieldYAxisJointPosition = new JTextField();
-			textFieldYAxisJointPosition.setBounds(new Rectangle(270, 277, 91, 20));
+			textFieldYAxisJointPosition.setBounds(new Rectangle(270, 277, 91,
+					20));
 			textFieldYAxisJointPosition.setEditable(false);
 			textFieldYAxisJointPosition.setColumns(10);
 			textFieldYAxisJointPosition.setText("0");
 		}
 		return textFieldYAxisJointPosition;
 	}
+
 	/**
-	 * This method initializes textFieldXAxisJointError	
-	 * 	
-	 * @return javax.swing.JTextField	
+	 * This method initializes textFieldXAxisJointError
+	 * 
+	 * @return javax.swing.JTextField
 	 */
 	private JTextField getTextFieldXAxisJointError() {
 		if (textFieldXAxisJointError == null) {
@@ -527,10 +539,11 @@ public class SlicerPanel extends JPanel {
 		}
 		return textFieldXAxisJointError;
 	}
+
 	/**
-	 * This method initializes textFieldYAxisJointError	
-	 * 	
-	 * @return javax.swing.JTextField	
+	 * This method initializes textFieldYAxisJointError
+	 * 
+	 * @return javax.swing.JTextField
 	 */
 	private JTextField getTextFieldYAxisJointError() {
 		if (textFieldYAxisJointError == null) {
@@ -542,10 +555,11 @@ public class SlicerPanel extends JPanel {
 		}
 		return textFieldYAxisJointError;
 	}
+
 	/**
-	 * This method initializes textFieldZAxisJointError	
-	 * 	
-	 * @return javax.swing.JTextField	
+	 * This method initializes textFieldZAxisJointError
+	 * 
+	 * @return javax.swing.JTextField
 	 */
 	private JTextField getTextFieldZAxisJointError() {
 		if (textFieldZAxisJointError == null) {
@@ -557,55 +571,62 @@ public class SlicerPanel extends JPanel {
 		}
 		return textFieldZAxisJointError;
 	}
+
 	/**
-	 * This method initializes textFieldInsertionJointError	
-	 * 	
-	 * @return javax.swing.JTextField	
+	 * This method initializes textFieldInsertionJointError
+	 * 
+	 * @return javax.swing.JTextField
 	 */
 	private JTextField getTextFieldInsertionJointError() {
 		if (textFieldInsertionJointError == null) {
 			textFieldInsertionJointError = new JTextField();
-			textFieldInsertionJointError.setBounds(new Rectangle(383, 353, 70, 20));
+			textFieldInsertionJointError.setBounds(new Rectangle(383, 353, 70,
+					20));
 			textFieldInsertionJointError.setEditable(false);
 			textFieldInsertionJointError.setColumns(10);
 			textFieldInsertionJointError.setText("0");
 		}
 		return textFieldInsertionJointError;
 	}
+
 	/**
-	 * This method initializes textFieldRotationJointError	
-	 * 	
-	 * @return javax.swing.JTextField	
+	 * This method initializes textFieldRotationJointError
+	 * 
+	 * @return javax.swing.JTextField
 	 */
 	private JTextField getTextFieldRotationJointError() {
 		if (textFieldRotationJointError == null) {
 			textFieldRotationJointError = new JTextField();
-			textFieldRotationJointError.setBounds(new Rectangle(380, 383, 70, 20));
+			textFieldRotationJointError.setBounds(new Rectangle(380, 383, 70,
+					20));
 			textFieldRotationJointError.setEditable(false);
 			textFieldRotationJointError.setColumns(10);
 			textFieldRotationJointError.setText("0");
 		}
 		return textFieldRotationJointError;
 	}
+
 	/**
-	 * This method initializes textFieldRetractionJointError	
-	 * 	
-	 * @return javax.swing.JTextField	
+	 * This method initializes textFieldRetractionJointError
+	 * 
+	 * @return javax.swing.JTextField
 	 */
 	private JTextField getTextFieldRetractionJointError() {
 		if (textFieldRetractionJointError == null) {
 			textFieldRetractionJointError = new JTextField();
-			textFieldRetractionJointError.setBounds(new Rectangle(380, 414, 70, 20));
+			textFieldRetractionJointError.setBounds(new Rectangle(380, 414, 70,
+					20));
 			textFieldRetractionJointError.setEditable(false);
 			textFieldRetractionJointError.setColumns(10);
 			textFieldRetractionJointError.setText("0");
 		}
 		return textFieldRetractionJointError;
 	}
+
 	/**
-	 * This method initializes jButtonMoveTo	
-	 * 	
-	 * @return javax.swing.JButton	
+	 * This method initializes jButtonMoveTo
+	 * 
+	 * @return javax.swing.JButton
 	 */
 	private JButton getJButtonMoveTo() {
 		if (jButtonMoveTo == null) {
@@ -616,10 +637,11 @@ public class SlicerPanel extends JPanel {
 		}
 		return jButtonMoveTo;
 	}
+
 	/**
-	 * This method initializes jButtonStop	
-	 * 	
-	 * @return javax.swing.JButton	
+	 * This method initializes jButtonStop
+	 * 
+	 * @return javax.swing.JButton
 	 */
 	private JButton getJButtonStop() {
 		if (jButtonStop == null) {
@@ -629,108 +651,122 @@ public class SlicerPanel extends JPanel {
 			jButtonStop.setText("STOP");
 			jButtonStop.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
-					//TODO add the stop event code
+					// TODO add the stop event code
 					System.out.println("Stopping all motors!");
-					getDevice().SetAllPIDSetPoint(getKinematicsGUI().getValues(), 0);
+					getDevice().SetAllPIDSetPoint(
+							getKinematicsGUI().getValues(), 0);
 				}
 			});
 		}
 		return jButtonStop;
 	}
+
 	/**
-	 * This method initializes textFieldXAxisNeedleCartesianError	
-	 * 	
-	 * @return javax.swing.JTextField	
+	 * This method initializes textFieldXAxisNeedleCartesianError
+	 * 
+	 * @return javax.swing.JTextField
 	 */
 	private JTextField getTextFieldXAxisNeedleCartesianError() {
 		if (textFieldXAxisNeedleCartesianError == null) {
 			textFieldXAxisNeedleCartesianError = new JTextField();
-			textFieldXAxisNeedleCartesianError.setBounds(new Rectangle(525, 234, 139, 20));
+			textFieldXAxisNeedleCartesianError.setBounds(new Rectangle(525,
+					234, 139, 20));
 			textFieldXAxisNeedleCartesianError.setEditable(false);
 			textFieldXAxisNeedleCartesianError.setColumns(10);
 			textFieldXAxisNeedleCartesianError.setText("0");
 		}
 		return textFieldXAxisNeedleCartesianError;
 	}
+
 	/**
-	 * This method initializes textFieldYAxisNeedleCartesianError	
-	 * 	
-	 * @return javax.swing.JTextField	
+	 * This method initializes textFieldYAxisNeedleCartesianError
+	 * 
+	 * @return javax.swing.JTextField
 	 */
 	private JTextField getTextFieldYAxisNeedleCartesianError() {
 		if (textFieldYAxisNeedleCartesianError == null) {
 			textFieldYAxisNeedleCartesianError = new JTextField();
-			textFieldYAxisNeedleCartesianError.setBounds(new Rectangle(525, 270, 140, 20));
+			textFieldYAxisNeedleCartesianError.setBounds(new Rectangle(525,
+					270, 140, 20));
 			textFieldYAxisNeedleCartesianError.setEditable(false);
 			textFieldYAxisNeedleCartesianError.setColumns(10);
 			textFieldYAxisNeedleCartesianError.setText("0");
 		}
 		return textFieldYAxisNeedleCartesianError;
 	}
+
 	/**
-	 * This method initializes textFieldZAxisNeedleCartesianError	
-	 * 	
-	 * @return javax.swing.JTextField	
+	 * This method initializes textFieldZAxisNeedleCartesianError
+	 * 
+	 * @return javax.swing.JTextField
 	 */
 	private JTextField getTextFieldZAxisNeedleCartesianError() {
 		if (textFieldZAxisNeedleCartesianError == null) {
 			textFieldZAxisNeedleCartesianError = new JTextField();
-			textFieldZAxisNeedleCartesianError.setBounds(new Rectangle(526, 310, 140, 19));
+			textFieldZAxisNeedleCartesianError.setBounds(new Rectangle(526,
+					310, 140, 19));
 			textFieldZAxisNeedleCartesianError.setEditable(false);
 			textFieldZAxisNeedleCartesianError.setColumns(10);
 			textFieldZAxisNeedleCartesianError.setText("0");
 		}
 		return textFieldZAxisNeedleCartesianError;
 	}
+
 	/**
-	 * This method initializes textFieldRollNeedleCartesianError	
-	 * 	
-	 * @return javax.swing.JTextField	
+	 * This method initializes textFieldRollNeedleCartesianError
+	 * 
+	 * @return javax.swing.JTextField
 	 */
 	private JTextField getTextFieldRollNeedleCartesianError() {
 		if (textFieldRollNeedleCartesianError == null) {
 			textFieldRollNeedleCartesianError = new JTextField();
-			textFieldRollNeedleCartesianError.setBounds(new Rectangle(526, 352, 138, 20));
+			textFieldRollNeedleCartesianError.setBounds(new Rectangle(526, 352,
+					138, 20));
 			textFieldRollNeedleCartesianError.setEditable(false);
 			textFieldRollNeedleCartesianError.setColumns(10);
 			textFieldRollNeedleCartesianError.setText("0");
 		}
 		return textFieldRollNeedleCartesianError;
 	}
+
 	/**
-	 * This method initializes textFieldXPitchNeedleCartesianError	
-	 * 	
-	 * @return javax.swing.JTextField	
+	 * This method initializes textFieldXPitchNeedleCartesianError
+	 * 
+	 * @return javax.swing.JTextField
 	 */
 	private JTextField getTextFieldXPitchNeedleCartesianError() {
 		if (textFieldXPitchNeedleCartesianError == null) {
 			textFieldXPitchNeedleCartesianError = new JTextField();
-			textFieldXPitchNeedleCartesianError.setBounds(new Rectangle(527, 385, 140, 17));
+			textFieldXPitchNeedleCartesianError.setBounds(new Rectangle(527,
+					385, 140, 17));
 			textFieldXPitchNeedleCartesianError.setEditable(false);
 			textFieldXPitchNeedleCartesianError.setColumns(10);
 			textFieldXPitchNeedleCartesianError.setText("0");
 		}
 		return textFieldXPitchNeedleCartesianError;
 	}
+
 	/**
-	 * This method initializes textFieldYawNeedleCartesianError	
-	 * 	
-	 * @return javax.swing.JTextField	
+	 * This method initializes textFieldYawNeedleCartesianError
+	 * 
+	 * @return javax.swing.JTextField
 	 */
 	private JTextField getTextFieldYawNeedleCartesianError() {
 		if (textFieldYawNeedleCartesianError == null) {
 			textFieldYawNeedleCartesianError = new JTextField();
-			textFieldYawNeedleCartesianError.setBounds(new Rectangle(526, 414, 137, 21));
+			textFieldYawNeedleCartesianError.setBounds(new Rectangle(526, 414,
+					137, 21));
 			textFieldYawNeedleCartesianError.setEditable(false);
 			textFieldYawNeedleCartesianError.setColumns(10);
 			textFieldYawNeedleCartesianError.setText("0");
 		}
 		return textFieldYawNeedleCartesianError;
 	}
+
 	/**
-	 * This method initializes jButtonRetractNeedle	
-	 * 	
-	 * @return javax.swing.JButton	
+	 * This method initializes jButtonRetractNeedle
+	 * 
+	 * @return javax.swing.JButton
 	 */
 	private JButton getJButtonRetractNeedle() {
 		if (jButtonRetractNeedle == null) {
@@ -740,10 +776,11 @@ public class SlicerPanel extends JPanel {
 		}
 		return jButtonRetractNeedle;
 	}
+
 	/**
-	 * This method initializes jButtonRetractStylet	
-	 * 	
-	 * @return javax.swing.JButton	
+	 * This method initializes jButtonRetractStylet
+	 * 
+	 * @return javax.swing.JButton
 	 */
 	private JButton getJButtonRetractStylet() {
 		if (jButtonRetractStylet == null) {
@@ -753,10 +790,11 @@ public class SlicerPanel extends JPanel {
 		}
 		return jButtonRetractStylet;
 	}
+
 	/**
-	 * This method initializes jButtonHomePosition	
-	 * 	
-	 * @return javax.swing.JButton	
+	 * This method initializes jButtonHomePosition
+	 * 
+	 * @return javax.swing.JButton
 	 */
 	private JButton getJButtonHomePosition() {
 		if (jButtonHomePosition == null) {
@@ -766,35 +804,53 @@ public class SlicerPanel extends JPanel {
 		}
 		return jButtonHomePosition;
 	}
-	
-	
+
 	private JButton getJButtonZFrameRegistration() {
 		if (jButtonZFrameRegistration == null) {
 			jButtonZFrameRegistration = new JButton();
-			jButtonZFrameRegistration.setBounds(new Rectangle(26, 161, 155, 27));
+			jButtonZFrameRegistration
+					.setBounds(new Rectangle(26, 161, 155, 27));
 			jButtonZFrameRegistration.setText("Confirm Registration");
-			//TODO list
-		
+
 			jButtonZFrameRegistration.addActionListener(new ActionListener() {
-				@Override
+				boolean enableTable = true;
+				
 				public void actionPerformed(ActionEvent e) {
-					// TODO Auto-generated method stub
-					tableZFrameRegistration.setEnabled(false);
+					
+					enableTable=!enableTable;
+					tableZFrameRegistration.setEnabled(enableTable);
 				}
 			});
-//			jButtonStop.addActionListener(new ActionListener() {
-//				public void actionPerformed(ActionEvent e) {
-//					
-//					System.out.println("Stopping all motors!");
-//					getDevice().SetAllPIDSetPoint(getKinematicsGUI().getValues(), 0);
-//				}
-//			});
-			
+			// jButtonStop.addActionListener(new ActionListener() {
+			// public void actionPerformed(ActionEvent e) {
+			//
+			// System.out.println("Stopping all motors!");
+			// getDevice().SetAllPIDSetPoint(getKinematicsGUI().getValues(), 0);
+			// }
+			// });
+
 		}
 		return jButtonZFrameRegistration;
 	}
 
-	
+	private JButton getjButtonDesiredNeedleRAS() {
+		if (jButtonDesiredNeedleRAS == null) {
+			jButtonDesiredNeedleRAS = new JButton();
+			// setBounds(int x, int y, int width, int height)
+			jButtonDesiredNeedleRAS.setBounds(new Rectangle(220, 161, 200, 27));
+			jButtonDesiredNeedleRAS.setText("Confirm Desired Needle RAS");
+			// TODO list
+
+			jButtonDesiredNeedleRAS.addActionListener(new ActionListener() {
+				boolean enableTable = true;
+				public void actionPerformed(ActionEvent e) {
+					enableTable = !enableTable;
+					tableDesiredNeedleRAS.setEnabled(enableTable);
+				}
+			});
+		}
+		return jButtonDesiredNeedleRAS;
+	}
 
 	public void setKinematicsGUI(KinematicsGUI kinematicsGUI) {
 		this.kinematicsGUI = kinematicsGUI;
@@ -803,6 +859,7 @@ public class SlicerPanel extends JPanel {
 	public GenericPIDDevice getDevice() {
 		return kinematicsGUI.getDevice();
 	}
+
 	public KinematicsGUI getKinematicsGUI() {
 		return kinematicsGUI;
 	}
