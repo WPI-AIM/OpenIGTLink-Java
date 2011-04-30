@@ -71,116 +71,14 @@ public class MyMessageHandler extends MessageHandler {
 			if (messageType.equals("GET_CAPABIL")) {
 				openIGTMessage = new GetCapabilityMessage(header, body);
 			} else if (messageType.equals("TRANSFORM")) {
-				openIGTMessage = new TransformMessage(header, body);
-				TransformMessage transfm = (TransformMessage) openIGTMessage;
-				transfm.Unpack();
-				// double[][] position=transfm.GetMatrix();
-			
-				double[] position = transfm.GetOrigin();
-				// double[][] rotation=transfm.GetNormals();
-				System.out.println("#@# Body data: "
-						+ new ByteList(openIGTMessage.body));
-				System.out.println("reading transform matrix from the client");
-				for (int i = 0; i < position.length; i++) {
-					System.out.println("XYZ Byte data: " + position[i]);
-				}
-				double[][] rotation=transfm.GetNormals();
-				System.out.println("*********" + transfm.deviceName);
-				System.out.println("Transform body Byte data: " + transfm);
-				System.out.println("Rotation data: " + rotation);
 				
-				if (transfm.deviceName.equals("ZFrameTransform"))
-				{
-					model.setzFrameFlag(true);
-				//	model.setFrameTransformation(new FrameTransformation(null));   
-					model.setZFrameTransformMatrix(transfm.GetMatrix());
-					System.out.println("Z Frame transform initilized");
-				
-				}
-			  	/*try {
-					if (dyio != null) {
-						dyio.SetPIDSetPoint(0, (int) position[0], 0.0);
-						System.out.println("\n X position" + position[0]);
-					} else {
-						System.out.println("NO DIYO");
-					}
-				} catch (Exception e) {
-					System.err.println("#*#*#*#*Failed to set position");
-					e.printStackTrace();
-				}
-				System.out
-						.println("##############Setting BowlerDevice Position ok");*/
+				model.transformCallback(header, body, openIGTMessage);
+						
 
 			} else if (messageType.equals("MOVE_TO")) {
-				System.out.println("perform  MOVE_TO");
-				openIGTMessage = new PositionMessage(header, body);
-				PositionMessage pos = (PositionMessage) openIGTMessage;
-				pos.UnpackBody();
-				double[] position = pos.getPosition();
-				// double [] quad = pos.getQuaternion();
-				System.out.println("##############Setting BowlerDevice Position: "+ position[0]);
-				System.out.println("Byte data: " + pos);
-
-				try {
-					if (model == null)
-						System.out.println("PID device is null!!!!!!!!!!!!!!!!!");
-					if(position[1]>1023)
-						position[1] = 1023;
-					if(position[1]<0)
-						position[1] = 0;
-					
-//					DyPIDConfiguration dypid = new DyPIDConfiguration(0,12,DyIOChannelMode.ANALOG_IN,11,DyIOChannelMode.SERVO_OUT);
-//					PIDConfiguration pid =new PIDConfiguration (0,true,true,true,1,0,0);
-					//dyio.ConfigureDynamicPIDChannels(dypid);
-//					dyio.ConfigurePIDController(pid);
-//					
-					//dyio.SetPIDSetPoint(0, (int) position[1], 0.0);
-					//RasSpacePosition ras= new RasSpacePosition(null,position);
-					//model.setPosition(ras);
-					
-					model.setTargetFlag(true);
-					model.setRasTargetVector(position);
-					
-					//TODO 
-					if ((model.isTargetFlag()==true)&&(model.iszFrameFlag()==true)){
-						// construct the matrix
-						 double[][] zFrameMatrixArray =  model.getZFrameTransformMatrix();
-						 model.setRasTargetMatrix(position);
-						 double[][] rasTargetMatrixArray =  model.getRasTargetMatrix();
-						
-						 // construct the matrix array
-						 Matrix rasTargetMatrix = new Matrix(rasTargetMatrixArray);
-						 Matrix zFrameMatrix = new Matrix(zFrameMatrixArray);		
-						 Matrix baseInZFrameMatrix= new Matrix(model.baseinZFrameMatrix);
-						
-						 //multiplication and inverse
-						 Matrix baseInImgMatrix= zFrameMatrix.times(baseInZFrameMatrix);
-						 Matrix tipInBaseMatrix= rasTargetMatrix.times(baseInImgMatrix.inverse());
-						 double[][] tipInBaseMatrixArray= tipInBaseMatrix.getArray();
-						 
-						 // find the tip in base vector
-						 model.setTipInBaseMatrix(tipInBaseMatrixArray);
-						 double[] tipInBaseVector= model.getPositionVector(model.getTipInBaseMatrix());
-						 System.out.println("Robot motion vector is "+ tipInBaseVector);
-						 double[] jointSpaceVector= model.Cartesian2JointSpace(tipInBaseVector);
-						 double [] encoderTickVector = model.JointSpace2EncoderTicks(jointSpaceVector);
-						 
-						 model.sendToMotors((int) encoderTickVector[0],(int) encoderTickVector[1],(int) encoderTickVector[2],1,10.0);
-						 
-						 model.setzFrameFlag(false);
-						 model.setTargetFlag(false);
-						// double[] cartesianPositionVector =robotMotionVector; 
-						
-					}
-					System.out.println(" PID device Servoing to "+position[1] );
-				} catch (Exception e) {
-					System.err.println("#*#*#*#*Failed to set position");
-					e.printStackTrace();
-				}
-				System.out
-						.println("##############Setting BowlerDevice Position ok");
-
-			} else if (messageType.equals("IMAGE")) {
+				model.moveToCallback(header, body, openIGTMessage);
+				
+				} else if (messageType.equals("IMAGE")) {
 				openIGTMessage = new ImageMessage(header, body);
 			} else if (messageType.equals("STATUS")) {
 				openIGTMessage = new StatusMessage(header, body);

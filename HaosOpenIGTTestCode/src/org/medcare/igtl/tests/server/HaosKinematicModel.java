@@ -1,6 +1,11 @@
 package org.medcare.igtl.tests.server;
 
 import java.lang.Math;
+
+import org.medcare.igtl.messages.OpenIGTMessage;
+import org.medcare.igtl.messages.PositionMessage;
+import org.medcare.igtl.messages.TransformMessage;
+import org.medcare.igtl.util.Header;
 import org.medcare.robot.CartesianSpacePosition;
 import org.medcare.robot.FrameTransformation;
 import org.medcare.robot.IKinematicsModel;
@@ -8,6 +13,9 @@ import org.medcare.robot.RasSpacePosition;
 
 //import Jama.Matrix;
 
+import Jama.Matrix;
+
+import com.neuronrobotics.sdk.common.ByteList;
 import com.neuronrobotics.sdk.pid.IPIDControl;
 
 public class HaosKinematicModel implements IKinematicsModel {
@@ -105,6 +113,122 @@ public class HaosKinematicModel implements IKinematicsModel {
 	@Override
 	public RasSpacePosition getRasPosition() {
 		return rasSpace;
+	}
+	
+	public void moveToCallback (Header header, byte[] body, OpenIGTMessage openIGTMessage) throws Exception{
+		System.out.println("new function++++++++++++++++++++");
+		
+		System.out.println("perform  MOVE_TO");
+		openIGTMessage = new PositionMessage(header, body);
+		PositionMessage pos = (PositionMessage) openIGTMessage;
+		pos.UnpackBody();
+		double[] position = pos.getPosition();
+		// double [] quad = pos.getQuaternion();
+		System.out.println("##############Setting BowlerDevice Position: "+ position[0]);
+		System.out.println("Byte data: " + pos);
+
+		try {
+			if (this == null)
+				System.out.println("PID device is null!!!!!!!!!!!!!!!!!");
+			if(position[1]>1023)
+				position[1] = 1023;
+			if(position[1]<0)
+				position[1] = 0;
+			
+//			DyPIDConfiguration dypid = new DyPIDConfiguration(0,12,DyIOChannelMode.ANALOG_IN,11,DyIOChannelMode.SERVO_OUT);
+//			PIDConfiguration pid =new PIDConfiguration (0,true,true,true,1,0,0);
+			//dyio.ConfigureDynamicPIDChannels(dypid);
+//			dyio.ConfigurePIDController(pid);
+//			
+			//dyio.SetPIDSetPoint(0, (int) position[1], 0.0);
+			//RasSpacePosition ras= new RasSpacePosition(null,position);
+			//model.setPosition(ras);
+			
+			this.setTargetFlag(true);
+			this.setRasTargetVector(position);
+			
+			//TODO 
+			if ((this.isTargetFlag()==true)&&(this.iszFrameFlag()==true)){
+				// construct the matrix
+				 double[][] zFrameMatrixArray =  this.getZFrameTransformMatrix();
+				 this.setRasTargetMatrix(position);
+				 double[][] rasTargetMatrixArray =  this.getRasTargetMatrix();
+				
+				 // construct the matrix array
+				 Matrix rasTargetMatrix = new Matrix(rasTargetMatrixArray);
+				 Matrix zFrameMatrix = new Matrix(zFrameMatrixArray);		
+				 Matrix baseInZFrameMatrix= new Matrix(this.baseinZFrameMatrix);
+				
+				 //multiplication and inverse
+				 Matrix baseInImgMatrix= zFrameMatrix.times(baseInZFrameMatrix);
+				 Matrix tipInBaseMatrix= rasTargetMatrix.times(baseInImgMatrix.inverse());
+				 double[][] tipInBaseMatrixArray= tipInBaseMatrix.getArray();
+				 
+				 // find the tip in base vector
+				 this.setTipInBaseMatrix(tipInBaseMatrixArray);
+				 double[] tipInBaseVector= this.getPositionVector(this.getTipInBaseMatrix());
+				 System.out.println("Robot motion vector is "+ tipInBaseVector);
+				 double[] jointSpaceVector= this.Cartesian2JointSpace(tipInBaseVector);
+				 double [] encoderTickVector = this.JointSpace2EncoderTicks(jointSpaceVector);
+				 
+				 this.sendToMotors((int) encoderTickVector[0],(int) encoderTickVector[1],(int) encoderTickVector[2],1,10.0);
+				 
+				 this.setzFrameFlag(false);
+				 this.setTargetFlag(false);
+				// double[] cartesianPositionVector =robotMotionVector; 
+				
+			}
+			System.out.println(" PID device Servoing to "+position[1] );
+		} catch (Exception e) {
+			System.err.println("#*#*#*#*Failed to set position");
+			e.printStackTrace();
+		}
+		System.out
+				.println("##############Setting BowlerDevice Position ok");
+	}
+	
+	public void transformCallback (Header header, byte[] body, OpenIGTMessage openIGTMessage) throws Exception {
+		System.out.println("*********************************");
+		
+		openIGTMessage = new TransformMessage(header, body);
+		TransformMessage transfm = (TransformMessage) openIGTMessage;
+		transfm.Unpack();
+		// double[][] position=transfm.GetMatrix();
+	
+		double[] position = transfm.GetOrigin();
+		// double[][] rotation=transfm.GetNormals();
+		System.out.println("#@# Body data: "
+				+ new ByteList(openIGTMessage.body));
+		System.out.println("reading transform matrix from the client");
+		for (int i = 0; i < position.length; i++) {
+			System.out.println("XYZ Byte data: " + position[i]);
+		}
+		double[][] rotation=transfm.GetNormals();
+		System.out.println("*********" + transfm.deviceName);
+		System.out.println("Transform body Byte data: " + transfm);
+		System.out.println("Rotation data: " + rotation);
+		
+		if (transfm.deviceName.equals("ZFrameTransform"))
+		{
+			this.setzFrameFlag(true);
+		//	this.setFrameTransformation(new FrameTransformation(null));   
+			this.setZFrameTransformMatrix(transfm.GetMatrix());
+			System.out.println("Z Frame transform initilized");
+		
+		}
+	  	/*try {
+			if (dyio != null) {
+				dyio.SetPIDSetPoint(0, (int) position[0], 0.0);
+				System.out.println("\n X position" + position[0]);
+			} else {
+				System.out.println("NO DIYO");
+			}
+		} catch (Exception e) {
+			System.err.println("#*#*#*#*Failed to set position");
+			e.printStackTrace();
+		}
+		System.out
+				.println("##############Setting BowlerDevice Position ok");*/
 	}
 	
 	public double[] Cartesian2JointSpace(double[] cartesianSpaceVector) {
