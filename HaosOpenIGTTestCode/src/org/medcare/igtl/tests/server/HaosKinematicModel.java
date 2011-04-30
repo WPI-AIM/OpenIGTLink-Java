@@ -232,6 +232,7 @@ public class HaosKinematicModel implements IKinematicsModel {
 				.println("##############Setting BowlerDevice Position ok");*/
 	}
 	
+	// inverse kinematics
 	public double[] Cartesian2JointSpace(double[] cartesianSpaceVector) {
 		double[] jointSpaceVector=new double[3];
 		//joint x
@@ -249,7 +250,19 @@ public class HaosKinematicModel implements IKinematicsModel {
 		this.cartesianSpace = pos;
 		}
 	
+	// forward kinematics
+	public double[] Joint2CartesianSpace(double[] cartesianSpaceVector) {
+		double[] jointSpaceVector=new double[3];
+		//joint x
+		jointSpaceVector[0]=cartesianSpaceVector[0];
+		jointSpaceVector[1]=L0-2*Math.sqrt(Math.pow(L1, 2)-Math.pow(4/7*(cartesianSpaceVector[1]-Y0), 2));
+		jointSpaceVector[2]=cartesianSpaceVector[2]-Z01-Z02;
+		return jointSpaceVector;
+		}
+	
+	
 	private int [] setpoints;
+	
 	public void sendToMotors(int xTicks, int yTicks, int zTicks, int rotationTicks, double time){
 		if(device != null){
 			if(setpoints == null)
