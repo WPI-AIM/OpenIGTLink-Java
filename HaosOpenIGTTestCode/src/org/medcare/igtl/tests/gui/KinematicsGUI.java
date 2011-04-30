@@ -36,7 +36,7 @@ import net.miginfocom.swing.MigLayout;
 
 public class KinematicsGUI implements IPIDEventListener{
 	/**
-	 * This method initializes textFieldXAxisJointPosition	
+	 * This method initializes textFieldXAxisJointPosition
 	 * 	
 	 * @return javax.swing.JTextField	
 	 */
@@ -81,7 +81,7 @@ public class KinematicsGUI implements IPIDEventListener{
 			public void actionPerformed(ActionEvent e) {
 				if(!connected){
 					if (!ConnectionDialog.getBowlerDevice(getDevice())) {
-					//	throw new RuntimeException("Failed to connect");
+						throw new RuntimeException("Failed to connect");
 					}
 					setValues(device.GetAllPIDPosition());
 					device.addPIDEventListener(getKinematicsGUI());
