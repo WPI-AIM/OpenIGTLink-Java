@@ -36,13 +36,17 @@ public class SlicerPanel extends JPanel {
 	private JTextField textFieldXAxisDesiredJointPosition;
 	private JTextField textFieldYAxisDesiredJointPosition;
 	private JTextField textFieldZAxisDesiredJointPosition;
-	private JTextField textFieldZAxisJointPosition;
 	private JTextField textFieldInsertionDesiredJointPosition;
 	private JTextField textFieldRotationDesiredJointPosition;
+	private JTextField textFieldRetractionDesiredJointPosition;
+
+	private JTextField textFieldXAxisJointPosition = null;
+	private JTextField textFieldYAxisJointPosition = null;
+	private JTextField textFieldZAxisJointPosition;
 	private JTextField textFieldInsertionJointPosition;
 	private JTextField textFieldRotationJointPosition;
-	private JTextField textFieldRetractionDesiredJointPosition;
 	private JTextField textFieldRetractionJointPosition;
+	
 	private JSeparator separator;
 	private JSeparator separator_1;
 	private JLabel lblZFrameRegistrition;
@@ -62,8 +66,7 @@ public class SlicerPanel extends JPanel {
 	private JLabel lblCartesianError = null;
 	private JLabel lblJointError = null;
 
-	private JTextField textFieldXAxisJointPosition = null;
-	private JTextField textFieldYAxisJointPosition = null;
+
 
 	private JTextField textFieldXAxisJointError = null;
 	private JTextField textFieldYAxisJointError = null;
@@ -503,7 +506,9 @@ public class SlicerPanel extends JPanel {
 		return jButtonCalculcateInvKinematics;
 	}
 
-	private JTextField getTextFieldXAxisJointPosition() {
+	//TODO 
+	// the original is private type function
+	public JTextField getTextFieldXAxisJointPosition() {
 		if (textFieldXAxisJointPosition == null) {
 			textFieldXAxisJointPosition = new JTextField();
 			textFieldXAxisJointPosition.setBounds(new Rectangle(269, 239, 86,

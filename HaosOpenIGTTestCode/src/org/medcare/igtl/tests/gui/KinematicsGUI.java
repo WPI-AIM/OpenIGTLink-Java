@@ -180,6 +180,11 @@ public class KinematicsGUI implements IPIDEventListener{
 	public void onPIDEvent(PIDEvent e) {
 		System.out.println("Got a PID event in Kinematics GUI #"+e.getGroup()+" value: "+e.getValue()+" timestamp: "+e.getTimeStamp());
 		getValues()[e.getGroup()]=e.getValue();
+		
+		slicerPanel.getTextFieldXAxisJointPosition().setText("haha");
+		
+		//textFieldXAxisJointPosition.setText("0");
+		
 	}
 
 	@Override

@@ -115,7 +115,8 @@ public class HaosKinematicModel implements IKinematicsModel {
 		return rasSpace;
 	}
 	
-	public void moveToCallback (Header header, byte[] body, OpenIGTMessage openIGTMessage) throws Exception{
+	// suhao:  this function must throws exception because "PositionMessage" throws Exception
+	public void moveToResponse (Header header, byte[] body, OpenIGTMessage openIGTMessage) throws Exception{
 		System.out.println("new function++++++++++++++++++++");
 		
 		System.out.println("perform  MOVE_TO");
@@ -187,7 +188,7 @@ public class HaosKinematicModel implements IKinematicsModel {
 				.println("##############Setting BowlerDevice Position ok");
 	}
 	
-	public void transformCallback (Header header, byte[] body, OpenIGTMessage openIGTMessage) throws Exception {
+	public void transformResponse (Header header, byte[] body, OpenIGTMessage openIGTMessage) throws Exception {
 		System.out.println("*********************************");
 		
 		openIGTMessage = new TransformMessage(header, body);

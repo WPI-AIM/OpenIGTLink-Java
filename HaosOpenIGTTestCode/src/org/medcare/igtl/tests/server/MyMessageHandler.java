@@ -72,11 +72,10 @@ public class MyMessageHandler extends MessageHandler {
 				openIGTMessage = new GetCapabilityMessage(header, body);
 			} else if (messageType.equals("TRANSFORM")) {
 				
-				model.transformCallback(header, body, openIGTMessage);
-						
+				model.transformResponse(header, body, openIGTMessage);		
 
 			} else if (messageType.equals("MOVE_TO")) {
-				model.moveToCallback(header, body, openIGTMessage);
+				model.moveToResponse(header, body, openIGTMessage);
 				
 				} else if (messageType.equals("IMAGE")) {
 				openIGTMessage = new ImageMessage(header, body);
