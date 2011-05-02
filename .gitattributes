@@ -1,22 +1,4 @@
 * text=auto !eol
-AimLabJavaRobot/.classpath -text
-AimLabJavaRobot/.project -text
-AimLabJavaRobot/.settings/org.eclipse.jdt.core.prefs -text
-AimLabJavaRobot/lib/Jama-1.0.2.jar -text
-AimLabJavaRobot/src/com/neuronrobotics/aim/gui/EventResponseTable.java -text
-AimLabJavaRobot/src/com/neuronrobotics/aim/gui/KinematicsGUI.java -text
-AimLabJavaRobot/src/com/neuronrobotics/aim/gui/SlicerPanel.java -text
-AimLabJavaRobot/src/com/neuronrobotics/aim/gui/middle.gif -text
-AimLabJavaRobot/src/com/neuronrobotics/aim/robot/CartesianSpacePosition.java -text
-AimLabJavaRobot/src/com/neuronrobotics/aim/robot/FrameTransformation.java -text
-AimLabJavaRobot/src/com/neuronrobotics/aim/robot/IKinematicsModel.java -text
-AimLabJavaRobot/src/com/neuronrobotics/aim/robot/LinkConfiguration.java -text
-AimLabJavaRobot/src/com/neuronrobotics/aim/robot/MRIController.java -text
-AimLabJavaRobot/src/com/neuronrobotics/aim/robot/ProstateRobotKinematicModel.java -text
-AimLabJavaRobot/src/com/neuronrobotics/aim/robot/RasSpacePosition.java -text
-AimLabJavaRobot/src/com/neuronrobotics/aim/robot/commands/MRICommandSample.java -text
-AimLabJavaRobot/src/com/neuronrobotics/aim/robot/xml/MRIXmlFactory.java -text
-AimLabJavaRobot/src/com/neuronrobotics/aim/robot/xml/ProstateRobot.xml -text
 HaosOpenIGTTestCode/.classpath -text
 HaosOpenIGTTestCode/.project -text
 HaosOpenIGTTestCode/.settings/org.eclipse.jdt.core.prefs -text
