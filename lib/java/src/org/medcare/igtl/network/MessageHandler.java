@@ -52,10 +52,12 @@ public abstract class MessageHandler {
          * @throws Exception received by perform method
          */
         public boolean performRequest() throws Exception {
+        	// extract message type from header
                 String messageType = this.header.getDataType();
                 Iterator<String> it = capabilityList.iterator();
                 while (it.hasNext()) {
                         String capab = (String) it.next();
+                        // perform corresponding message based on message type
                         if (messageType.equals(capab)) {
                                 return perform(messageType);
                         }

@@ -36,8 +36,7 @@ public class MessageQueueManager extends Thread {
         public ConcurrentLinkedQueue<MessageHandler> openIGT_Queue = new ConcurrentLinkedQueue<MessageHandler>();
         private boolean alive = true;
         ServerThread serverThread;
-
-                private ErrorManager errorManager;
+        private ErrorManager errorManager;
 
         /***************************************************************************
          * Default MessageQueueManager constructor.

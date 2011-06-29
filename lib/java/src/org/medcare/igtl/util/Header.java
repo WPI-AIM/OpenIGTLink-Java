@@ -16,8 +16,6 @@
 
 package org.medcare.igtl.util;
 
-import com.neuronrobotics.sdk.common.ByteList;
-
 /**
  *** For reading/writing OpenIGTLink headers
  * 
@@ -248,7 +246,7 @@ public class Header {
         	s+=" Timestamp: "+getTimeStamp();
         	s+=" Body Size:"+getBody_size();
         	s+=" CRC: "+getCrc();
-        	s+=" bytes: "+new ByteList(getBytes());
+        	//s+=" bytes: "+new ByteList(getBytes());
         	return s;
         }
 }
