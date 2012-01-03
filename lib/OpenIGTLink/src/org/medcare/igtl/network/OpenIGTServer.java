@@ -41,6 +41,7 @@ public abstract class OpenIGTServer {
         private Status status;
         public ErrorManager errorManager;
         ServerSocket socket = null;
+        private ServerThread thread;
         boolean listening = true;
         /***************************************************************************
          * Default MessageQueueManager constructor.
@@ -82,7 +83,8 @@ public abstract class OpenIGTServer {
         	}
         }
         private void startIGT() throws IOException, Exception{
-        	new ServerThread(socket.accept(), this).start();
+        	 setServerThread(new ServerThread(socket.accept(), this));
+        	 getServerThread().start();
         }
 
         /**
@@ -102,6 +104,14 @@ public abstract class OpenIGTServer {
         public Status getStatus() {
                 return this.status;
         }
+        /**
+         * Sends a message up the link
+         * @param messageHandler
+         * @throws Exception 
+         */
+        public void sendMessage(Header header, byte[] body) throws Exception{
+        	getServerThread().sendMessage( header, body);
+        }
 
         /**
          *** To get message Handler
@@ -114,4 +124,12 @@ public abstract class OpenIGTServer {
          * @return the message Handler
          */
         public abstract MessageHandler getMessageHandler(Header header, byte[] bodyBuf, ServerThread serverThread);
+
+		public void setServerThread(ServerThread thread) {
+			this.thread = thread;
+		}
+
+		public ServerThread getServerThread() {
+			return thread;
+		}
 }

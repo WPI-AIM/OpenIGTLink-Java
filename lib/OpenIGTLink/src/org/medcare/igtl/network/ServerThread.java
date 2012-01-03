@@ -97,6 +97,11 @@ public class ServerThread extends Thread {
                 }
                 this.interrupt();
         }
+        
+		public void sendMessage(Header header, byte[] body) throws Exception {
+			sendBytes(header.getBytes());
+			sendBytes(body);
+		}
 
         /***************************************************************************
          * Sends bytes
@@ -137,4 +142,6 @@ public class ServerThread extends Thread {
         public Status getStatus() {
                 return this.openIGTServer.getStatus();
         }
+
+
 }
