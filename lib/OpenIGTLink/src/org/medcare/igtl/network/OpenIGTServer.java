@@ -21,6 +21,7 @@ import java.net.ServerSocket;
 
 import javax.net.ServerSocketFactory;
 
+import org.medcare.igtl.messages.OpenIGTMessage;
 import org.medcare.igtl.util.ErrorManager;
 import org.medcare.igtl.util.Status;
 import org.medcare.igtl.util.Header;
@@ -54,20 +55,21 @@ public abstract class OpenIGTServer {
          * 
          **************************************************************************/
         public OpenIGTServer(int port, ErrorManager errorManager) throws Exception {
-                this.errorManager = errorManager;
-                ServerSocketFactory serverSocketFactory = ServerSocketFactory.getDefault();
-                try {
-                        socket = serverSocketFactory.createServerSocket(port);
-                } catch (IOException e) {
-                        errorManager.error("OpenIGTServer Could not listen on port: " + port, e, ErrorManager.OPENIGTSERVER_IO_EXCEPTION);
-                        throw e;
-                }
-                //There are not violent enough curses for this sort of thing...
+        	System.out.println("Starting IGTLink Server");
+            this.errorManager = errorManager;
+            ServerSocketFactory serverSocketFactory = ServerSocketFactory.getDefault();
+            try {
+                    socket = serverSocketFactory.createServerSocket(port);
+            } catch (IOException e) {
+                    errorManager.error("OpenIGTServer Could not listen on port: " + port, e, ErrorManager.OPENIGTSERVER_IO_EXCEPTION);
+                    throw e;
+            }
+            //There are not violent enough curses for this sort of thing...
 //                while (listening)
 //                        new ServerThread(socket.accept(), this).start();
 //                socket.close();
-                server s = new server();
-                s.start();
+            server s = new server();
+            s.start();
         }
         private class server extends Thread{
         	public void run(){
@@ -82,9 +84,15 @@ public abstract class OpenIGTServer {
         		}
         	}
         }
+        /**
+         * This method waits until a client connects to the server port
+         * @throws IOException
+         * @throws Exception
+         */
         private void startIGT() throws IOException, Exception{
         	 setServerThread(new ServerThread(socket.accept(), this));
         	 getServerThread().start();
+        	 System.out.println("IGTLink Server started");
         }
 
         /**
@@ -109,8 +117,12 @@ public abstract class OpenIGTServer {
          * @param messageHandler
          * @throws Exception 
          */
-        public void sendMessage(Header header, byte[] body) throws Exception{
-        	getServerThread().sendMessage( header, body);
+        public void sendMessage(OpenIGTMessage message) throws Exception{
+        	if(getServerThread()!=null){
+        		getServerThread().sendMessage(message);
+        	}else{
+        		System.out.println("No clients connected");
+        	}
         }
 
         /**

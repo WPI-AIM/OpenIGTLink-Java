@@ -20,6 +20,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
+import org.medcare.igtl.messages.OpenIGTMessage;
 import org.medcare.igtl.util.ErrorManager;
 import org.medcare.igtl.util.Header;
 import org.medcare.igtl.util.Status;
@@ -97,7 +98,10 @@ public class ServerThread extends Thread {
                 }
                 this.interrupt();
         }
-        
+		public void sendMessage(OpenIGTMessage message) throws Exception {
+			// TODO Auto-generated method stub
+			sendMessage(message.header, message.body);
+		}
 		public void sendMessage(Header header, byte[] body) throws Exception {
 			sendBytes(header.getBytes());
 			sendBytes(body);
@@ -142,6 +146,8 @@ public class ServerThread extends Thread {
         public Status getStatus() {
                 return this.openIGTServer.getStatus();
         }
+
+
 
 
 }
