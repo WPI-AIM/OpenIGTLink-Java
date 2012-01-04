@@ -92,7 +92,7 @@ public abstract class OpenIGTServer {
         private void startIGT() throws IOException, Exception{
         	 setServerThread(new ServerThread(socket.accept(), this));
         	 getServerThread().start();
-        	 System.out.println("IGTLink Server started");
+        	 System.out.println("IGTLink client connected");
         }
 
         /**
