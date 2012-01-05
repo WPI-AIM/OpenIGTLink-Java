@@ -57,6 +57,11 @@ public abstract class OpenIGTServer {
         public OpenIGTServer(int port, ErrorManager errorManager) throws Exception {
         	System.out.println("Starting IGTLink Server");
             this.errorManager = errorManager;
+            start( port);
+        }
+        
+        public void start(int port) throws IOException{
+        	stopServer();
             ServerSocketFactory serverSocketFactory = ServerSocketFactory.getDefault();
             try {
                     socket = serverSocketFactory.createServerSocket(port);
@@ -64,13 +69,10 @@ public abstract class OpenIGTServer {
                     errorManager.error("OpenIGTServer Could not listen on port: " + port, e, ErrorManager.OPENIGTSERVER_IO_EXCEPTION);
                     throw e;
             }
-            //There are not violent enough curses for this sort of thing...
-//                while (listening)
-//                        new ServerThread(socket.accept(), this).start();
-//                socket.close();
             server s = new server();
             s.start();
         }
+        
         private class server extends Thread{
         	public void run(){
 	        	while (listening){
@@ -143,5 +145,9 @@ public abstract class OpenIGTServer {
 
 		public ServerThread getServerThread() {
 			return thread;
+		}
+		public void stopServer(){
+			getServerThread().interrupt();
+			listening = false;
 		}
 }
