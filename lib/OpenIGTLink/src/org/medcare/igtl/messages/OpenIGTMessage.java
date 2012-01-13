@@ -62,7 +62,7 @@ public abstract class OpenIGTMessage {
                 this.deviceName = header.getDeviceName();
                 this.body = body;
                 this.bytesArray = new BytesArray();
-                //Unpack();
+                Unpack();
         }
 
         /**

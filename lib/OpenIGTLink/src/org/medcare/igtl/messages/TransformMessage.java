@@ -227,9 +227,9 @@ public class TransformMessage extends OpenIGTMessage {
         	//System.out.print("\nGetting Origins: [");
     		for(int i=0;i<origin.length;i++){
     			o[i] = origin[i];
-    			System.out.print(origin[i]+" ");
+    			//System.out.print(origin[i]+" ");
     		}
-    		System.out.print("]\n");
+    		//System.out.print("]\n");
             return o;
         }
 
@@ -322,8 +322,8 @@ public class TransformMessage extends OpenIGTMessage {
                 	System.err.println("null normal");
                 }
                 
-                System.err.println("display normal matrix");
-                printDoubleDataArray(normals);
+                //System.err.println("display normal matrix");
+                //printDoubleDataArray(normals);
                 
                 matrix[0][0] = 32;
                 matrix[1][0] = normals[1][0];

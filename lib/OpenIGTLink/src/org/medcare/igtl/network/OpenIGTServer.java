@@ -43,7 +43,7 @@ public abstract class OpenIGTServer {
         public ErrorManager errorManager;
         ServerSocket socket = null;
         private ServerThread thread;
-        boolean listening = true;
+        private boolean listening = true;
         /***************************************************************************
          * Default MessageQueueManager constructor.
          * 
@@ -62,6 +62,7 @@ public abstract class OpenIGTServer {
         
         public void start(int port) throws IOException{
         	stopServer();
+        	System.out.println("IGTLink client Waiting for connection");
             ServerSocketFactory serverSocketFactory = ServerSocketFactory.getDefault();
             try {
                     socket = serverSocketFactory.createServerSocket(port);
@@ -75,7 +76,8 @@ public abstract class OpenIGTServer {
         
         private class server extends Thread{
         	public void run(){
-	        	while (listening){
+        		setListening(true);
+	        	while (isListening()){
 	                try {
 						startIGT();
 					} catch (IOException e) {
@@ -84,6 +86,7 @@ public abstract class OpenIGTServer {
 						e.printStackTrace();
 					}
         		}
+	        	System.out.println("IGTLink Server Died, exiting");
         	}
         }
         /**
@@ -92,6 +95,7 @@ public abstract class OpenIGTServer {
          * @throws Exception
          */
         private void startIGT() throws IOException, Exception{
+        	
         	 setServerThread(new ServerThread(socket.accept(), this));
         	 getServerThread().start();
         	 System.out.println("IGTLink client connected");
@@ -147,7 +151,16 @@ public abstract class OpenIGTServer {
 			return thread;
 		}
 		public void stopServer(){
-			getServerThread().interrupt();
-			listening = false;
+			if(getServerThread()!=null)
+				getServerThread().interrupt();
+			setListening(false);
+		}
+
+		public void setListening(boolean listening) {
+			this.listening = listening;
+		}
+
+		public boolean isListening() {
+			return listening;
 		}
 }
