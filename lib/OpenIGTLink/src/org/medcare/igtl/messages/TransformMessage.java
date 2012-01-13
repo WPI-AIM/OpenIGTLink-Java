@@ -74,7 +74,12 @@ public class TransformMessage extends OpenIGTMessage {
                 super(header, body);
                 }
 
-        /**
+        public TransformMessage(String deviceName,double[] positionAray, double[][] rotationMatrix) {
+        	super(deviceName);
+        	SetTransformData(positionAray, rotationMatrix);
+		}
+
+		/**
          *** To create body from body array
          * 
          *** 
@@ -131,7 +136,7 @@ public class TransformMessage extends OpenIGTMessage {
                 bytesArray.putDouble(origin[2], 4);
                 
                 transform_data = bytesArray.getBytes();
-                
+                PackBody();
              //   System.out.println("++++++++++++++++++++++++++++++++++++++");
                 return transform_data;
         }
