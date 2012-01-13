@@ -21,8 +21,8 @@ import org.medcare.igtl.util.Status;
 public abstract class MessageHandler {
 
         String err = "MessageHandler.performRequest() failed.";
-        public byte[] body;
-        public Header header;
+        private byte[] body;
+        private Header header;
         public ServerThread serverThread;
         public ArrayList<String> capabilityList = new ArrayList<String>();
 
@@ -39,8 +39,8 @@ public abstract class MessageHandler {
          * 
          **************************************************************************/
         public MessageHandler(Header header, byte[] body, ServerThread serverThread) {
-                this.header = header;
-                this.body = body;
+                this.setHeader(header);
+                this.setBody(body);
                 this.serverThread = serverThread;
         }
 
@@ -53,7 +53,7 @@ public abstract class MessageHandler {
          */
         public boolean performRequest() throws Exception {
         	// extract message type from header
-                String messageType = this.header.getDataType();
+                String messageType = this.getHeader().getDataType();
                 Iterator<String> it = capabilityList.iterator();
                 while (it.hasNext()) {
                         String capab = (String) it.next();
@@ -113,5 +113,21 @@ public abstract class MessageHandler {
         public Status getStatus() {
                 return this.serverThread.getStatus();
         }
+
+		public void setHeader(Header header) {
+			this.header = header;
+		}
+
+		public Header getHeader() {
+			return header;
+		}
+
+		public void setBody(byte[] body) {
+			this.body = body;
+		}
+
+		public byte[] getBody() {
+			return body;
+		}
 }
 

@@ -21,6 +21,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 
 import org.medcare.igtl.messages.OpenIGTMessage;
+import org.medcare.igtl.util.BytesArray;
 import org.medcare.igtl.util.ErrorManager;
 import org.medcare.igtl.util.Header;
 import org.medcare.igtl.util.Status;
@@ -77,19 +78,21 @@ public class ServerThread extends Thread {
                                 if (ret_read > 0) {
                                         Header header = new Header(headerBuff);
                                         byte[] bodyBuf = new byte[(int) header.getBody_size()];
-                                        System.out.print("ServerThread Header deviceName : " + header.getDeviceName() + " Type : " + header.getDataType() + " bodySize " + header.getBody_size() + "\n");
+                                        //System.out.print("ServerThread Header deviceName : " + header.getDeviceName() + " Type : " + header.getDataType() + " bodySize " + header.getBody_size() + "\n");
                                         if ((int) header.getBody_size() > 0) {
                                                 ret_read = instr.read(bodyBuf);
                                                 System.out.print("ServerThread Body ret_read : " + ret_read + "\n");
-                                                System.out.println("**"+ ret_read+ "ret_read \n");
-                                                if (ret_read > 0) {
+                                                if (ret_read !=header.getBody_size()) {
                                                         errorManager.error("ServerThread bodyBuf in ServerThread ret_read = " + ret_read, new Exception("Abnormal return from reading"), ErrorManager.SERVERTHREAD_ABNORMAL_ANSWER);
                                                 }
                                         }
+//                                        System.out.println("New Header: "+header);
+//                                        BytesArray b = new BytesArray(); 
+//                                        b.putBytes(bodyBuf);
+//                                        System.out.println("New Body: "+b);
                                         messageQueue.addMessage(openIGTServer.getMessageHandler(header, bodyBuf, this));
                                 }
                         } while (alive && ret_read >= 0);
-                        // System.out.println("J'AI LU");
                         outstr.close();
                         instr.close();
                         socket.close();

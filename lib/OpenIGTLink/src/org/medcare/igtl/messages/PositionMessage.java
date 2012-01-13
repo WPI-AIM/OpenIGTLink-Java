@@ -19,6 +19,7 @@ package org.medcare.igtl.messages;
 import org.medcare.igtl.util.BytesArray;
 import org.medcare.igtl.util.Header;
 
+
 /**
  *** This class create an Position object from bytes received or help to generate
  * bytes to send from it
@@ -49,6 +50,8 @@ public class PositionMessage extends OpenIGTMessage {
          *** 
          * @param deviceName
          *            Device Name
+         * @param quaternion2 
+         * @param ds 
          **/
         public PositionMessage(String deviceName) {
                 super(deviceName);

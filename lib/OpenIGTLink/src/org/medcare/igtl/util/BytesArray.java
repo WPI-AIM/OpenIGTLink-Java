@@ -901,4 +901,13 @@ public class BytesArray {
 	public long next_crc(long crc, byte ch) {
 		return (crc >>> 8) ^ CRC_TABLE[((int) crc ^ ch) & 0xff];
 	}
+	
+	@Override 
+	public String toString(){
+		String s="[";
+		for(int i=0;i<this.size;i++){
+			s+=" "+bytesArray[i];
+		}
+		return s+"]";
+	}
 }

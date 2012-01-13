@@ -148,6 +148,7 @@ public class Header {
                 timestamp = bytesArray.decodeTimeStamp(bytesArray.getBytes(8));
                 body_size = bytesArray.getLong(8); // unsigned int 64 bits
                 crc = bytesArray.getLong(8); // unsigned int 64 bits
+                System.out.println("New header: "+this);
         }
 
         // ------------------------------------------------------------------------
@@ -241,8 +242,8 @@ public class Header {
         public String toString(){
         	String s="";
         	s+="Version: "+getVersion();
-        	s+=" Type: "+type;
-        	s+=" Name: "+name;
+        	s+=" Type: "+getDataType();
+        	s+=" Name: "+getDeviceName();
         	s+=" Timestamp: "+getTimeStamp();
         	s+=" Body Size:"+getBody_size();
         	s+=" CRC: "+getCrc();

@@ -89,6 +89,7 @@ public class TransformMessage extends OpenIGTMessage {
         public boolean UnpackBody() throws Exception {
         		//System.out.println("Unpacking Transform Body..");
                 transform_data = new byte[IGTL_TRANSFORM_SIZE];
+                System.out.println("Body size: "+body.length+" date size: "+transform_data.length);
                 System.arraycopy(body, 0, transform_data, 0, IGTL_TRANSFORM_SIZE);
                 SetTransformData(transform_data);
                 

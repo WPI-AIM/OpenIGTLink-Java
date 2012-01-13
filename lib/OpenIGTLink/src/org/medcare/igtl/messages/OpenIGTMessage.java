@@ -72,7 +72,9 @@ public abstract class OpenIGTMessage {
          * @return true if unpacking is ok
          */
         public boolean Unpack() throws Exception {
-                if (body.length > 0 && !isBodyUnpacked) {
+                if (body.length > 0 
+                		//&& !isBodyUnpacked
+                		) {
                 	System.out.println("Unpacking message...");
                         //if (header.getCrc() == bytesArray.crc64(body, body.length, 0L)) {
                                 isBodyUnpacked = UnpackBody();

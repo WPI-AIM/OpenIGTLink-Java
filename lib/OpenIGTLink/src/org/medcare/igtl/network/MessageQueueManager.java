@@ -33,7 +33,7 @@ public class MessageQueueManager extends Thread {
         private static String VERSION = "0.1a";
 
         private long sleep;
-        public ConcurrentLinkedQueue<MessageHandler> openIGT_Queue = new ConcurrentLinkedQueue<MessageHandler>();
+        private ConcurrentLinkedQueue<MessageHandler> openIGT_Queue = new ConcurrentLinkedQueue<MessageHandler>();
         private boolean alive = true;
         ServerThread serverThread;
         private ErrorManager errorManager;
@@ -59,10 +59,9 @@ public class MessageQueueManager extends Thread {
                 do {
                         try {
                                 Thread.sleep(sleep); // Wait 100 milli before alive again
-                                if (!openIGT_Queue.isEmpty()) {
+                                if (!getOpenIGT_Queue().isEmpty()) {
                                         // On prefere perdre des impressions que rester coince
-                                        MessageHandler messageHandler = (MessageHandler) openIGT_Queue
-                                                        .poll();
+                                        MessageHandler messageHandler = (MessageHandler) getOpenIGT_Queue().poll();
                                         if (messageHandler != null) {
                                                 try {
                                                         res = messageHandler.performRequest();
@@ -71,7 +70,8 @@ public class MessageQueueManager extends Thread {
                                                 } catch (CrcException c) {
                                                         errorManager.error("PB messageHandler ", c, ErrorManager.MESSAGE_CRC_EXCEPTION);
                                                 } catch (Exception e) {
-                                                        errorManager.error("PB messageHandler ", e, ErrorManager.MESSAGE_EXCEPTION);
+                                                	e.printStackTrace();
+                                                    errorManager.error("PB messageHandler ", e, ErrorManager.MESSAGE_EXCEPTION);
                                                 } finally {
                                                         System.out.println("MessageQueueManager messageHandler.performRequest OK");
                                                 }
@@ -93,7 +93,7 @@ public class MessageQueueManager extends Thread {
          * 
          */
         public void addMessage(MessageHandler messageHandler) {
-                openIGT_Queue.add(messageHandler);
+                getOpenIGT_Queue().add(messageHandler);
         }
 
         /**
@@ -126,4 +126,12 @@ public class MessageQueueManager extends Thread {
         public String getVersion() {
                 return VERSION;
         }
+
+		public void setOpenIGT_Queue(ConcurrentLinkedQueue<MessageHandler> openIGT_Queue) {
+			this.openIGT_Queue = openIGT_Queue;
+		}
+
+		public ConcurrentLinkedQueue<MessageHandler> getOpenIGT_Queue() {
+			return openIGT_Queue;
+		}
 }
