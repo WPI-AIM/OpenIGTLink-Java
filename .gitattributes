@@ -42,3 +42,5 @@ lib/OpenIGTLink/src/org/medcare/igtl/util/Tests.java -text
 lib/OpenIGTLink/src/org/medcare/robot/CartesianSpacePosition.java -text
 lib/OpenIGTLink/src/org/medcare/robot/FrameTransformation.java -text
 lib/OpenIGTLink/src/org/medcare/robot/RasSpacePosition.java -text
+lib/OpenIGTLink/src/sample/ClientSample.java -text
+lib/OpenIGTLink/src/sample/ServerSample.java -text
