@@ -45,6 +45,7 @@ public abstract class OpenIGTServer {
         ServerSocket socket = null;
         private ServerThread thread;
         private boolean listening = true;
+        private boolean running = false;
         /***************************************************************************
          * Default MessageQueueManager constructor.
          * 
@@ -99,6 +100,7 @@ public abstract class OpenIGTServer {
         	
         	 setServerThread(new ServerThread(socket.accept(), this));
         	 getServerThread().start();
+        	 running=true;
         	 System.out.println("IGTLink client connected");
         }
 
@@ -124,9 +126,15 @@ public abstract class OpenIGTServer {
          * @param messageHandler
          * @throws Exception 
          */
-        public void sendMessage(OpenIGTMessage message) throws Exception{
+        public void sendMessage(OpenIGTMessage message){
         	if(getServerThread()!=null){
-        		getServerThread().sendMessage(message);
+        		
+        		try {
+					getServerThread().sendMessage(message);
+				} catch (Exception e) {
+					stopServer();
+				}
+        		
         		//Log.info("Pushing upstream IGTLink packet "+message);
         	}else{
         		System.out.println("No clients connected");
@@ -156,6 +164,7 @@ public abstract class OpenIGTServer {
 			if(getServerThread()!=null)
 				getServerThread().interrupt();
 			setListening(false);
+			running=false;
 		}
 
 		public void setListening(boolean listening) {
@@ -164,5 +173,9 @@ public abstract class OpenIGTServer {
 
 		public boolean isListening() {
 			return listening;
+		}
+		
+		public boolean isConnected() {
+			return running;
 		}
 }

@@ -20,11 +20,10 @@ public class GenericIGTLinkClient extends OpenIGTClient implements IOpenIgtPacke
 
 			@Override
 			public void error(String message, Exception exception, int errorCode) {
-				// TODO Auto-generated method stub
-
+				System.err.println(message);
 			}
 		});
-
+		System.out.println("GenericIGTLinkClient started");
 	}
 
 	@Override
@@ -125,6 +124,7 @@ public class GenericIGTLinkClient extends OpenIGTClient implements IOpenIgtPacke
 		if(listeners.contains(l))
 			listeners.remove(l);
 	}
+
 }
 
 

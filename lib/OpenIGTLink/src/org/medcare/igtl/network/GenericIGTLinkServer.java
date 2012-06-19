@@ -162,7 +162,7 @@ public class GenericIGTLinkServer extends OpenIGTServer implements IOpenIgtPacke
 				if(pose!= null){
 					//GSF 1/26/12 - This command takes a quaternion, not a rotation matrix
 					PositionMessage  message;
-					message = new PositionMessage (name,pose.getPositionArray(), pose.getRotationNRMatrix());
+					message = new PositionMessage (name,pose.getPositionArray(), pose.getRotationMatrix());
 					onTaskSpaceUpdate(null,null);
 					
 					//PositionMessage  message = new PositionMessage ("TeST",pose.getPositionAray(), pose.getRotation());
@@ -183,5 +183,7 @@ public class GenericIGTLinkServer extends OpenIGTServer implements IOpenIgtPacke
 			}
 		}
 	}
+
+
 	
 }

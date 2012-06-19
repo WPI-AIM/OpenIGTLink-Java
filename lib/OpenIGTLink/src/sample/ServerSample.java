@@ -21,10 +21,19 @@ public class ServerSample implements IOpenIgtPacketListener {
 			//Add local event listener
 			server.addIOpenIgtOnPacket(new ServerSample());
 			
+			while(!server.isConnected()){
+				Thread.sleep(100);
+			}
+			
+			System.out.println("Pushing packet");
 			//Create an identify matrix
 			TransformNR t = new TransformNR();
 			//Push a transform object upstream
-			server.pushPose("TransformPush", t);
+			
+			while(server.isConnected()){
+				server.pushPose("TransformPush", t);
+				Thread.sleep(1000);
+			}
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

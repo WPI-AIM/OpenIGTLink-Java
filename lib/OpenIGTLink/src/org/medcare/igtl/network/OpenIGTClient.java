@@ -45,7 +45,7 @@ public abstract class OpenIGTClient extends Thread {
 	private OutputStream outstr;
 	private InputStream instr;
 	private ResponseQueueManager responseQueue = null;
-	private boolean alive;
+	private boolean alive=true;
 	private String host;
 	private int port;
 	private Status status;
@@ -80,7 +80,7 @@ public abstract class OpenIGTClient extends Thread {
 		{
 			System.out.println("exception happened");
 			e.printStackTrace(); 
-			System.exit(0);
+			return;
 		}
 
 
@@ -88,6 +88,8 @@ public abstract class OpenIGTClient extends Thread {
 		this.responseQueue.start();
 		this.outstr = socket.getOutputStream();
 		this.instr = socket.getInputStream();
+		this.start();
+		System.out.println("Client connected and ready");
 	}
 
 	/***************************************************************************
@@ -96,7 +98,7 @@ public abstract class OpenIGTClient extends Thread {
 	 * 
 	 **************************************************************************/
 	public void run() {
-		this.alive = true;
+		System.out.println("Starting client Thread");
 		try {
 			int ret_read = 0;
 			byte[] headerBuff = new byte[Header.LENGTH];
@@ -132,7 +134,8 @@ public abstract class OpenIGTClient extends Thread {
 						responseQueue.addResponse(getResponseHandler(header, bodyBuf));
 					}
 				}
-			} while (alive && ret_read >= 0);
+			} while (isConnected() && ret_read >= 0);
+			System.out.println("Client thread exited! Connected state="+ isConnected()+" ret_read = "+ret_read);
 		} catch (UnknownHostException e) {
 			errorManager.error("OpenIGTClient Don't know about host" + host, e, ErrorManager.OPENIGTCLIENT_UNKNOWNHOST_EXCEPTION);
 		} catch (IOException e) {
@@ -220,4 +223,8 @@ public abstract class OpenIGTClient extends Thread {
 	 * @return the response Handler
 	 */
 	public abstract ResponseHandler getResponseHandler(Header header, byte[] bodyBuf);
+	
+	public boolean isConnected() {
+		return alive;
+	}
 }

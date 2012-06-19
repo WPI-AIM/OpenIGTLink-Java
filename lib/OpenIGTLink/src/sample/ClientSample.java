@@ -15,8 +15,15 @@ public class ClientSample implements IOpenIgtPacketListener {
 	public static void main(String[] args) {
 		GenericIGTLinkClient client;
 		try {
+			System.out.println("Starting client");
 			client = new GenericIGTLinkClient ("127.0.0.1",18944);
 			client.addIOpenIgtOnPacket(new ClientSample());	
+			
+			while(client.isConnected()){
+				Thread.sleep(100);
+			}
+			System.out.println("Client disconnected");
+			System.exit(0);
 			
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
@@ -28,7 +35,6 @@ public class ClientSample implements IOpenIgtPacketListener {
 	@Override
 	public void onRxTransform(String name, TransformNR t) {
 		System.out.println("Received Transform: "+t);  
-		
 		if(name.equals("RegistrationTransform") || name.equals("CALIBRATION")){
 			System.err.println("Received Registration Transform");
 			System.out.println("Setting fiducial registration matrix: "+t); 
@@ -44,7 +50,6 @@ public class ClientSample implements IOpenIgtPacketListener {
 		}else{
 			System.err.println("Received unidentified transform matrix");
 			System.out.println("Setting task space pose: "+t); 
-			
 		}
 	}
 

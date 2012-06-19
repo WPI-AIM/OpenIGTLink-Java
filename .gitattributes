@@ -1,6 +1,7 @@
 * text=auto !eol
 lib/OpenIGTLink/.classpath -text
 lib/OpenIGTLink/.project -text
+lib/OpenIGTLink/.settings/org.eclipse.jdt.core.prefs -text
 lib/OpenIGTLink/LICENSE.txt -text
 lib/OpenIGTLink/README.txt -text
 lib/OpenIGTLink/build.xml -text

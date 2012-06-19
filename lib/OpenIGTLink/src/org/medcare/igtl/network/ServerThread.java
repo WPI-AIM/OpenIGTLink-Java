@@ -119,7 +119,7 @@ public class ServerThread extends Thread {
          * @param bytes
          *            - byte[] array.
          **************************************************************************/
-        final public synchronized void sendBytes(byte[] bytes) throws Exception {
+        final public synchronized void sendBytes(byte[] bytes) throws IOException {
                 outstr.write(bytes);
                 outstr.flush();
         }
