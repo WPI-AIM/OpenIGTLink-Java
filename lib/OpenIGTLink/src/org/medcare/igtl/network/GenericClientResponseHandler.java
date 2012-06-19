@@ -7,10 +7,6 @@ import org.medcare.igtl.messages.TransformMessage;
 import org.medcare.igtl.util.Header;
 import org.medcare.igtl.util.IGTImage;
 
-
-import edu.wpi.robotics.aim.core.math.Rotation;
-import edu.wpi.robotics.aim.core.math.Transform;
-
 public class GenericClientResponseHandler extends ResponseHandler{
 
 	public OpenIGTMessage openIGTMessage;

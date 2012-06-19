@@ -1,18 +1,8 @@
 package org.medcare.igtl.network;
 
-import org.medcare.igtl.messages.GetCapabilityMessage;
-import org.medcare.igtl.messages.ImageMessage;
 import org.medcare.igtl.messages.OpenIGTMessage;
-import org.medcare.igtl.messages.PositionMessage;
-import org.medcare.igtl.messages.StatusMessage;
-import org.medcare.igtl.messages.TransformMessage;
-import org.medcare.igtl.util.BytesArray;
 import org.medcare.igtl.util.Header;
-import org.medcare.igtl.util.IGTImage;
 
-
-import edu.wpi.robotics.aim.core.math.Rotation;
-import edu.wpi.robotics.aim.core.math.Transform;
 
 public class GenericServerResponseHandler extends MessageHandler {
 	private IOpenIgtPacketListener server;

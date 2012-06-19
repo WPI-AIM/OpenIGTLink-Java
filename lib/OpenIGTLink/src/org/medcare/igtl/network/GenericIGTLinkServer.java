@@ -9,9 +9,10 @@ import org.medcare.igtl.util.ErrorManager;
 import org.medcare.igtl.util.Header;
 import org.medcare.igtl.util.IGTImage;
 
+import com.neuronrobotics.sdk.addons.kinematics.math.TransformNR;
+
 
 import Jama.Matrix;
-import edu.wpi.robotics.aim.core.math.Transform;
 
 public class GenericIGTLinkServer extends OpenIGTServer implements IOpenIgtPacketListener{
 	
@@ -38,25 +39,25 @@ public class GenericIGTLinkServer extends OpenIGTServer implements IOpenIgtPacke
 	}
 	
 	/**
-	 * This method will be called by the IGT server when a transform is received. Supports:
-	 * TRANSFORM
+	 * This method will be called by the IGT server when a TransformNR is received. Supports:
+	 * TransformNR
 	 * QTRANS
-	 * QTRANSFORM
+	 * QTransformNR
 	 * POSITION
 	 * @param name The string in the 'NAME' field of the IGT packet
 	 * @param t
 	 */
-	public void onRxTransform(String name,Transform t){
+	public void onRxTransform(String name,TransformNR t){
 		for(IOpenIgtPacketListener l:listeners){
 			l.onRxTransform(name, t);
 		}
 	}
 	/**
-	 * Request for a transform for transmition to IGT
-	 * @param name A string of what type of transform to get
-	 * @return the requested transform 
+	 * Request for a TransformNR for transmition to IGT
+	 * @param name A string of what type of TransformNR to get
+	 * @return the requested TransformNR 
 	 */
-	public Transform getTxTransform(String name){
+	public TransformNR getTxTransform(String name){
 		if(listeners.size() != 1){
 			throw new RuntimeException("There can be only one listener for this packet type.");
 		}
@@ -76,7 +77,7 @@ public class GenericIGTLinkServer extends OpenIGTServer implements IOpenIgtPacke
 	
 	/**
 	 * This is the request handler for a String packet
-	 * @param name A string of what type of transform to get
+	 * @param name A string of what type of TransformNR to get
 	 */
 	public String onTxString(String name){
 		if(listeners.size() != 1){
@@ -112,7 +113,7 @@ public class GenericIGTLinkServer extends OpenIGTServer implements IOpenIgtPacke
 	 * This is a handler for an Image sent from IGT packet
 	 * @param name A string of what type of data to get
 	 * @param image the image
-	 * @param t A transform of where the image is
+	 * @param t A TransformNR of where the image is
 	 */
 	public void onRxImage(String name,ImageMessage image){
 		for(IOpenIgtPacketListener l:listeners){
@@ -130,15 +131,15 @@ public class GenericIGTLinkServer extends OpenIGTServer implements IOpenIgtPacke
 			listeners.remove(l);
 	}
 	
-	public void pushPose(String name, Transform t){
+	public void pushPose(String name, TransformNR t){
 		s.onTaskSpaceUpdate(name, t);
 	}
 	
 	public class sender extends Thread{
 		
-		private Transform pose;
+		private TransformNR pose;
 		private String name;
-		public synchronized void onTaskSpaceUpdate( String name, Transform pose){
+		public synchronized void onTaskSpaceUpdate( String name, TransformNR pose){
 			this.pose = pose;
 			this.name=name;
 		}
@@ -161,7 +162,7 @@ public class GenericIGTLinkServer extends OpenIGTServer implements IOpenIgtPacke
 				if(pose!= null){
 					//GSF 1/26/12 - This command takes a quaternion, not a rotation matrix
 					PositionMessage  message;
-					message = new PositionMessage (name,pose.getPositionArray(), pose.getRotationMatrix());
+					message = new PositionMessage (name,pose.getPositionArray(), pose.getRotationNRMatrix());
 					onTaskSpaceUpdate(null,null);
 					
 					//PositionMessage  message = new PositionMessage ("TeST",pose.getPositionAray(), pose.getRotation());

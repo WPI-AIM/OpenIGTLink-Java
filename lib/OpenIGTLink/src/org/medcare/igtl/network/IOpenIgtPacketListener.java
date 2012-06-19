@@ -1,9 +1,9 @@
 package org.medcare.igtl.network;
 import org.medcare.igtl.messages.ImageMessage;
 
-import Jama.Matrix;
+import com.neuronrobotics.sdk.addons.kinematics.math.TransformNR;
 
-import edu.wpi.robotics.aim.core.math.Transform;
+import Jama.Matrix;
 
 public interface IOpenIgtPacketListener {
 	/**
@@ -15,13 +15,13 @@ public interface IOpenIgtPacketListener {
 	 * @param name The string in the 'NAME' field of the IGT packet
 	 * @param t
 	 */
-	void onRxTransform(String name,Transform t);
+	void onRxTransform(String name,TransformNR t);
 	/**
 	 * Request for a transform for transmition to IGT
 	 * @param name A string of what type of transform to get
 	 * @return the requested transform 
 	 */
-	Transform getTxTransform(String name);
+	TransformNR getTxTransform(String name);
 	/**
 	 * This is the handler for a String packet
 	 * @param name A string of what type of data to get

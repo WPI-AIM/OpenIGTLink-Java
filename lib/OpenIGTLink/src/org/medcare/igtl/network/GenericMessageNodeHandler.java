@@ -6,9 +6,8 @@ import org.medcare.igtl.messages.PositionMessage;
 import org.medcare.igtl.messages.TransformMessage;
 import org.medcare.igtl.util.Header;
 
-
-import edu.wpi.robotics.aim.core.math.Rotation;
-import edu.wpi.robotics.aim.core.math.Transform;
+import com.neuronrobotics.sdk.addons.kinematics.math.RotationNR;
+import com.neuronrobotics.sdk.addons.kinematics.math.TransformNR;
 
 public class GenericMessageNodeHandler {
 	
@@ -29,7 +28,7 @@ public class GenericMessageNodeHandler {
         		// Position vector and rotation matrix from the received transform
         		double[] position = transform.getPosition();
         		double[][] rotation=transform.getRotationMatrixArray(); 	
-        		Transform t =new Transform(position, rotation);
+        		TransformNR t =new TransformNR(position, rotation);
         		node.onRxTransform(openIGTMessage.getDeviceName(), t);
         } else if (messageType.equals("POSITION") || messageType.equals("MOVE_TO")) {
                 System.out.println("perform POSITION");
@@ -38,8 +37,8 @@ public class GenericMessageNodeHandler {
         		transform.Unpack();
         		// Position vector and rotation matrix from the received transform
         		double[] position = transform.getPosition();
-        		Rotation rotation=transform.getQuaternion(); 	
-        		Transform t =new Transform(position, rotation);
+        		RotationNR rotation=transform.getQuaternion(); 	
+        		TransformNR t =new TransformNR(position, rotation);
         		node.onRxTransform(openIGTMessage.getDeviceName(), t);
         } else if (messageType.equals("IMAGE")) {
             //    openIGTMessage = new ImageMessage(getHeader(), getBody());

@@ -5,11 +5,11 @@ import java.util.ArrayList;
 import org.medcare.igtl.messages.ImageMessage;
 import org.medcare.igtl.util.ErrorManager;
 import org.medcare.igtl.util.Header;
-import org.medcare.igtl.util.IGTImage;
+
+import com.neuronrobotics.sdk.addons.kinematics.math.TransformNR;
 
 import Jama.Matrix;
 
-import edu.wpi.robotics.aim.core.math.Transform;
 
 public class GenericIGTLinkClient extends OpenIGTClient implements IOpenIgtPacketListener
 {
@@ -42,7 +42,7 @@ public class GenericIGTLinkClient extends OpenIGTClient implements IOpenIgtPacke
 	 * @param name The string in the 'NAME' field of the IGT packet
 	 * @param t
 	 */
-	public void onRxTransform(String name,Transform t){
+	public void onRxTransform(String name,TransformNR t){
 		for(IOpenIgtPacketListener l:listeners){
 			l.onRxTransform(name, t);
 		}
@@ -52,7 +52,7 @@ public class GenericIGTLinkClient extends OpenIGTClient implements IOpenIgtPacke
 	 * @param name A string of what type of transform to get
 	 * @return the requested transform 
 	 */
-	public Transform getTxTransform(String name){
+	public TransformNR getTxTransform(String name){
 		if(listeners.size() != 1){
 			throw new RuntimeException("There can be only one listener for this packet type.");
 		}

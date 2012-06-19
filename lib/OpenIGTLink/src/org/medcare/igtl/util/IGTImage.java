@@ -4,20 +4,21 @@ import java.awt.image.BufferedImage;
 
 import org.medcare.igtl.messages.ImageMessage;
 
-import edu.wpi.robotics.aim.core.math.Transform;
+import com.neuronrobotics.sdk.addons.kinematics.math.TransformNR;
+
 
 public class IGTImage {
 	ImageMessage message;
 	BufferedImage image = null;
-	Transform transform = new Transform(); 
+	TransformNR transform = new TransformNR(); 
 	public IGTImage(ImageMessage m){
 		message=m;
 		//TODO Satya, populate all fields.
 		image = null;
-		transform = new Transform(); 
+		transform = new TransformNR(); 
 	}
 	
-	public Transform getTransform(){
+	public TransformNR getTransform(){
 		
 		return transform;
 	}

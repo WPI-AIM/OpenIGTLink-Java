@@ -19,7 +19,7 @@ package org.medcare.igtl.messages;
 import org.medcare.igtl.util.BytesArray;
 import org.medcare.igtl.util.Header;
 
-import edu.wpi.robotics.aim.core.math.Rotation;
+import com.neuronrobotics.sdk.addons.kinematics.math.RotationNR;
 
 
 /**
@@ -41,7 +41,7 @@ public class PositionMessage extends OpenIGTMessage {
         private int quaternionSize = ALL;
 
         public double position[] = new double[3]; // float 32bits
-        public Rotation quaternion; // float 32bits
+        public RotationNR quaternion; // float 32bits
         private byte position_data[];
         private int bodyLength;
 
@@ -55,9 +55,9 @@ public class PositionMessage extends OpenIGTMessage {
          * @param quaternion2 
          * @param ds 
          **/
-        public PositionMessage(String deviceName, double[] ds, Rotation rotation) {
+        public PositionMessage(String deviceName, double[] ds, RotationNR RotationNR) {
                 super(deviceName);           
-                setPositionData(ds, rotation, 4);        		
+                setPositionData(ds, RotationNR, 4);        		
         }
 
         /**
@@ -110,7 +110,7 @@ public class PositionMessage extends OpenIGTMessage {
          *** 
          * @return the bytes array created from the value
          */
-        public byte[] setPositionData(double position[], Rotation quaternion, int quaternionSize) {
+        public byte[] setPositionData(double position[], RotationNR quaternion, int quaternionSize) {
                 setPosition(position);
                 setQuaternion(quaternion);
                 this.quaternionSize = quaternionSize;
@@ -167,7 +167,7 @@ public class PositionMessage extends OpenIGTMessage {
                 for (int i = 0; i < quaternionSize; i++) {
                         q[i] = bytesArray.getDouble(4); // float32
                 }
-                setQuaternion(new Rotation(q));
+                setQuaternion(new RotationNR(q));
         }
 
         /**
@@ -216,7 +216,7 @@ public class PositionMessage extends OpenIGTMessage {
          * @param quaternion
          *** 
          */
-        void setQuaternion(Rotation  quaternion) {
+        void setQuaternion(RotationNR  quaternion) {
                 this.quaternion = quaternion;
         }
 
@@ -229,7 +229,7 @@ public class PositionMessage extends OpenIGTMessage {
          *** 
          */
         void setQuaternion(double ox, double oy, double oz, double w) {
-                quaternion = new Rotation(w,ox,oy,oz);
+                quaternion = new RotationNR(w,ox,oy,oz);
         }
 
         /**
@@ -237,7 +237,7 @@ public class PositionMessage extends OpenIGTMessage {
          *** 
          * @return the quaternion array
          */
-        public Rotation getQuaternion() {
+        public RotationNR getQuaternion() {
                 return quaternion;
         }
 
