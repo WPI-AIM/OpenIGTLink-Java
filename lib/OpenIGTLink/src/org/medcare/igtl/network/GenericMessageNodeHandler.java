@@ -41,8 +41,10 @@ public class GenericMessageNodeHandler {
         		TransformNR t =new TransformNR(position, rotation);
         		node.onRxTransform(openIGTMessage.getDeviceName(), t);
         } else if (messageType.equals("IMAGE")) {
-            //    openIGTMessage = new ImageMessage(getHeader(), getBody());
-        	node.onRxImage(openIGTMessage.getDeviceName(),new ImageMessage(head,body));
+        	ImageMessage imgMesg = new ImageMessage(head, body);
+			openIGTMessage =(OpenIGTMessage)imgMesg;
+			imgMesg.Unpack();
+			node.onRxImage(openIGTMessage.getDeviceName(),imgMesg);
         }else {
                 System.out.println("Perform messageType : " + messageType + " not implemented");
                 return null;
