@@ -1,5 +1,6 @@
 package org.medcare.igtl.network;
 
+import org.medcare.igtl.messages.DataArrayMessage;
 import org.medcare.igtl.messages.ImageMessage;
 import org.medcare.igtl.messages.OpenIGTMessage;
 import org.medcare.igtl.messages.PositionMessage;
@@ -45,7 +46,15 @@ public class GenericMessageNodeHandler {
 			openIGTMessage =(OpenIGTMessage)imgMesg;
 			imgMesg.Unpack();
 			node.onRxImage(openIGTMessage.getDeviceName(),imgMesg);
-        }else {
+		
+        }else if (messageType.equals("ARRAY")) {
+        	DataArrayMessage datMesg = new DataArrayMessage(head, body);
+			openIGTMessage =(OpenIGTMessage)datMesg;
+        	node.onRxDataArray(openIGTMessage.getDeviceName(), datMesg.getDataMatrix());// this is a non functional stub	
+        }
+        
+        else {
+        	
                 System.out.println("Perform messageType : " + messageType + " not implemented");
                 return null;
         }
