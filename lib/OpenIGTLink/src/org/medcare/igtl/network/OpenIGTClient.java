@@ -115,21 +115,17 @@ public abstract class OpenIGTClient extends Thread {
 					byte[] bodyBuf = new byte[size];
 
 					System.out.println("Size of Packet ::" + size );
-					
-					// Since read() can at max read 65536 bytes per call or inputstream can only contain 65536 at once
-					// To avoid the problem if the image message size is greater than 65536 bytes
-					byte[] tempBytes = new byte[65536];
 					int currentPos =0;
-					for(int i=0; i< size/65536 ;i++)
+					while(true)
 					{
-						ret_read = instr.read(tempBytes);
-						System.arraycopy(tempBytes, 0, bodyBuf, currentPos, 65536);
-						currentPos = currentPos + 65536;
+					ret_read = instr.read(bodyBuf, currentPos, size);
+					System.out.println("Ret Read " + ret_read);
+					size = size - ret_read;
+					currentPos = currentPos + ret_read;
+					if(size==0)
+						break;
 					}
-					tempBytes = new byte[size%65536];
-					ret_read = instr.read(tempBytes);
-					System.arraycopy(tempBytes, 0, bodyBuf, currentPos, size%65536);
-
+	
 					if (ret_read > 0) {
 						responseQueue.addResponse(getResponseHandler(header, bodyBuf));
 					}
