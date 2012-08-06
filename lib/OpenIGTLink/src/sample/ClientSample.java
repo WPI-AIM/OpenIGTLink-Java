@@ -34,7 +34,7 @@ public class ClientSample implements IOpenIgtPacketListener {
 
 	@Override
 	public void onRxTransform(String name, TransformNR t) {
-		System.out.println("Received Transform: "+t);  
+		//System.out.println("Received Transform: "+t);  
 		if(name.equals("RegistrationTransform") || name.equals("CALIBRATION")){
 			System.err.println("Received Registration Transform");
 			System.out.println("Setting fiducial registration matrix: "+t); 

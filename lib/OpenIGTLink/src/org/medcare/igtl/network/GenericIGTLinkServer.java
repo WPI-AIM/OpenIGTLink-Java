@@ -132,6 +132,7 @@ public class GenericIGTLinkServer extends OpenIGTServer implements IOpenIgtPacke
 	}
 	
 	public void pushPose(String name, TransformNR t){
+		
 		s.onTaskSpaceUpdate(name, t);
 	}
 	

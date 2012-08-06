@@ -129,6 +129,14 @@ public class ServerThread extends Thread {
          **************************************************************************/
         public void interrupt() {
                 alive = false;
+                try {
+					outstr.close();
+					instr.close();
+	                socket.close();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
         }
 
         /**

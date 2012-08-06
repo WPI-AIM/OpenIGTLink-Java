@@ -46,6 +46,7 @@ public abstract class OpenIGTServer {
         private ServerThread thread;
         private boolean listening = true;
         private boolean running = false;
+        private int port;
         /***************************************************************************
          * Default MessageQueueManager constructor.
          * 
@@ -59,17 +60,21 @@ public abstract class OpenIGTServer {
         public OpenIGTServer(int port, ErrorManager errorManager) throws Exception {
         	System.out.println("Starting IGTLink Server");
             this.errorManager = errorManager;
-            start( port);
+            
+            startServer( port);
         }
         
-        public void start(int port) throws IOException{
+        private void startServer(int port) throws IOException{
+        	this.port=port;
         	stopServer();
         	System.out.println("IGTLink client Waiting for connection");
-            ServerSocketFactory serverSocketFactory = ServerSocketFactory.getDefault();
+            
             try {
-                    socket = serverSocketFactory.createServerSocket(port);
+            	ServerSocketFactory serverSocketFactory = ServerSocketFactory.getDefault();
+                socket = serverSocketFactory.createServerSocket(this.port);
+                System.out.println("Socket created");
             } catch (IOException e) {
-                    errorManager.error("OpenIGTServer Could not listen on port: " + port, e, ErrorManager.OPENIGTSERVER_IO_EXCEPTION);
+                    errorManager.error("OpenIGTServer Could not listen on port: " + this.port, e, ErrorManager.OPENIGTSERVER_IO_EXCEPTION);
                     throw e;
             }
             server s = new server();
@@ -79,16 +84,32 @@ public abstract class OpenIGTServer {
         private class server extends Thread{
         	public void run(){
         		setListening(true);
-	        	while (isListening()){
-	                try {
-						startIGT();
-					} catch (IOException e) {
-						e.printStackTrace();
-					} catch (Exception e) {
+        		try {
+					startIGT();
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				} catch (Exception e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+        		System.out.println("Waiting for close");
+	        	while (!socket.isClosed()){
+	        		try {
+						Thread.sleep(100);
+					} catch (InterruptedException e) {
+						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
         		}
-	        	System.out.println("IGTLink Server Died, exiting");
+	        	System.out.println("IGTLink Server Died, restarting");
+	        	try {
+					startServer(port);
+					return;
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
         	}
         }
         /**
@@ -163,6 +184,10 @@ public abstract class OpenIGTServer {
 		public void stopServer(){
 			if(getServerThread()!=null)
 				getServerThread().interrupt();
+			if(socket!= null)
+				try {
+					socket.close();
+				} catch (IOException e) {}
 			setListening(false);
 			running=false;
 		}
@@ -176,6 +201,6 @@ public abstract class OpenIGTServer {
 		}
 		
 		public boolean isConnected() {
-			return running;
+			return running && ! socket.isClosed();
 		}
 }

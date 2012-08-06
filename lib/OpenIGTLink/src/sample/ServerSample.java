@@ -18,6 +18,7 @@ public class ServerSample implements IOpenIgtPacketListener {
 		try {
 			//Set up server
 			server = new GenericIGTLinkServer (18944);
+
 			//Add local event listener
 			server.addIOpenIgtOnPacket(new ServerSample());
 			
@@ -29,10 +30,14 @@ public class ServerSample implements IOpenIgtPacketListener {
 			//Create an identify matrix
 			TransformNR t = new TransformNR();
 			//Push a transform object upstream
-			
-			while(server.isConnected()){
-				server.pushPose("TransformPush", t);
+			while(true){
 				Thread.sleep(1000);
+				if(server.isConnected()){
+					System.out.println("Push");
+					server.pushPose("TransformPush", t);
+				}else{
+					System.out.println("Wait");
+				}
 			}
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
