@@ -19,9 +19,10 @@ public class ClientSample implements IOpenIgtPacketListener {
 			client = new GenericIGTLinkClient ("127.0.0.1",18944);
 			client.addIOpenIgtOnPacket(new ClientSample());	
 			
-			while(client.isConnected()){
-				Thread.sleep(100);
+			for(int i=0;i<5;i++){
+				Thread.sleep(1000);
 			}
+			client.stopClient();
 			System.out.println("Client disconnected");
 			System.exit(0);
 			

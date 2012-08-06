@@ -118,12 +118,12 @@ public abstract class OpenIGTClient extends Thread {
 					int currentPos =0;
 					while(true)
 					{
-					ret_read = instr.read(bodyBuf, currentPos, size);
-					System.out.println("Ret Read " + ret_read);
-					size = size - ret_read;
-					currentPos = currentPos + ret_read;
-					if(size==0)
-						break;
+						ret_read = instr.read(bodyBuf, currentPos, size);
+						System.out.println("Ret Read " + ret_read);
+						size = size - ret_read;
+						currentPos = currentPos + ret_read;
+						if(size==0)
+							break;
 					}
 	
 					if (ret_read > 0) {

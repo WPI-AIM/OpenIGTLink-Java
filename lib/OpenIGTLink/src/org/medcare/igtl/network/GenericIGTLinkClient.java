@@ -114,6 +114,11 @@ public class GenericIGTLinkClient extends OpenIGTClient implements IOpenIgtPacke
 			l.onRxImage(name, image);
 		}
 	}
+	
+	public void stopClient(){
+		interrupt();
+		while(isConnected());
+	}
 
 
 	public void addIOpenIgtOnPacket(IOpenIgtPacketListener l){
