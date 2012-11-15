@@ -6,7 +6,6 @@ lib/OpenIGTLink/LICENSE.txt -text
 lib/OpenIGTLink/README.txt -text
 lib/OpenIGTLink/build.xml -text
 lib/OpenIGTLink/lib/Jama-1.0.2.jar -text
-lib/OpenIGTLink/lib/nrsdk-3.8.7-jar-with-dependencies.jar -text
 lib/OpenIGTLink/lib/nrsdk-3.8.8-jar-with-dependencies.jar -text
 lib/OpenIGTLink/src/org/medcare/igtl/messages/CapabilityMessage.java -text
 lib/OpenIGTLink/src/org/medcare/igtl/messages/DataArrayMessage.java -text
