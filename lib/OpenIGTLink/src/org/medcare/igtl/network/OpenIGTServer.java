@@ -26,6 +26,8 @@ import org.medcare.igtl.util.ErrorManager;
 import org.medcare.igtl.util.Status;
 import org.medcare.igtl.util.Header;
 
+import com.neuronrobotics.sdk.common.Log;
+
 
 /**
  * <p>
@@ -58,7 +60,7 @@ public abstract class OpenIGTServer {
          * 
          **************************************************************************/
         public OpenIGTServer(int port, ErrorManager errorManager) throws Exception {
-        	System.out.println("Starting IGTLink Server");
+        	Log.debug("Starting IGTLink Server");
             this.errorManager = errorManager;
             
             startServer( port);
@@ -67,12 +69,12 @@ public abstract class OpenIGTServer {
         private void startServer(int port) throws IOException{
         	this.port=port;
         	stopServer();
-        	System.out.println("IGTLink client Waiting for connection");
+        	Log.debug("IGTLink client Waiting for connection");
             
             try {
             	ServerSocketFactory serverSocketFactory = ServerSocketFactory.getDefault();
                 socket = serverSocketFactory.createServerSocket(this.port);
-                System.out.println("Socket created");
+                Log.debug("Socket created");
             } catch (IOException e) {
                     errorManager.error("OpenIGTServer Could not listen on port: " + this.port, e, ErrorManager.OPENIGTSERVER_IO_EXCEPTION);
                     throw e;
@@ -93,7 +95,7 @@ public abstract class OpenIGTServer {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
-        		System.out.println("Waiting for close");
+        		Log.debug("Waiting for close");
 	        	while (!socket.isClosed()){
 	        		try {
 						Thread.sleep(100);
@@ -102,7 +104,7 @@ public abstract class OpenIGTServer {
 						e.printStackTrace();
 					}
         		}
-	        	System.out.println("IGTLink Server Died, restarting");
+	        	Log.debug("IGTLink Server Died, restarting");
 	        	try {
 					startServer(port);
 					return;
@@ -122,7 +124,7 @@ public abstract class OpenIGTServer {
         	 setServerThread(new ServerThread(socket.accept(), this));
         	 getServerThread().start();
         	 running=true;
-        	 System.out.println("IGTLink client connected");
+        	 Log.debug("IGTLink client connected");
         }
 
         /**
@@ -158,7 +160,7 @@ public abstract class OpenIGTServer {
         		
         		//Log.info("Pushing upstream IGTLink packet "+message);
         	}else{
-        		System.out.println("No clients connected");
+        		Log.debug("No clients connected");
         	}
         }
 
