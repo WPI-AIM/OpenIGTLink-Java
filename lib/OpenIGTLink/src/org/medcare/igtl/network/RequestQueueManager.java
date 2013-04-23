@@ -15,7 +15,7 @@
 =========================================================================*/
 
 package org.medcare.igtl.network;
-
+import com.neuronrobotics.sdk.common.Log;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 import org.medcare.igtl.util.ErrorManager;
@@ -70,7 +70,7 @@ public class RequestQueueManager extends Thread {
                                                 } catch (Exception e) {
                                                         errorManager.error("RequestQueueManager openIGTClient.sendBytes ", e, ErrorManager.REQUEST_EXCEPTION);
                                                 } finally {
-                                                        System.out.println("RequestQueueManager SendBytes OK");
+                                                        Log.debug("RequestQueueManager SendBytes OK");
                                                 }
                                         } else {
                                                        errorManager.error("PB openIGTClient openIGTRequest null", new Exception("sendBytes error"), ErrorManager.REQUEST_ERROR);

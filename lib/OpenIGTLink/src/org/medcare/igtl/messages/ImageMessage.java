@@ -19,6 +19,8 @@ package org.medcare.igtl.messages;
 import org.medcare.igtl.util.BytesArray;
 import org.medcare.igtl.util.Header;
 
+import com.neuronrobotics.sdk.common.Log;
+
 /**
  *** This class create an Image object from bytes received or help to generate
  * bytes to send from it
@@ -572,7 +574,7 @@ public class ImageMessage extends OpenIGTMessage {
 	public void setMatrix(double matrix[][]) {
 		this.matrix = matrix;
 
-		System.out.println(matrix);
+		Log.debug(matrix.toString());
 		norm_i = new double[3];
 		norm_j = new double[3];
 		norm_k = new double[3];

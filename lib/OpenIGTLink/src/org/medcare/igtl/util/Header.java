@@ -15,7 +15,7 @@
 =========================================================================*/
 
 package org.medcare.igtl.util;
-
+import com.neuronrobotics.sdk.common.Log;
 /**
  *** For reading/writing OpenIGTLink headers
  * 
@@ -109,7 +109,7 @@ public class Header {
                 }
                 int len = dataType.length();
                 //byte data[] = dataType.getBytes(bytesArray.charset);
-                //System.out.println("len : " + len + " data len : " + data.length);
+                //Log.debug("len : " + len + " data len : " + data.length);
                 if (len > 12)
                         len = 12;
                 System.arraycopy(dataType.getBytes(bytesArray.charset), 0, typeArray, 0, len);
@@ -144,7 +144,7 @@ public class Header {
                 bytesArray = new BytesArray();
                 bytesArray.putBytes(bytes);
                 populate();
-                System.out.println("New header: "+this);
+                Log.debug("New header: "+this);
         }
         
         private void populate(){

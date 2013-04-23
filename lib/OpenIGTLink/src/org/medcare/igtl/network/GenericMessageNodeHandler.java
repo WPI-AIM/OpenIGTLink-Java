@@ -9,13 +9,13 @@ import org.medcare.igtl.util.Header;
 
 import com.neuronrobotics.sdk.addons.kinematics.math.RotationNR;
 import com.neuronrobotics.sdk.addons.kinematics.math.TransformNR;
-
+import com.neuronrobotics.sdk.common.Log;
 public class GenericMessageNodeHandler {
 	
 	public OpenIGTMessage openIGTMessage;
 
 	public OpenIGTMessage perform(String messageType,Header head, byte[] body, IOpenIgtPacketListener node) throws Exception {
-        //System.out.println("perform messageType : " + messageType);
+        //Log.debug("perform messageType : " + messageType);
 		//Log.info("Recived IGTLink packet, header="+head+" body="+new ByteList( body));
         
 		//TODO - GSF: Need to add complete set of new IGTLInk commands for BRP robot
@@ -32,7 +32,7 @@ public class GenericMessageNodeHandler {
         		TransformNR t =new TransformNR(position, rotation);
         		node.onRxTransform(openIGTMessage.getDeviceName(), t);
         } else if (messageType.equals("POSITION") || messageType.equals("MOVE_TO")) {
-                System.out.println("perform POSITION");
+                Log.debug("perform POSITION");
                 openIGTMessage = new PositionMessage(head, body);   
         		PositionMessage transform = (PositionMessage) openIGTMessage;
         		transform.Unpack();
@@ -55,7 +55,7 @@ public class GenericMessageNodeHandler {
         
         else {
         	
-                System.out.println("Perform messageType : " + messageType + " not implemented");
+                Log.debug("Perform messageType : " + messageType + " not implemented");
                 return null;
         }
         return openIGTMessage;

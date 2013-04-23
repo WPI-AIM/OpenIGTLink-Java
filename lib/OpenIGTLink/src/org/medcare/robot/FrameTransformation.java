@@ -43,7 +43,7 @@ public class FrameTransformation {
 
 	/*
 	 * double[][] array = {{1.,2.,3},{4.,5.,6.},{7.,8.,10.}}; Matrix A = new
-	 * Matrix(array); Matrix Ainv=A.inverse(); // System.out.println(A);
+	 * Matrix(array); Matrix Ainv=A.inverse(); // Log.debug(A);
 	 * 
 	 * @SuppressWarnings("unused") private double[][] frameMultiplication(double
 	 * matrixA[][], double matrixB[][]) { for (int i = 0; i < matrixA.length;

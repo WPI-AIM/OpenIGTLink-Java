@@ -15,7 +15,7 @@
 =========================================================================*/
 
 package org.medcare.igtl.network;
-
+import com.neuronrobotics.sdk.common.Log;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 import org.medcare.igtl.util.CrcException;
@@ -73,7 +73,7 @@ public class MessageQueueManager extends Thread {
                                                 	e.printStackTrace();
                                                     errorManager.error("PB messageHandler ", e, ErrorManager.MESSAGE_EXCEPTION);
                                                 } finally {
-                                                        System.out.println("MessageQueueManager messageHandler.performRequest OK");
+                                                        Log.debug("MessageQueueManager messageHandler.performRequest OK");
                                                 }
 
                                         } else {

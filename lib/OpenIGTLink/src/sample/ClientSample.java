@@ -1,5 +1,5 @@
 package sample;
-
+import com.neuronrobotics.sdk.common.Log;
 import org.medcare.igtl.messages.ImageMessage;
 import org.medcare.igtl.network.GenericIGTLinkClient;
 import org.medcare.igtl.network.IOpenIgtPacketListener;
@@ -15,7 +15,7 @@ public class ClientSample implements IOpenIgtPacketListener {
 	public static void main(String[] args) {
 		GenericIGTLinkClient client;
 		try {
-			System.out.println("Starting client");
+			Log.debug("Starting client");
 			client = new GenericIGTLinkClient ("127.0.0.1",18944);
 			client.addIOpenIgtOnPacket(new ClientSample());	
 			
@@ -23,7 +23,7 @@ public class ClientSample implements IOpenIgtPacketListener {
 				Thread.sleep(1000);
 			}
 			client.stopClient();
-			System.out.println("Client disconnected");
+			Log.debug("Client disconnected");
 			System.exit(0);
 			
 		} catch (Exception e) {
@@ -35,22 +35,22 @@ public class ClientSample implements IOpenIgtPacketListener {
 
 	@Override
 	public void onRxTransform(String name, TransformNR t) {
-		//System.out.println("Received Transform: "+t);  
+		//Log.debug("Received Transform: "+t);  
 		if(name.equals("RegistrationTransform") || name.equals("CALIBRATION")){
 			System.err.println("Received Registration Transform");
-			System.out.println("Setting fiducial registration matrix: "+t); 
+			Log.debug("Setting fiducial registration matrix: "+t); 
 			return;
 		}else if(name.equals("TARGET")){
 			System.err.println("Received RAS Transform: TARGET");
-			System.out.println("Setting task space pose: "+t); 
+			Log.debug("Setting task space pose: "+t); 
 			
 		}else if(name.equals("myTransform")){
 			System.err.println("Received Transformation Matrix: myTransform");
-			System.out.println("Setting task space pose: "+t); 
+			Log.debug("Setting task space pose: "+t); 
 			
 		}else{
 			System.err.println("Received unidentified transform matrix");
-			System.out.println("Setting task space pose: "+t); 
+			Log.debug("Setting task space pose: "+t); 
 		}
 	}
 

@@ -15,7 +15,7 @@
 =========================================================================*/
 
 package org.medcare.igtl.network;
-
+import com.neuronrobotics.sdk.common.Log;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.IOException;
@@ -78,7 +78,7 @@ public abstract class OpenIGTClient extends Thread {
 		}
 		catch (Exception e)
 		{
-			System.out.println("exception happened");
+			Log.debug("exception happened");
 			e.printStackTrace(); 
 			return;
 		}
@@ -89,7 +89,7 @@ public abstract class OpenIGTClient extends Thread {
 		this.outstr = socket.getOutputStream();
 		this.instr = socket.getInputStream();
 		this.start();
-		System.out.println("Client connected and ready");
+		Log.debug("Client connected and ready");
 	}
 
 	/***************************************************************************
@@ -98,14 +98,14 @@ public abstract class OpenIGTClient extends Thread {
 	 * 
 	 **************************************************************************/
 	public void run() {
-		System.out.println("Starting client Thread");
+		Log.debug("Starting client Thread");
 		try {
 			int ret_read = 0;
 			byte[] headerBuff = new byte[Header.LENGTH];
-			// System.out.println("JE LIS");
+			// Log.debug("JE LIS");
 			do {
 				ret_read = instr.read(headerBuff);
-				System.out.println("Size of Header ::" + ret_read + "\n" );
+				Log.debug("Size of Header ::" + ret_read + "\n" );
 				
 				if (ret_read > 0) {
 					// System.out.print(new String(buff, 0, ret_read));
@@ -114,12 +114,12 @@ public abstract class OpenIGTClient extends Thread {
 					int size = (int)header.getBody_size();
 					byte[] bodyBuf = new byte[size];
 
-					System.out.println("Size of Packet ::" + size );
+					Log.debug("Size of Packet ::" + size );
 					int currentPos =0;
 					while(true)
 					{
 						ret_read = instr.read(bodyBuf, currentPos, size);
-						System.out.println("Ret Read " + ret_read);
+						Log.debug("Ret Read " + ret_read);
 						size = size - ret_read;
 						currentPos = currentPos + ret_read;
 						if(size==0)
@@ -131,7 +131,7 @@ public abstract class OpenIGTClient extends Thread {
 					}
 				}
 			} while (isConnected() && ret_read >= 0);
-			System.out.println("Client thread exited! Connected state="+ isConnected()+" ret_read = "+ret_read);
+			Log.debug("Client thread exited! Connected state="+ isConnected()+" ret_read = "+ret_read);
 		} catch (UnknownHostException e) {
 			errorManager.error("OpenIGTClient Don't know about host" + host, e, ErrorManager.OPENIGTCLIENT_UNKNOWNHOST_EXCEPTION);
 		} catch (IOException e) {

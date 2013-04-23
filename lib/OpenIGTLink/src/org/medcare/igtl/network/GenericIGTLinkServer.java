@@ -168,10 +168,10 @@ public class GenericIGTLinkServer extends OpenIGTServer implements IOpenIgtPacke
 					
 					//PositionMessage  message = new PositionMessage ("TeST",pose.getPositionAray(), pose.getRotation());
 					//message.SetMatrix(pose.getPositionAray(), pose.getRotationMatrix());
-					//System.out.println("Sending Header: "+message.getHeader()); 
+					//Log.debug("Sending Header: "+message.getHeader()); 
 					 BytesArray b = new BytesArray(); 
 		             b.putBytes(message.getBody());
-					//System.out.println("Sending Body: "+b);
+					//Log.debug("Sending Body: "+b);
 		            
 					try {
 						sendMessage(message);

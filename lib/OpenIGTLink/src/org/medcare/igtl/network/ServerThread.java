@@ -85,10 +85,10 @@ public class ServerThread extends Thread {
                                                         errorManager.error("ServerThread bodyBuf in ServerThread ret_read = " + ret_read, new Exception("Abnormal return from reading"), ErrorManager.SERVERTHREAD_ABNORMAL_ANSWER);
                                                 }
                                         }
-//                                        System.out.println("New Header: "+header);
+//                                        Log.debug("New Header: "+header);
 //                                        BytesArray b = new BytesArray(); 
 //                                        b.putBytes(bodyBuf);
-//                                        System.out.println("New Body: "+b);
+//                                        Log.debug("New Body: "+b);
                                         messageQueue.addMessage(openIGTServer.getMessageHandler(header, bodyBuf, this));
                                 }
                         } while (alive && ret_read >= 0);

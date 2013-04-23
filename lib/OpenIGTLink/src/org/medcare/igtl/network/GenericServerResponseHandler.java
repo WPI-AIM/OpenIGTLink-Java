@@ -18,7 +18,7 @@ public class GenericServerResponseHandler extends MessageHandler {
 
 	@Override
 	public boolean perform(String messageType) throws Exception {
-        //System.out.println("perform messageType : " + messageType);
+        //Log.debug("perform messageType : " + messageType);
 		//Log.info("Recived IGTLink packet, header="+getHeader()+" body="+new ByteList(getBody()));
         
 		//TODO - GSF: Need to add complete set of new IGTLInk commands for BRP robot

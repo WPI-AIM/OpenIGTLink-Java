@@ -15,7 +15,7 @@
 =========================================================================*/
 
 package org.medcare.igtl.util;
-
+import com.neuronrobotics.sdk.common.Log;
 import java.math.BigInteger;
 
 /**
@@ -46,19 +46,19 @@ public class Tests {
                                 .println("Display the crc array calculated from Coefficient corresponding to ECMA-182 polynome");
                 BytesArray tool = new BytesArray();
                 double nombre = 15678.345 / 10000.0;
-                System.out.println("Tests: double [15678.345/10000] " + nombre);
+                Log.debug("Tests: double [15678.345/10000] " + nombre);
                 long entier = (long) nombre;
                 long reste = (long) ((nombre - entier) * 1000);
                 System.out
                                 .println("Tests: extract seconds and fraction from double [15678.345/10000] "
                                                 + nombre + " seconds " + entier + " fraction " + reste);
 
-                System.out.println("Tests: encodeLong [1,224,false]");
+                Log.debug("Tests: encodeLong [1,224,false]");
                 byte[] bytes = tool.encodeLong(1, 224, false);
-                System.out.println("Tests: length [" + bytes.length + "]");
-                System.out.println("Tests: decodeLong ["
+                Log.debug("Tests: length [" + bytes.length + "]");
+                Log.debug("Tests: decodeLong ["
                                 + tool.decodeLong(bytes, 0, false) + "]");
-                System.out.println("Tests: encodeLong [1,224,true]");
+                Log.debug("Tests: encodeLong [1,224,true]");
                 bytes = tool.encodeLong(1, 224, true);
                 bytes = new byte[] { (byte) 0x80 };
                 System.out
@@ -88,14 +88,14 @@ public class Tests {
                                                                 .toUpperCase());
 
                 long res = tool.decodeLong(bytes, 0, true);
-                System.out.println("Long res  : \t" + res);
-                System.out.println("encodeTimeStamp now  : ");
+                Log.debug("Long res  : \t" + res);
+                Log.debug("encodeTimeStamp now  : ");
 
                 bytes = tool.encodeTimeStamp(System.currentTimeMillis());
                 bi = new BigInteger(bytes);
-                System.out.println("Tests: toString [" + bi.toString() + "]");
-                System.out.println("Tests: longValue [" + bi.shortValue() + "]");
-                System.out.println("Tests: bi.toString(2) [" + bi.toString(2) + "]");
+                Log.debug("Tests: toString [" + bi.toString() + "]");
+                Log.debug("Tests: longValue [" + bi.shortValue() + "]");
+                Log.debug("Tests: bi.toString(2) [" + bi.toString(2) + "]");
         }
 }
 

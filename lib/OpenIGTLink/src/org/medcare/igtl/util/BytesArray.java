@@ -185,13 +185,13 @@ public class BytesArray {
 					v = (v >>> 1);
 				}
 			}
-			// System.out.println("0x" + Long.toHexString(v));
+			// Log.debug("0x" + Long.toHexString(v));
 			CRC_TABLE[i] = v;
 		}*/
 		
 
-		//System.out.println("\n CRC table");
-		//System.out.println(CRC_TABLE + "\n");
+		//Log.debug("\n CRC table");
+		//Log.debug(CRC_TABLE + "\n");
 	//}
 
 	// ------------------------------------------------------------------------
@@ -856,10 +856,10 @@ public class BytesArray {
 	 *** @return The long crc64 value
 	 **/
 	public long crc64(byte[] buffer, int len, long crc) {
-		// System.out.println("crc len " + len);
+		// Log.debug("crc len " + len);
 		for (int i = 0; i < len; i++) {
 			crc = next_crc(crc, buffer[i]);
-			// System.out.println("crc 0x" + Long.toHexString(crc));
+			// Log.debug("crc 0x" + Long.toHexString(crc));
 		}
 		return crc;
 	}

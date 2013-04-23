@@ -7,6 +7,7 @@ import org.medcare.igtl.util.ErrorManager;
 import org.medcare.igtl.util.Header;
 
 import com.neuronrobotics.sdk.addons.kinematics.math.TransformNR;
+import com.neuronrobotics.sdk.common.Log;
 
 import Jama.Matrix;
 
@@ -23,7 +24,7 @@ public class GenericIGTLinkClient extends OpenIGTClient implements IOpenIgtPacke
 				System.err.println(message);
 			}
 		});
-		System.out.println("GenericIGTLinkClient started");
+		Log.debug("GenericIGTLinkClient started");
 	}
 
 	@Override

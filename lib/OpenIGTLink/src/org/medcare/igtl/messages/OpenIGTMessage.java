@@ -20,6 +20,8 @@ import org.medcare.igtl.util.BytesArray;
 //import org.medcare.igtl.util.CrcException;
 import org.medcare.igtl.util.Header;
 
+import com.neuronrobotics.sdk.common.Log;
+
 //import com.neuronrobotics.sdk.common.ByteList;
 
 /**
@@ -75,7 +77,7 @@ public abstract class OpenIGTMessage {
                 if (getBody().length > 0 
                 		//&& !isBodyUnpacked
                 		) {
-                	System.out.println("Unpacking message...");
+                	Log.debug("Unpacking message...");
                         //if (header.getCrc() == bytesArray.crc64(body, body.length, 0L)) {
                                 isBodyUnpacked = UnpackBody();
                                 return isBodyUnpacked;
@@ -145,7 +147,7 @@ public abstract class OpenIGTMessage {
         public byte[] getBytes() {
                 byte[] header_Bytes = getHeader().getBytes();
                 byte[] bytes = new byte[getBody().length + Header.LENGTH];
-                //System.out.println("Header actual size: "+ header_Bytes.length+" defined size: "+Header.LENGTH+" : "+new ByteList( header.getBytes()));
+                //Log.debug("Header actual size: "+ header_Bytes.length+" defined size: "+Header.LENGTH+" : "+new ByteList( header.getBytes()));
                
                 // first copy header to "bytes"
                 // then copy "body" to "bytes" from the header.length bit

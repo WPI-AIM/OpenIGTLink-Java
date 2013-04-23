@@ -15,7 +15,7 @@
 =========================================================================*/
 
 package org.medcare.igtl.network;
-
+import com.neuronrobotics.sdk.common.Log;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 import org.medcare.igtl.util.CrcException;
@@ -71,7 +71,7 @@ public class ResponseQueueManager extends Thread {
                                                 } catch (Exception e) {
                                                         errorManager.error("PB responseHandler ", e, ErrorManager.RESPONSE_EXCEPTION);
                                                 } finally {
-                                                        System.out.println("ResponseQueueManager ResponseHandler.performResponse OK");
+                                                        Log.debug("ResponseQueueManager ResponseHandler.performResponse OK");
                                                 }
                                         } else {
                                                        errorManager.error("ResponseQueueManager responseHandler null", new Exception("performResponse error"), ErrorManager.RESPONSE_ERROR);
