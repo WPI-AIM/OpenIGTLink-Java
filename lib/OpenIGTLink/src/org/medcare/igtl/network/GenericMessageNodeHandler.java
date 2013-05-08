@@ -21,7 +21,7 @@ public class GenericMessageNodeHandler {
 		//TODO - GSF: Need to add complete set of new IGTLInk commands for BRP robot
 		//http://wiki.ncigt.org/index.php/P41:Prostate:BRP:MRI_New_BRP_OpenIGTLink_Protocol_2012_Mar
 		//Should support both TRANSFORM and QTRANSFORM packets
-		
+		Log.debug("Perform messageType : " + messageType );
 		if  (messageType.equals("TRANSFORM")) {
                 openIGTMessage = new TransformMessage(head, body);   
         		TransformMessage transform = (TransformMessage) openIGTMessage;
@@ -55,7 +55,7 @@ public class GenericMessageNodeHandler {
         
         else {
         	
-                Log.debug("Perform messageType : " + messageType + " not implemented");
+                Log.debug("Message Type : " + messageType + " not implemented");
                 return null;
         }
         return openIGTMessage;

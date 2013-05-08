@@ -13,6 +13,12 @@ public class GenericServerResponseHandler extends MessageHandler {
 		capabilityList.add("POSITION");
 		capabilityList.add("IMAGE");
 		capabilityList.add("MOVE_TO");
+		capabilityList.add("ARRAY");
+		capabilityList.add("CALIBRATION");
+		capabilityList.add("TARGET");
+		capabilityList.add("PLANNING");
+		capabilityList.add("MOVE_TO_TARGET");
+		capabilityList.add("LOCK");
 		this.server=server;
 	}
 
