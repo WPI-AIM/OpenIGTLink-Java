@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import org.medcare.igtl.messages.ImageMessage;
 import org.medcare.igtl.messages.PositionMessage;
+import org.medcare.igtl.messages.StatusMessage;
 import org.medcare.igtl.util.BytesArray;
 import org.medcare.igtl.util.ErrorManager;
 import org.medcare.igtl.util.Header;
@@ -135,15 +136,25 @@ public class GenericIGTLinkServer extends OpenIGTServer implements IOpenIgtPacke
 		
 		s.onTaskSpaceUpdate(name, t);
 	}
-	
+	public void pushStatus(String name, String status){
+		
+		s.onStatus(name, status);
+	}
 	public class sender extends Thread{
 		
 		private TransformNR pose;
 		private String name;
+		private String status=null;
 		public synchronized void onTaskSpaceUpdate( String name, TransformNR pose){
 			this.pose = pose;
 			this.name=name;
 		}
+		
+		public void onStatus(String name2, String push) {
+			this.name=name2;
+			this.status =  push;
+		}
+
 		public void run(){
 			while(getServerThread()==null){
 				try {
@@ -179,7 +190,21 @@ public class GenericIGTLinkServer extends OpenIGTServer implements IOpenIgtPacke
 						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
+					pose=null;
 					
+				}
+				if(status !=null){
+					
+					StatusMessage message = new StatusMessage(name,status);
+					BytesArray b = new BytesArray(); 
+		            b.putBytes(message.getBody());
+					try {
+						sendMessage(message);
+					} catch (Exception e) {
+							// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					status = null;
 				}
 			}
 		}
