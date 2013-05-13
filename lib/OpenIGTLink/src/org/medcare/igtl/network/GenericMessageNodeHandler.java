@@ -17,7 +17,6 @@ public class GenericMessageNodeHandler {
 	public OpenIGTMessage perform(String messageType,Header head, byte[] body, IOpenIgtPacketListener node) throws Exception {
         //Log.debug("perform messageType : " + messageType);
 		//Log.info("Recived IGTLink packet, header="+head+" body="+new ByteList( body));
-        
 		//TODO - GSF: Need to add complete set of new IGTLInk commands for BRP robot
 		//http://wiki.ncigt.org/index.php/P41:Prostate:BRP:MRI_New_BRP_OpenIGTLink_Protocol_2012_Mar
 		//Should support both TRANSFORM and QTRANSFORM packets
