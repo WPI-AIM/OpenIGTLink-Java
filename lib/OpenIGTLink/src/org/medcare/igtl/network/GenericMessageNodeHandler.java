@@ -51,8 +51,13 @@ public class GenericMessageNodeHandler {
         	DataArrayMessage datMesg = new DataArrayMessage(head, body);
 			openIGTMessage =(OpenIGTMessage)datMesg;
         	node.onRxDataArray(openIGTMessage.getDeviceName(), datMesg.getDataMatrix());// this is a non functional stub	
+       
+        }else if (messageType.equals("STRING")) {
+        	
+        	DataArrayMessage datMesg = new DataArrayMessage(head, body);
+			openIGTMessage =(OpenIGTMessage)datMesg;
+        	node.onRxString(openIGTMessage.getDeviceName(), body.toString());// this is a non functional stub	
         }
-        
         else {
         	
                 Log.debug("Message Type : " + messageType + " not implemented");
