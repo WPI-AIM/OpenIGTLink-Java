@@ -48,12 +48,13 @@ public class GenericMessageNodeHandler {
 			node.onRxImage(openIGTMessage.getDeviceName(),imgMesg);
 		
         }else if (messageType.equals("ARRAY")) {
+        	Log.error("This method is not complete");
         	DataArrayMessage datMesg = new DataArrayMessage(head, body);
 			openIGTMessage =(OpenIGTMessage)datMesg;
         	node.onRxDataArray(openIGTMessage.getDeviceName(), datMesg.getDataMatrix());// this is a non functional stub	
        
         }else if (messageType.equals("STRING")) {
-        	
+        	Log.error("This method is not complete");
         	DataArrayMessage datMesg = new DataArrayMessage(head, body);
 			openIGTMessage =(OpenIGTMessage)datMesg;
         	node.onRxString(openIGTMessage.getDeviceName(), body.toString());// this is a non functional stub	
