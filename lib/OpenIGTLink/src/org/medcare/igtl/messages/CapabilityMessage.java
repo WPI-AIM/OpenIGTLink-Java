@@ -27,6 +27,7 @@ import org.medcare.igtl.util.Header;
  * bytes to send from it
  * 
  * @author Andre Charles Legendre
+ * @author Kevin Harrington
  * 
  */
 //My comment
