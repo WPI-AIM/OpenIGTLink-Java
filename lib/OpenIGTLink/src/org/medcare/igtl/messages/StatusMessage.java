@@ -99,6 +99,7 @@ public class StatusMessage extends OpenIGTMessage {
          */
         @Override
         public byte[] PackBody() {
+        		setStatusData(status);
                 setBody(new byte[status_data.length]);
                 System.arraycopy(status_data, 0, getBody(), 0, status_data.length);
                 setHeader(new Header(VERSION, "STATUS", deviceName, getBody()));

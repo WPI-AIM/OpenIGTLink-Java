@@ -134,7 +134,7 @@ public abstract class OpenIGTMessage {
          **/
         public byte[] getBody() {
         	if(body==null){
-        		
+        		//TODO what if body is null?
         	}
             return body;
         }

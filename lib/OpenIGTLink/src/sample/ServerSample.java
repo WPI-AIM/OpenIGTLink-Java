@@ -56,7 +56,7 @@ public class ServerSample implements IOpenIgtPacketListener {
 			return;
 		}else if(name.equals("TARGET")){
 			System.err.println("Received RAS Transform: TARGET");
-			Log.debug("Setting task space pose: "+t); 
+				Log.debug("Setting task space pose: "+t); 
 			
 		}else if(name.equals("myTransform")){
 			System.err.println("Received Transformation Matrix: myTransform");

@@ -2,6 +2,7 @@ package org.medcare.igtl.network;
 
 import java.util.ArrayList;
 
+import org.medcare.igtl.messages.DataArrayMessage;
 import org.medcare.igtl.messages.ImageMessage;
 import org.medcare.igtl.messages.PositionMessage;
 import org.medcare.igtl.messages.StatusMessage;
@@ -194,10 +195,11 @@ public class GenericIGTLinkServer extends OpenIGTServer implements IOpenIgtPacke
 					
 				}
 				if(status !=null){
-					
 					StatusMessage message = new StatusMessage(name,status);
-					BytesArray b = new BytesArray(); 
-		            b.putBytes(message.getBody());
+					System.out.println("Sending Status Message: Header=" + message.getHeader() + " AND body=" + message.getBody());
+					//TODO : why following lines of code exists here??
+					//BytesArray b = new BytesArray(); 
+		            //b.putBytes(message.getBody());
 					try {
 						sendMessage(message);
 					} catch (Exception e) {

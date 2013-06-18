@@ -1,5 +1,7 @@
 package org.medcare.igtl.network;
 
+import java.nio.ByteBuffer;
+
 import org.medcare.igtl.messages.DataArrayMessage;
 import org.medcare.igtl.messages.ImageMessage;
 import org.medcare.igtl.messages.OpenIGTMessage;
@@ -56,7 +58,12 @@ public class GenericMessageNodeHandler {
         	Log.error("This method is not complete");
         	DataArrayMessage datMesg = new DataArrayMessage(head, body);
 			openIGTMessage =(OpenIGTMessage)datMesg;
-        	node.onRxString(openIGTMessage.getDeviceName(), body.toString());// this is a non functional stub	
+        	Log.debug("Received String Message: Header=" + datMesg.getHeader() + " and Data=" + datMesg.getBody());
+        	//For string message we have to skip first 4 bytes as 0-1:ENcodinng and 1-2:Length
+        	//currently using only US-ASCII encoding and we don't need length
+        	String msgBody = new String(body,4,body.length-4,"US-ASCII");	
+
+        	node.onRxString(openIGTMessage.getDeviceName(), msgBody);// this is a non functional stub	
         }
         else {
         	
