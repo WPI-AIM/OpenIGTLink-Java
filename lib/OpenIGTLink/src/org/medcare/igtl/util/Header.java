@@ -15,6 +15,8 @@
 =========================================================================*/
 
 package org.medcare.igtl.util;
+import java.nio.ByteBuffer;
+
 import com.neuronrobotics.sdk.common.Log;
 /**
  *** For reading/writing OpenIGTLink headers

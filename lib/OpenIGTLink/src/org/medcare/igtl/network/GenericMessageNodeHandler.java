@@ -6,6 +6,7 @@ import org.medcare.igtl.messages.DataArrayMessage;
 import org.medcare.igtl.messages.ImageMessage;
 import org.medcare.igtl.messages.OpenIGTMessage;
 import org.medcare.igtl.messages.PositionMessage;
+import org.medcare.igtl.messages.StringMessage;
 import org.medcare.igtl.messages.TransformMessage;
 import org.medcare.igtl.util.Header;
 
@@ -55,10 +56,17 @@ public class GenericMessageNodeHandler {
         	node.onRxDataArray(openIGTMessage.getDeviceName(), datMesg.getDataMatrix());// this is a non functional stub	
        
         }else if (messageType.equals("STRING")) {
-        	Log.error("This method is not complete");
+        	StringMessage strMsg = new StringMessage(head, body);
+
+        	System.out.println( "CRC of origional msg is:" + strMsg.getHeader().getCrc());
+        	strMsg.UnpackBody();
+			openIGTMessage =(OpenIGTMessage)strMsg;
+        	Log.debug("RECEIVED STRING MESSAGE:" + strMsg.toString() );
+        	/*Log.error("This method is not complete");
         	DataArrayMessage datMesg = new DataArrayMessage(head, body);
 			openIGTMessage =(OpenIGTMessage)datMesg;
         	Log.debug("Received String Message: Header=" + datMesg.getHeader() + " and Data=" + datMesg.getBody());
+        	*/
         	//For string message we have to skip first 4 bytes as 0-1:ENcodinng and 1-2:Length
         	//currently using only US-ASCII encoding and we don't need length
         	String msgBody = new String(body,4,body.length-4,"US-ASCII");	

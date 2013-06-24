@@ -589,6 +589,23 @@ public class BytesArray {
 	// ------------------------------------------------------------------------
 
 	/**
+	 *** Add a <code>short</code> value to the bytesArray
+	 *** 
+	 * @param val
+	 *            The value to write
+	 *** @param wrtLen
+	 *            The number of bytes to write the value into
+	 *** @return The number of bytes written
+	 **/
+	public int putShort(short val) {
+		/* write int */
+			byte n[] = ByteBuffer.allocate(2).putShort(val).array();
+			return putBytes(n);
+	}
+
+	// ------------------------------------------------------------------------
+	
+	/**
 	 *** Add a string to the bytesArray. Writes until either <code>wrtLen</code>
 	 *** bytes are written or the string terminates
 	 *** 
@@ -855,13 +872,37 @@ public class BytesArray {
 	 *            actual crc value <code>n</code>
 	 *** @return The long crc64 value
 	 **/
-	public long crc64(byte[] buffer, int len, long crc) {
+	public static long crc64(byte[] buffer, int len, long crc) {
+		   int i=0;
+			while (i<len){
+				int tableIndex=0;
+				char shrtcrc56 = (char)((crc>>56) & 0xFF);
+				tableIndex = buffer[i] ^ shrtcrc56;
+				
+		        crc = CRC_TABLE[tableIndex] ^ (crc << 8);
+				//System.out.println( "data=" + buffer[i] + " , unsigned crc>>56=" + (int)shrtcrc56 +  ", Index=" + index + ", crc=" + crc) ;
+		        i++;
+		    }
+		    return crc;
+
+		
+		/*int i=0;
+			while (i<len){
+				ByteBuffer b = ByteBuffer.allocate(Long.SIZE);
+				b.putLong(crc >> 56);
+				byte lastByte = b.get(16); //get Last byte in Long CRC
+				
+				int tableIndex = Math.abs(buffer[i] ^ Math.abs(lastByte));
+		        crc = CRC_TABLE[tableIndex] ^ (crc << 8);
+		        i++;
+		    }
+		    return crc;*/
 		// Log.debug("crc len " + len);
-		for (int i = 0; i < len; i++) {
+	/*	for (int i = 0; i < len; i++) {
 			crc = next_crc(crc, buffer[i]);
 			// Log.debug("crc 0x" + Long.toHexString(crc));
-		}
-		return crc;
+		}*/
+		//return crc;
 	}
 /*	public long crc64(byte[] buffer, int len, long crc) {
 		int index=1;

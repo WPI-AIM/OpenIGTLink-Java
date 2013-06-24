@@ -6,12 +6,14 @@ import org.medcare.igtl.messages.DataArrayMessage;
 import org.medcare.igtl.messages.ImageMessage;
 import org.medcare.igtl.messages.PositionMessage;
 import org.medcare.igtl.messages.StatusMessage;
+import org.medcare.igtl.messages.StringMessage;
 import org.medcare.igtl.util.BytesArray;
 import org.medcare.igtl.util.ErrorManager;
 import org.medcare.igtl.util.Header;
 import org.medcare.igtl.util.IGTImage;
 
 import com.neuronrobotics.sdk.addons.kinematics.math.TransformNR;
+import com.neuronrobotics.sdk.common.Log;
 
 
 import Jama.Matrix;
@@ -141,11 +143,18 @@ public class GenericIGTLinkServer extends OpenIGTServer implements IOpenIgtPacke
 		
 		s.onStatus(name, status);
 	}
+	public void pushStringMessage(String deviceName, String msg){
+		StringMessage strMsg = new StringMessage(deviceName , msg);
+		s.onStringMessage(strMsg);
+	}
+	
 	public class sender extends Thread{
 		
 		private TransformNR pose;
 		private String name;
 		private String status=null;
+		private StringMessage strMsg=null;
+		
 		public synchronized void onTaskSpaceUpdate( String name, TransformNR pose){
 			this.pose = pose;
 			this.name=name;
@@ -155,7 +164,9 @@ public class GenericIGTLinkServer extends OpenIGTServer implements IOpenIgtPacke
 			this.name=name2;
 			this.status =  push;
 		}
-
+		public void onStringMessage(StringMessage msg){
+			this.strMsg = msg;
+		}
 		public void run(){
 			while(getServerThread()==null){
 				try {
@@ -196,7 +207,8 @@ public class GenericIGTLinkServer extends OpenIGTServer implements IOpenIgtPacke
 				}
 				if(status !=null){
 					StatusMessage message = new StatusMessage(name,status);
-					System.out.println("Sending Status Message: Header=" + message.getHeader() + " AND body=" + message.getBody());
+					message.PackBody();
+					Log.debug("Sending Status Message: Header=" + message.getHeader() + " AND body=" + message.getBody());
 					//TODO : why following lines of code exists here??
 					//BytesArray b = new BytesArray(); 
 		            //b.putBytes(message.getBody());
@@ -208,10 +220,17 @@ public class GenericIGTLinkServer extends OpenIGTServer implements IOpenIgtPacke
 					}
 					status = null;
 				}
+				if( strMsg != null){
+					Log.debug("Sending String Message: Header=" + strMsg.getHeader() + " AND body=" + strMsg.getBody());
+					try {
+						sendMessage(strMsg);
+					} catch (Exception e) {
+							// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					strMsg = null;
+				}
 			}
 		}
 	}
-
-
-	
 }

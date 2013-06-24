@@ -107,6 +107,7 @@ public class ServerThread extends Thread {
 		public void sendMessage(Header header, byte[] body) throws Exception {
 			sendBytes(header.getBytes());
 			sendBytes(body);
+			System.out.println("Message: Header=" + header.toString() + " Body=" + body.toString());
 		}
 
         /***************************************************************************

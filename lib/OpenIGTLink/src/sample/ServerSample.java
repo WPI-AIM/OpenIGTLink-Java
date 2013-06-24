@@ -1,6 +1,7 @@
 package sample;
 import com.neuronrobotics.sdk.common.Log;
 import org.medcare.igtl.messages.ImageMessage;
+import org.medcare.igtl.messages.StringMessage;
 import org.medcare.igtl.network.GenericIGTLinkServer;
 import org.medcare.igtl.network.IOpenIgtPacketListener;
 
@@ -79,7 +80,6 @@ public class ServerSample implements IOpenIgtPacketListener {
 	@Override
 	public void onRxString(String name, String body) {
 		// TODO Auto-generated method stub
-		
 	}
 
 	@Override

@@ -154,7 +154,6 @@ public abstract class OpenIGTServer {
         		
         		try {
     				//TODO before sending message it should be packed, should this be done here or in Message itself? 
-        			message.PackBody();
 					getServerThread().sendMessage(message);
 				} catch (Exception e) {
 					stopServer();
