@@ -873,14 +873,17 @@ public class BytesArray {
 	 *** @return The long crc64 value
 	 **/
 	public static long crc64(byte[] buffer, int len, long crc) {
-		   int i=0;
+			int i=0;
+			int tableIndex=0;
 			while (i<len){
-				int tableIndex=0;
-				char shrtcrc56 = (char)((crc>>56) & 0xFF);
-				tableIndex = buffer[i] ^ shrtcrc56;
+				char unsignedCharCrc56 = (char)((crc>>56) & 0xFF);//Java does not support unsigned data types so this is workaround to convert byte to unsigned int-char
+				char unsignedCharBuf = (char)buffer[i];
+				unsignedCharBuf = (char)(unsignedCharBuf & 0xFF); //Java does not support unsigned data types so this is workaround to convert byte to unsigned int-char
+				
+				tableIndex = Math.abs( unsignedCharBuf ^ unsignedCharCrc56 );
 				
 		        crc = CRC_TABLE[tableIndex] ^ (crc << 8);
-				//System.out.println( "data=" + buffer[i] + " , unsigned crc>>56=" + (int)shrtcrc56 +  ", Index=" + index + ", crc=" + crc) ;
+				//System.out.println( "data=" + shrtBfr + " , unsigned crc>>56=" + (int)shrtcrc56 +  ", Index=" + tableIndex + ", crc=" + crc) ;
 		        i++;
 		    }
 		    return crc;
@@ -951,4 +954,12 @@ public class BytesArray {
 		}
 		return s+"]";
 	}
+	
+	public static void printBytes(byte b[]){
+		for(int i=0;i<b.length;i++){
+			System.out.print( b[i] + " " );
+		}
+		System.out.println("");
+	}
+
 }

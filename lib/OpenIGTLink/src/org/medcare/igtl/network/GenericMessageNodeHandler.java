@@ -8,6 +8,7 @@ import org.medcare.igtl.messages.OpenIGTMessage;
 import org.medcare.igtl.messages.PositionMessage;
 import org.medcare.igtl.messages.StringMessage;
 import org.medcare.igtl.messages.TransformMessage;
+import org.medcare.igtl.util.BytesArray;
 import org.medcare.igtl.util.Header;
 
 import com.neuronrobotics.sdk.addons.kinematics.math.RotationNR;
@@ -57,11 +58,8 @@ public class GenericMessageNodeHandler {
        
         }else if (messageType.equals("STRING")) {
         	StringMessage strMsg = new StringMessage(head, body);
-
-        	System.out.println( "CRC of origional msg is:" + strMsg.getHeader().getCrc());
         	strMsg.UnpackBody();
 			openIGTMessage =(OpenIGTMessage)strMsg;
-        	Log.debug("RECEIVED STRING MESSAGE:" + strMsg.toString() );
         	/*Log.error("This method is not complete");
         	DataArrayMessage datMesg = new DataArrayMessage(head, body);
 			openIGTMessage =(OpenIGTMessage)datMesg;

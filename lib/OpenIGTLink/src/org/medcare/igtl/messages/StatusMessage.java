@@ -60,9 +60,10 @@ public class StatusMessage extends OpenIGTMessage {
          * @param deviceName
          *            Device Name
          **/
-        public StatusMessage(String deviceName,String status) {
+        public StatusMessage(String deviceName,int code, int subCode, String status) {
                 super(deviceName);
-                setStatus(new Status(Status.STATUS_OK,Status.STATUS_OK, deviceName, status));
+                setStatus(new Status(code,subCode, deviceName, status));
+                PackBody();
         }
         /**
          *** Constructor to be used to create message from received data

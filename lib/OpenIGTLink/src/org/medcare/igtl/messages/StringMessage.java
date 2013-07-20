@@ -50,7 +50,7 @@ public class StringMessage extends OpenIGTMessage{
 		long calculated_crc = BytesArray.crc64(body, body.length, 0L);
 		long recvd_crc = head.getCrc();
 		
-		System.out.println("Calculated CRC=" + calculated_crc + "REceived CRC=" + recvd_crc );
+		//System.out.println("String: Calculated CRC=" + calculated_crc + "REceived CRC=" + recvd_crc );
 	}
 	
 	void setMessage(String msg){

@@ -1,17 +1,23 @@
 package org.medcare.igtl.network;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Queue;
+
+import javax.net.ssl.SSLEngineResult.Status;
 
 import org.medcare.igtl.messages.DataArrayMessage;
 import org.medcare.igtl.messages.ImageMessage;
+import org.medcare.igtl.messages.OpenIGTMessage;
 import org.medcare.igtl.messages.PositionMessage;
 import org.medcare.igtl.messages.StatusMessage;
 import org.medcare.igtl.messages.StringMessage;
+import org.medcare.igtl.messages.TransformMessage;
 import org.medcare.igtl.util.BytesArray;
 import org.medcare.igtl.util.ErrorManager;
 import org.medcare.igtl.util.Header;
 import org.medcare.igtl.util.IGTImage;
-
 import com.neuronrobotics.sdk.addons.kinematics.math.TransformNR;
 import com.neuronrobotics.sdk.common.Log;
 
@@ -135,37 +141,45 @@ public class GenericIGTLinkServer extends OpenIGTServer implements IOpenIgtPacke
 			listeners.remove(l);
 	}
 	
-	public void pushPose(String name, TransformNR t){
-		
-		s.onTaskSpaceUpdate(name, t);
+	public void pushPose(String deviceName, TransformNR pose){
+		PositionMessage  poseMsg = new PositionMessage (deviceName,pose.getPositionArray(), pose.getRotationMatrix());
+		s.onTaskSpaceUpdate(poseMsg);
 	}
-	public void pushStatus(String name, String status){
-		
-		s.onStatus(name, status);
+	public void pushStatus(String deviceName, int code, int subCode, String status){
+		StatusMessage statMsg = new StatusMessage(deviceName, code, subCode, status);
+		s.onStatus(statMsg);
 	}
 	public void pushStringMessage(String deviceName, String msg){
 		StringMessage strMsg = new StringMessage(deviceName , msg);
 		s.onStringMessage(strMsg);
 	}
+	public void pushTransformMessage( String deviceName, TransformNR t){
+		TransformMessage transMsg = new TransformMessage(deviceName, t.getPositionArray(), t.getRotationMatrixArray());
+		transMsg.PackBody();
+		s.onTransformMessage(transMsg);
+	}
 	
 	public class sender extends Thread{
-		
+		private Queue<OpenIGTMessage> messageQueue = new LinkedList<OpenIGTMessage>();
 		private TransformNR pose;
 		private String name;
 		private String status=null;
+		private int code = org.medcare.igtl.util.Status.STATUS_OK;
+		private int subCode = org.medcare.igtl.util.Status.STATUS_OK;
+		
 		private StringMessage strMsg=null;
-		
-		public synchronized void onTaskSpaceUpdate( String name, TransformNR pose){
-			this.pose = pose;
-			this.name=name;
+		private TransformMessage transMsg=null;
+		public synchronized void onTaskSpaceUpdate( PositionMessage msg){
+			messageQueue.add(msg);
 		}
-		
-		public void onStatus(String name2, String push) {
-			this.name=name2;
-			this.status =  push;
+		public void onStatus(StatusMessage msg) {
+			messageQueue.add(msg);
 		}
 		public void onStringMessage(StringMessage msg){
-			this.strMsg = msg;
+			messageQueue.add(msg);
+		}
+		public void onTransformMessage(TransformMessage msg){
+			messageQueue.add(msg);
 		}
 		public void run(){
 			while(getServerThread()==null){
@@ -183,53 +197,17 @@ public class GenericIGTLinkServer extends OpenIGTServer implements IOpenIgtPacke
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
-				if(pose!= null){
-					//GSF 1/26/12 - This command takes a quaternion, not a rotation matrix
-					PositionMessage  message;
-					message = new PositionMessage (name,pose.getPositionArray(), pose.getRotationMatrix());
-					onTaskSpaceUpdate(null,null);
-					
-					//PositionMessage  message = new PositionMessage ("TeST",pose.getPositionAray(), pose.getRotation());
-					//message.SetMatrix(pose.getPositionAray(), pose.getRotationMatrix());
-					//Log.debug("Sending Header: "+message.getHeader()); 
-					 BytesArray b = new BytesArray(); 
-		             b.putBytes(message.getBody());
-					//Log.debug("Sending Body: "+b);
-		            
-					try {
-						sendMessage(message);
-					} catch (Exception e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
+				//below code is bypassed for better Queue based implementation
+				try {
+					OpenIGTMessage msg = messageQueue.poll();
+					if(msg!=null){
+						sendMessage(msg);
 					}
-					pose=null;
-					
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
 				}
-				if(status !=null){
-					StatusMessage message = new StatusMessage(name,status);
-					message.PackBody();
-					Log.debug("Sending Status Message: Header=" + message.getHeader() + " AND body=" + message.getBody());
-					//TODO : why following lines of code exists here??
-					//BytesArray b = new BytesArray(); 
-		            //b.putBytes(message.getBody());
-					try {
-						sendMessage(message);
-					} catch (Exception e) {
-							// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-					status = null;
-				}
-				if( strMsg != null){
-					Log.debug("Sending String Message: Header=" + strMsg.getHeader() + " AND body=" + strMsg.getBody());
-					try {
-						sendMessage(strMsg);
-					} catch (Exception e) {
-							// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-					strMsg = null;
-				}
+
 			}
 		}
 	}

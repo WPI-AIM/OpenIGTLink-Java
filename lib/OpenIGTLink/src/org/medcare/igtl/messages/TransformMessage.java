@@ -74,11 +74,17 @@ public class TransformMessage extends OpenIGTMessage {
          */
         public TransformMessage(Header header, byte body[]) throws Exception {
                 super(header, body);
-                }
+        		//varify CRC here to make sure this is correct message
+        		long calculated_crc = BytesArray.crc64(body, body.length, 0L);
+        		long recvd_crc = header.getCrc();
+        		
+        		//System.out.println("Transform: Calculated CRC=" + calculated_crc + "REceived CRC=" + recvd_crc );
+        }
 
         public TransformMessage(String deviceName,double[] positionAray, double[][] rotationMatrix) {
         	super(deviceName);
         	setTransformData(positionAray, rotationMatrix);
+        	PackBody();
 		}
 
 		/**
@@ -128,7 +134,7 @@ public class TransformMessage extends OpenIGTMessage {
                 setRotationMatrix(normals);
                 for (int i = 0; i < 3; i++)
                         for (int j = 0; j < 3; j++)
-                                bytesArray.putDouble(normals[i][j], 4);
+                                bytesArray.putDouble(normals[j][i], 4);
                 setMatrix(origin, normals);
                                
              // the position vector
@@ -143,7 +149,6 @@ public class TransformMessage extends OpenIGTMessage {
              //   Log.debug("++++++++++++++++++++++++++++++++++++++");
                 return transform_data;
         }
-
         /**
          *** To extract image characteristics from transform_data byte array
          * @param transform_data
@@ -159,14 +164,14 @@ public class TransformMessage extends OpenIGTMessage {
                 for (int i = 0; i < 3; i++){
                         for (int j = 0; j < 3; j++){
                                 rotationMatrixArray[j][i] = bytesArray.getDouble(4); // float32
-                             //   Log.debug("Normals ["+i+","+j+"] : "+normals[i][j]);
+                                //Log.debug("Normals ["+i+","+j+"] : "+rotationMatrixArray[j][i]);
                         }      
                 }
                 // the position vector
                 double[] o = new double[3];                
                 for(int i=0;i<3;i++){
                 	o[i] = bytesArray.getDouble(4); // float32
-                //	Log.debug("Origin "+i+": "+o[i]);
+                	//Log.debug("Origin "+i+": "+o[i]);
                 }
                 
                // Log.debug("++++++++++++++++++++++++++++++++++++++");

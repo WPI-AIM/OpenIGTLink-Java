@@ -80,7 +80,6 @@ public class ServerThread extends Thread {
                                         //System.out.print("ServerThread Header deviceName : " + header.getDeviceName() + " Type : " + header.getDataType() + " bodySize " + header.getBody_size() + "\n");
                                         if ((int) header.getBody_size() > 0) {
                                                 ret_read = instr.read(bodyBuf);
-                                                System.out.print("ServerThread Body ret_read : " + ret_read + "\n");
                                                 if (ret_read !=header.getBody_size()) {
                                                         errorManager.error("ServerThread bodyBuf in ServerThread ret_read = " + ret_read, new Exception("Abnormal return from reading"), ErrorManager.SERVERTHREAD_ABNORMAL_ANSWER);
                                                 }
