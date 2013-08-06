@@ -27,6 +27,7 @@ import org.medcare.igtl.util.Status;
 import org.medcare.igtl.util.Header;
 
 import com.neuronrobotics.sdk.common.Log;
+import com.neuronrobotics.sdk.util.ThreadUtil;
 
 
 /**
@@ -86,32 +87,38 @@ public abstract class OpenIGTServer {
         private class server extends Thread{
         	public void run(){
         		setListening(true);
-        		try {
-					startIGT();
-				} catch (IOException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				} catch (Exception e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
-        		Log.debug("Waiting for close");
-	        	while (!socket.isClosed()){
-	        		try {
-						Thread.sleep(100);
-					} catch (InterruptedException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-        		}
-	        	Log.debug("IGTLink Server Died, restarting");
-	        	try {
-					startServer(port);
-					return;
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
+        		while(true){
+            		try {
+    					startIGT();
+    				} catch (IOException e1) {
+    					// TODO Auto-generated catch block
+    					e1.printStackTrace();
+    				} catch (Exception e1) {
+    					// TODO Auto-generated catch block
+    					e1.printStackTrace();
+    				}
+            		Log.debug("Processing requests from a client and waiting for another one");
+    	        	/*while (!socket.isClosed()){
+    	        		try {
+    	        			System.out.println("Waiting for closing the server...");
+    						Thread.sleep(100);
+    					} catch (InterruptedException e) {
+    						// TODO Auto-generated catch block
+    						e.printStackTrace();
+    					}
+            		}*/
+              		if( socket.isClosed() )
+              		{
+        	        	Log.debug("IGTLink Server Died, restarting");
+        	        	try {
+        					startServer(port);
+        				} catch (IOException e) {
+        					// TODO Auto-generated catch block
+        					e.printStackTrace();
+        				}
+            		}
+
+          		}
         	}
         }
         /**

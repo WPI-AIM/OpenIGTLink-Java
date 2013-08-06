@@ -182,32 +182,33 @@ public class GenericIGTLinkServer extends OpenIGTServer implements IOpenIgtPacke
 			messageQueue.add(msg);
 		}
 		public void run(){
-			while(getServerThread()==null){
-				try {
-					Thread.sleep(500);
-				} catch (InterruptedException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-			}
-			while(getServerThread().isAlive()){
-				try {
-					Thread.sleep(500);
-				} catch (InterruptedException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
-				//below code is bypassed for better Queue based implementation
-				try {
-					OpenIGTMessage msg = messageQueue.poll();
-					if(msg!=null){
-						sendMessage(msg);
+			while(true){
+				while(getServerThread()==null){
+					try {
+						Thread.sleep(500);
+					} catch (InterruptedException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
 					}
-				} catch (Exception e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
 				}
-
+				while(getServerThread().isAlive()){
+					try {
+						Thread.sleep(500);
+					} catch (InterruptedException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+					//take out a message from Queue and send it
+					try {
+						OpenIGTMessage msg = messageQueue.poll();
+						if(msg!=null){
+							sendMessage(msg);
+						}
+					} catch (Exception e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				}
 			}
 		}
 	}
