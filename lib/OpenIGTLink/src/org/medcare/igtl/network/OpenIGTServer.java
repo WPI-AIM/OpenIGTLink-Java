@@ -12,6 +12,9 @@
   the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR
   PURPOSE.  See the above copyright notices for more information.
 
+  Edited By Nirav Patel(napatel@wpi.edu) on Aug 10 2013
+  ---Making server run and listen for multiple devices and maintain server status information
+  
 =========================================================================*/
 
 package org.medcare.igtl.network;
@@ -43,13 +46,14 @@ import com.neuronrobotics.sdk.util.ThreadUtil;
  */
 
 public abstract class OpenIGTServer {
-        private Status status;
         public ErrorManager errorManager;
         ServerSocket socket = null;
         private ServerThread thread;
-        private boolean listening = true;
-        private boolean running = false;
+        private boolean keepAlive = true;
         private int port;
+        
+        public static enum ServerStatus {STOPPED, LISTENING, CONNECTED }; //possible server states
+        ServerStatus currentStatus = ServerStatus.STOPPED; //start as stopped status
         /***************************************************************************
          * Default MessageQueueManager constructor.
          * 
@@ -61,21 +65,18 @@ public abstract class OpenIGTServer {
          * 
          **************************************************************************/
         public OpenIGTServer(int port, ErrorManager errorManager) throws Exception {
-        	Log.debug("Starting IGTLink Server");
             this.errorManager = errorManager;
-            
-            startServer( port);
+            this.port = port;
+            currentStatus = ServerStatus.STOPPED;
         }
         
-        private void startServer(int port) throws IOException{
-        	this.port=port;
+        public void startServer(int port) throws IOException{
+        	Log.debug("Starting IGTLink Server");
         	stopServer();
-        	Log.debug("IGTLink client Waiting for connection");
-            
             try {
             	ServerSocketFactory serverSocketFactory = ServerSocketFactory.getDefault();
                 socket = serverSocketFactory.createServerSocket(this.port);
-                Log.debug("Socket created");
+                Log.debug("Server Socket created");
             } catch (IOException e) {
                     errorManager.error("OpenIGTServer Could not listen on port: " + this.port, e, ErrorManager.OPENIGTSERVER_IO_EXCEPTION);
                     throw e;
@@ -83,11 +84,20 @@ public abstract class OpenIGTServer {
             server s = new server();
             s.start();
         }
-        
+
+		public void stopServer(){
+			if(getServerThread()!=null)
+				getServerThread().interrupt();
+			if(socket!= null)
+				try {
+					socket.close();
+				} catch (IOException e) {}
+			currentStatus = ServerStatus.STOPPED;
+		}
+       
         private class server extends Thread{
         	public void run(){
-        		setListening(true);
-        		while(true){
+        		while(getKeepAlive()){
             		try {
     					startIGT();
     				} catch (IOException e1) {
@@ -127,31 +137,18 @@ public abstract class OpenIGTServer {
          * @throws Exception
          */
         private void startIGT() throws IOException, Exception{
-        	
+         	 Log.debug("IGTLink client Waiting for connection");
+     		 
+         	 currentStatus = ServerStatus.LISTENING;
         	 setServerThread(new ServerThread(socket.accept(), this));
-        	 getServerThread().start();
-        	 running=true;
-        	 Log.debug("IGTLink client connected");
+        	 if( getKeepAlive()){
+        		 getServerThread().start();
+        		 currentStatus = ServerStatus.CONNECTED;
+        		 Log.debug("IGTLink client connected");
+        	 }
         }
 
-        /**
-         *** To set server status
-         * @param status
-         *** 
-         */
-        public void setStatus(Status status) {
-                this.status = status;
-        }
-
-        /**
-         *** To get server status
-         *** 
-         * @return the status status
-         */
-        public Status getStatus() {
-                return this.status;
-        }
-        /**
+         /**
          * Sends a message up the link
          * @param messageHandler
          * @throws Exception 
@@ -191,26 +188,40 @@ public abstract class OpenIGTServer {
 		public ServerThread getServerThread() {
 			return thread;
 		}
-		public void stopServer(){
-			if(getServerThread()!=null)
-				getServerThread().interrupt();
-			if(socket!= null)
-				try {
-					socket.close();
-				} catch (IOException e) {}
-			setListening(false);
-			running=false;
+		/**
+		 * @return the killAlive
+		 */
+		public boolean getKeepAlive() {
+			return keepAlive;
 		}
 
-		public void setListening(boolean listening) {
-			this.listening = listening;
+		/**
+		 * @param killAlive the killAlive to set
+		 */
+		public void setKeepAlive(boolean keepAlive) {
+			this.keepAlive = keepAlive;
 		}
 
-		public boolean isListening() {
-			return listening;
+		/**
+		 * @return the currentStatus
+		 */
+		public ServerStatus getCurrentStatus() {
+			return currentStatus;
+		}
+
+		/**
+		 * @param currentStatus the currentStatus to set
+		 */
+		public void setCurrentStatus(ServerStatus currentStatus) {
+			this.currentStatus = currentStatus;
 		}
 		
-		public boolean isConnected() {
-			return running && ! socket.isClosed();
+		public boolean isConnected(){
+			if( currentStatus == ServerStatus.CONNECTED ){
+				return true;
+			}
+			else{
+				return false;
+			}
 		}
 }

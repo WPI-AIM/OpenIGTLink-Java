@@ -20,6 +20,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import org.medcare.igtl.messages.OpenIGTMessage;
+import org.medcare.igtl.network.OpenIGTServer.ServerStatus;
 //import org.medcare.igtl.util.BytesArray;
 import org.medcare.igtl.util.ErrorManager;
 import org.medcare.igtl.util.Header;
@@ -144,8 +145,8 @@ public class ServerThread extends Thread {
          * @param status
          *** 
          */
-        public void setStatus(Status status) {
-                this.openIGTServer.setStatus(status);
+        public void setStatus(ServerStatus status) {
+                this.openIGTServer.setCurrentStatus(status);
         }
 
         /**
@@ -153,8 +154,8 @@ public class ServerThread extends Thread {
          *** 
          * @return the status status
          */
-        public Status getStatus() {
-                return this.openIGTServer.getStatus();
+        public ServerStatus getStatus() {
+                return this.openIGTServer.getCurrentStatus();
         }
 
 

@@ -96,24 +96,7 @@ public abstract class MessageHandler {
                 return capabilityList;
         }
 
-        /**
-         *** To set server status
-         * @param status
-         *** 
-         */
-        public void setStatus(Status status) {
-                this.serverThread.setStatus(status);
-        }
-
-        /**
-         *** To set server status
-         *** 
-         * @return the status status
-         */
-        public Status getStatus() {
-                return this.serverThread.getStatus();
-        }
-
+ 
 		public void setHeader(Header header) {
 			this.header = header;
 		}
