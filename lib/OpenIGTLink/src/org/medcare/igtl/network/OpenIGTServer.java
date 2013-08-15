@@ -68,6 +68,7 @@ public abstract class OpenIGTServer {
             this.errorManager = errorManager;
             this.port = port;
             currentStatus = ServerStatus.STOPPED;
+            startServer(port);
         }
         
         public void startServer(int port) throws IOException{
@@ -139,6 +140,16 @@ public abstract class OpenIGTServer {
         private void startIGT() throws IOException, Exception{
          	 Log.debug("IGTLink client Waiting for connection");
      		 
+      		if( socket.isClosed() )
+      		{
+	        	Log.debug("IGTLink Server Died, restarting");
+	        	try {
+					startServer(port);
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+    		}
          	 currentStatus = ServerStatus.LISTENING;
         	 setServerThread(new ServerThread(socket.accept(), this));
         	 if( getKeepAlive()){
