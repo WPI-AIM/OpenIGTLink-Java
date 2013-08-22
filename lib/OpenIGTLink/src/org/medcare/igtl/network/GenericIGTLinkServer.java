@@ -1,9 +1,12 @@
 package org.medcare.igtl.network;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.PriorityQueue;
 import java.util.Queue;
+import java.util.concurrent.PriorityBlockingQueue;
 
 import javax.net.ssl.SSLEngineResult.Status;
 
@@ -161,22 +164,24 @@ public class GenericIGTLinkServer extends OpenIGTServer implements IOpenIgtPacke
 	
 	public class sender extends Thread{
 		private Queue<OpenIGTMessage> messageQueue = new LinkedList<OpenIGTMessage>();
-		private TransformNR pose;
-		private String name;
-		private String status=null;
-		private int code = org.medcare.igtl.util.Status.STATUS_OK;
-		private int subCode = org.medcare.igtl.util.Status.STATUS_OK;
-		
-		private StringMessage strMsg=null;
-		private TransformMessage transMsg=null;
 		public synchronized void onTaskSpaceUpdate( PositionMessage msg){
 			messageQueue.add(msg);
 		}
 		public void onStatus(StatusMessage msg) {
-			messageQueue.add(msg);
+			//by pass Queue if its STOP or EMERGENCY message
+			if( msg.deviceName == "STOP" ||  msg.deviceName == "EMERGENCY"){
+				sendMessage(msg);
+			}else{
+				messageQueue.add(msg);
+			}
 		}
 		public void onStringMessage(StringMessage msg){
-			messageQueue.add(msg);
+			//by pass Queue if its STOP or EMERGENCY message
+			if( msg.getMessage() == "STOP" || msg.getMessage() == "EMERGENCY"){
+				sendMessage(msg);
+			}else{
+				messageQueue.add(msg);
+			}
 		}
 		public void onTransformMessage(TransformMessage msg){
 			messageQueue.add(msg);
