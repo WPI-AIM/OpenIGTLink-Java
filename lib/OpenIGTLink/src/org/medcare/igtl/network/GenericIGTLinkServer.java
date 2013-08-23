@@ -211,6 +211,9 @@ public class GenericIGTLinkServer extends OpenIGTServer implements IOpenIgtPacke
 						}
 					} catch (Exception e) {
 						// TODO Auto-generated catch block
+						//if its not able to send the message then flush all the messages from the Queue assuming that the clinet disconnected
+						//keeping the messages in Queue might cause problems when client connects again
+						messageQueue.clear();
 						e.printStackTrace();
 					}
 				}

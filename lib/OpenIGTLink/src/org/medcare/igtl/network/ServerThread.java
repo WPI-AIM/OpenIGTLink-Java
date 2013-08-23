@@ -103,6 +103,7 @@ public class ServerThread extends Thread {
 		public void sendMessage(OpenIGTMessage message) throws Exception {
 			// TODO Auto-generated method stub
 			sendMessage(message.getHeader(), message.getBody());
+			//System.out.println("Message: Header=" + message.getHeader().toString() + " Body=" + message.getBody().toString());
 		}
 		public void sendMessage(Header header, byte[] body) throws Exception {
 			sendBytes(header.getBytes());

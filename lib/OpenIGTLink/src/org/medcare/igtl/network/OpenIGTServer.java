@@ -87,13 +87,17 @@ public abstract class OpenIGTServer {
         }
 
 		public void stopServer(){
+			Log.debug("Stopping the IGTLink Server");
 			if(getServerThread()!=null)
 				getServerThread().interrupt();
 			if(socket!= null)
 				try {
 					socket.close();
-				} catch (IOException e) {}
-			currentStatus = ServerStatus.STOPPED;
+					currentStatus = ServerStatus.STOPPED;
+					Log.debug("IGTLink Server stopped");
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
 		}
        
         private class server extends Thread{
@@ -108,7 +112,6 @@ public abstract class OpenIGTServer {
     					// TODO Auto-generated catch block
     					e1.printStackTrace();
     				}
-            		Log.debug("Processing requests from a client and waiting for another one");
     	        	/*while (!socket.isClosed()){
     	        		try {
     	        			System.out.println("Waiting for closing the server...");
@@ -118,17 +121,6 @@ public abstract class OpenIGTServer {
     						e.printStackTrace();
     					}
             		}*/
-              		if( socket.isClosed() )
-              		{
-        	        	Log.debug("IGTLink Server Died, restarting");
-        	        	try {
-        					startServer(port);
-        				} catch (IOException e) {
-        					// TODO Auto-generated catch block
-        					e.printStackTrace();
-        				}
-            		}
-
           		}
         	}
         }
@@ -138,9 +130,8 @@ public abstract class OpenIGTServer {
          * @throws Exception
          */
         private void startIGT() throws IOException, Exception{
-         	 Log.debug("IGTLink client Waiting for connection");
      		 
-      		if( socket.isClosed() )
+      		while( socket==null | socket.isClosed() )
       		{
 	        	Log.debug("IGTLink Server Died, restarting");
 	        	try {
@@ -150,13 +141,17 @@ public abstract class OpenIGTServer {
 					e.printStackTrace();
 				}
     		}
-         	 currentStatus = ServerStatus.LISTENING;
-        	 setServerThread(new ServerThread(socket.accept(), this));
-        	 if( getKeepAlive()){
+      		try{
+            	 currentStatus = ServerStatus.LISTENING;
+               	 Log.debug("IGTLink Server Waiting for connection");
+            	 setServerThread(new ServerThread(socket.accept(), this));
         		 getServerThread().start();
         		 currentStatus = ServerStatus.CONNECTED;
         		 Log.debug("IGTLink client connected");
-        	 }
+      		}catch(Exception e){
+      			Log.error("Server died while waiting for client");
+      			e.printStackTrace();
+      		}
         }
 
          /**
