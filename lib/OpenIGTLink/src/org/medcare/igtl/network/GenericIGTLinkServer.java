@@ -164,6 +164,8 @@ public class GenericIGTLinkServer extends OpenIGTServer implements IOpenIgtPacke
 	
 	public class sender extends Thread{
 		private Queue<OpenIGTMessage> messageQueue = new LinkedList<OpenIGTMessage>();
+		TransformMessage curPos = null;
+		
 		public synchronized void onTaskSpaceUpdate( PositionMessage msg){
 			messageQueue.add(msg);
 		}
@@ -184,7 +186,12 @@ public class GenericIGTLinkServer extends OpenIGTServer implements IOpenIgtPacke
 			}
 		}
 		public void onTransformMessage(TransformMessage msg){
-			messageQueue.add(msg);
+			if( msg.deviceName == "CURRENT_POSITION"){
+				curPos = msg;
+			}
+			else{
+				messageQueue.add(msg);
+			}
 		}
 		public void run(){
 			while(true){
@@ -208,6 +215,10 @@ public class GenericIGTLinkServer extends OpenIGTServer implements IOpenIgtPacke
 						OpenIGTMessage msg = messageQueue.poll();
 						if(msg!=null){
 							sendMessage(msg);
+						}
+						else if( curPos !=null ){
+							sendMessage(curPos);
+							curPos = null;
 						}
 					} catch (Exception e) {
 						// TODO Auto-generated catch block
