@@ -55,8 +55,8 @@ public class Status {
         public Status(int code, int subCode, String errorName, String statusString) {
                 this.code = code;
                 this.subCode = subCode;
-                this.errorName = errorName;
-                this.statusString = statusString;
+                this.errorName = errorName + '\0';
+                this.statusString = statusString + '\0';
         }
 
         /**

@@ -152,6 +152,10 @@ public class GenericIGTLinkServer extends OpenIGTServer implements IOpenIgtPacke
 		StatusMessage statMsg = new StatusMessage(deviceName, code, subCode, status);
 		s.onStatus(statMsg);
 	}
+	public void pushStatus(String deviceName, int code, int subCode, String errorName, String status){
+		StatusMessage statMsg = new StatusMessage(deviceName, code, subCode, errorName, status);
+		s.onStatus(statMsg);
+	}
 	public void pushStringMessage(String deviceName, String msg){
 		StringMessage strMsg = new StringMessage(deviceName , msg);
 		s.onStringMessage(strMsg);
@@ -171,19 +175,19 @@ public class GenericIGTLinkServer extends OpenIGTServer implements IOpenIgtPacke
 		}
 		public void onStatus(StatusMessage msg) {
 			//by pass Queue if its STOP or EMERGENCY message
-			if( msg.deviceName == "STOP" ||  msg.deviceName == "EMERGENCY"){
-				sendMessage(msg);
-			}else{
+			//if( msg.deviceName == "STOP" ||  msg.deviceName == "EMERGENCY"){
+			//	sendMessage(msg);
+			//}else{
 				messageQueue.add(msg);
-			}
+			//}
 		}
 		public void onStringMessage(StringMessage msg){
 			//by pass Queue if its STOP or EMERGENCY message
-			if( msg.getMessage() == "STOP" || msg.getMessage() == "EMERGENCY"){
-				sendMessage(msg);
-			}else{
+			//if( msg.getMessage() == "STOP" || msg.getMessage() == "EMERGENCY"){
+			//	sendMessage(msg);
+			//}else{
 				messageQueue.add(msg);
-			}
+			//}
 		}
 		public void onTransformMessage(TransformMessage msg){
 			if( msg.deviceName == "CURRENT_POSITION"){
@@ -196,6 +200,7 @@ public class GenericIGTLinkServer extends OpenIGTServer implements IOpenIgtPacke
 		public void run(){
 			while(true){
 				while(getServerThread()==null){
+					messageQueue.clear(); //keep cleaning the message Queue till Clinet connects
 					try {
 						Thread.sleep(500);
 					} catch (InterruptedException e) {
@@ -213,7 +218,7 @@ public class GenericIGTLinkServer extends OpenIGTServer implements IOpenIgtPacke
 					//take out a message from Queue and send it
 					try {
 						OpenIGTMessage msg = messageQueue.poll();
-						if(msg!=null){
+						if(msg!=null ){
 							sendMessage(msg);
 						}
 						else if( curPos !=null ){
@@ -222,9 +227,6 @@ public class GenericIGTLinkServer extends OpenIGTServer implements IOpenIgtPacke
 						}
 					} catch (Exception e) {
 						// TODO Auto-generated catch block
-						//if its not able to send the message then flush all the messages from the Queue assuming that the clinet disconnected
-						//keeping the messages in Queue might cause problems when client connects again
-						messageQueue.clear();
 						e.printStackTrace();
 					}
 				}

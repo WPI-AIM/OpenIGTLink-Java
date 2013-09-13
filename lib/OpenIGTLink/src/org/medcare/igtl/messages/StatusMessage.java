@@ -66,6 +66,19 @@ public class StatusMessage extends OpenIGTMessage {
                 PackBody();
         }
         /**
+         *** Constructor to be used to create message to send them with this
+         * constructor you must use method SetImageHeader, then CreateBody and then
+         * getBytes to send them
+         *** 
+         * @param deviceName -Device Name
+         *            
+         **/
+        public StatusMessage(String deviceName,int code, int subCode, String errorName, String status) {
+                super(deviceName);
+                setStatus(new Status(code,subCode, errorName, status));
+                PackBody();
+        }
+        /**
          *** Constructor to be used to create message from received data
          * 
          * @param header
