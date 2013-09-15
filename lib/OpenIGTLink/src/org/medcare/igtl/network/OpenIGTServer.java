@@ -90,7 +90,7 @@ public abstract class OpenIGTServer {
 			Log.debug("Stopping the IGTLink Server");
 			if(getServerThread()!=null)
 				getServerThread().interrupt();
-			if(socket!= null)
+			if(socket!= null){
 				try {
 					socket.close();
 					currentStatus = ServerStatus.STOPPED;
@@ -98,6 +98,7 @@ public abstract class OpenIGTServer {
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
+			}
 		}
        
         private class server extends Thread{
@@ -139,6 +140,7 @@ public abstract class OpenIGTServer {
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
+					currentStatus = ServerStatus.STOPPED;
 				}
     		}
       		try{

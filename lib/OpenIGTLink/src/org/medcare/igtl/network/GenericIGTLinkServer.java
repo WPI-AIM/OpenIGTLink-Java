@@ -199,7 +199,7 @@ public class GenericIGTLinkServer extends OpenIGTServer implements IOpenIgtPacke
 		}
 		public void run(){
 			while(true){
-				while(getServerThread()==null){
+				while(getServerThread()==null || getServerThread().isAlive()==false){
 					messageQueue.clear(); //keep cleaning the message Queue till Clinet connects
 					try {
 						Thread.sleep(500);
