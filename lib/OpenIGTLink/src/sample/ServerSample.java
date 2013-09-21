@@ -4,6 +4,7 @@ import org.medcare.igtl.messages.ImageMessage;
 import org.medcare.igtl.messages.StringMessage;
 import org.medcare.igtl.network.GenericIGTLinkServer;
 import org.medcare.igtl.network.IOpenIgtPacketListener;
+import org.medcare.igtl.util.Status;
 
 import Jama.Matrix;
 
@@ -76,7 +77,11 @@ public class ServerSample implements IOpenIgtPacketListener {
 		// TODO Auto-generated method stub
 		return null;
 	}
-
+	@Override
+	public Status onGetStatus(String name) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 	@Override
 	public void onRxString(String name, String body) {
 		// TODO Auto-generated method stub

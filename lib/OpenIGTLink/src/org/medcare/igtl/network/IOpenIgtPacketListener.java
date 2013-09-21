@@ -1,5 +1,6 @@
 package org.medcare.igtl.network;
 import org.medcare.igtl.messages.ImageMessage;
+import org.medcare.igtl.util.Status;
 
 import com.neuronrobotics.sdk.addons.kinematics.math.TransformNR;
 
@@ -22,6 +23,12 @@ public interface IOpenIgtPacketListener {
 	 * @return the requested transform 
 	 */
 	TransformNR getTxTransform(String name);
+	/**
+	 * Request for status from IGT/Slicer
+	 * @param name A string of what type of transform to get
+	 * @return the requested status 
+	 */
+	 Status onGetStatus(String name);
 	/**
 	 * This is the handler for a String packet
 	 * @param name A string of what type of data to get

@@ -3,6 +3,7 @@ import com.neuronrobotics.sdk.common.Log;
 import org.medcare.igtl.messages.ImageMessage;
 import org.medcare.igtl.network.GenericIGTLinkClient;
 import org.medcare.igtl.network.IOpenIgtPacketListener;
+import org.medcare.igtl.util.Status;
 
 import Jama.Matrix;
 
@@ -56,6 +57,12 @@ public class ClientSample implements IOpenIgtPacketListener {
 
 	@Override
 	public TransformNR getTxTransform(String name) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Status onGetStatus(String name) {
 		// TODO Auto-generated method stub
 		return null;
 	}

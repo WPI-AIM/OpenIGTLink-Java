@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import org.medcare.igtl.messages.ImageMessage;
 import org.medcare.igtl.util.ErrorManager;
 import org.medcare.igtl.util.Header;
+import org.medcare.igtl.util.Status;
 
 import com.neuronrobotics.sdk.addons.kinematics.math.TransformNR;
 import com.neuronrobotics.sdk.common.Log;
@@ -57,6 +58,17 @@ public class GenericIGTLinkClient extends OpenIGTClient implements IOpenIgtPacke
 			throw new RuntimeException("There can be only one listener for this packet type.");
 		}
 		return listeners.get(0).getTxTransform(name);
+	}
+	/**
+	 * Request for status from IGT/Slicer
+	 * @param name A string of what type of transform to get
+	 * @return the requested status
+	 */
+	public Status onGetStatus(String name){
+		if(listeners.size() != 1){
+			throw new RuntimeException("There can be only one listener for this packet type.");
+		}
+		return listeners.get(0).onGetStatus(name);
 	}
 	/**
 	 * This is the handler for a String packet

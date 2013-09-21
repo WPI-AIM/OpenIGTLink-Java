@@ -77,6 +77,17 @@ public class GenericIGTLinkServer extends OpenIGTServer implements IOpenIgtPacke
 		return listeners.get(0).getTxTransform(name);
 	}
 	/**
+	 * Request for status from IGT/Slicer
+	 * @param name A string of what type of transform to get
+	 * @return the requested status
+	 */
+	public org.medcare.igtl.util.Status onGetStatus(String name){
+		if(listeners.size() != 1){
+			throw new RuntimeException("There can be only one listener for this packet type.");
+		}
+		return listeners.get(0).onGetStatus(name);
+	}
+	/**
 	 * This is the handler for a String packet
 	 * @param name A string of what type of data to get
 	 * @param body A string of the content

@@ -6,6 +6,7 @@ import org.medcare.igtl.messages.DataArrayMessage;
 import org.medcare.igtl.messages.ImageMessage;
 import org.medcare.igtl.messages.OpenIGTMessage;
 import org.medcare.igtl.messages.PositionMessage;
+import org.medcare.igtl.messages.StatusMessage;
 import org.medcare.igtl.messages.StringMessage;
 import org.medcare.igtl.messages.TransformMessage;
 import org.medcare.igtl.util.BytesArray;
@@ -40,10 +41,12 @@ public class GenericMessageNodeHandler {
         		PositionMessage transform = (PositionMessage) openIGTMessage;
         		transform.Unpack();
         		// Position vector and rotation matrix from the received transform
-        		double[] position = transform.getPosition();
-        		RotationNR rotation=transform.getQuaternion(); 	
-        		TransformNR t =new TransformNR(position, rotation);
-        		node.onRxTransform(openIGTMessage.getDeviceName(), t);
+        		//double[] position = transform.getPosition();
+        		//RotationNR rotation=transform.getQuaternion(); 	
+        		//TransformNR t =new TransformNR(position, rotation);
+        		//TODO Nirav- This seems wrong, it should be calling getTxTransform() changing it
+        		//node.onRxTransform(openIGTMessage.getDeviceName(), t);
+        		node.getTxTransform(openIGTMessage.getDeviceName());
         } else if (messageType.equals("IMAGE")) {
         	ImageMessage imgMesg = new ImageMessage(head, body);
 			openIGTMessage =(OpenIGTMessage)imgMesg;
@@ -70,8 +73,12 @@ public class GenericMessageNodeHandler {
         	String msgBody = new String(body,4,body.length-4,"US-ASCII");	
 
         	node.onRxString(openIGTMessage.getDeviceName(), msgBody);// this is a non functional stub	
-        }
-        else {
+        }else if (messageType.equals("STATUS")) {
+        	StatusMessage statMsg = new StatusMessage(head, body);
+        	statMsg.UnpackBody();
+			openIGTMessage =(OpenIGTMessage)statMsg;
+        	node.onGetStatus(openIGTMessage.getDeviceName());// this is a non functional stub	
+        }else {
         	
                 Log.debug("Message Type : " + messageType + " not implemented");
                 return null;
