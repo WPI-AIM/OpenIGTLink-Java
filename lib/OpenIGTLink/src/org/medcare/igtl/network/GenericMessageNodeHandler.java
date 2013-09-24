@@ -35,18 +35,24 @@ public class GenericMessageNodeHandler {
         		double[][] rotation=transform.getRotationMatrixArray(); 	
         		TransformNR t =new TransformNR(position, rotation);
         		node.onRxTransform(openIGTMessage.getDeviceName(), t);
-        } else if (messageType.equals("POSITION") || messageType.equals("MOVE_TO")) {
+        }else if(messageType.equals("GET_TRANS")){
+            openIGTMessage = new TransformMessage(head, body);   
+    		TransformMessage transform = (TransformMessage) openIGTMessage;
+    		transform.Unpack();
+    		// Position vector and rotation matrix from the received transform
+    		node.getTxTransform(openIGTMessage.getDeviceName());
+        }
+		else if (messageType.equals("POSITION") || messageType.equals("MOVE_TO")) {
                 Log.debug("perform POSITION");
                 openIGTMessage = new PositionMessage(head, body);   
         		PositionMessage transform = (PositionMessage) openIGTMessage;
         		transform.Unpack();
         		// Position vector and rotation matrix from the received transform
-        		//double[] position = transform.getPosition();
-        		//RotationNR rotation=transform.getQuaternion(); 	
-        		//TransformNR t =new TransformNR(position, rotation);
+        		double[] position = transform.getPosition();
+        		RotationNR rotation=transform.getQuaternion(); 	
+        		TransformNR t =new TransformNR(position, rotation);
         		//TODO Nirav- This seems wrong, it should be calling getTxTransform() changing it
-        		//node.onRxTransform(openIGTMessage.getDeviceName(), t);
-        		node.getTxTransform(openIGTMessage.getDeviceName());
+        		node.onRxTransform(openIGTMessage.getDeviceName(), t);
         } else if (messageType.equals("IMAGE")) {
         	ImageMessage imgMesg = new ImageMessage(head, body);
 			openIGTMessage =(OpenIGTMessage)imgMesg;
@@ -77,6 +83,7 @@ public class GenericMessageNodeHandler {
         	StatusMessage statMsg = new StatusMessage(head, body);
         	statMsg.UnpackBody();
 			openIGTMessage =(OpenIGTMessage)statMsg;
+			System.out.println("Received Get_Status request");
         	node.onGetStatus(openIGTMessage.getDeviceName());// this is a non functional stub	
         }else {
         	
