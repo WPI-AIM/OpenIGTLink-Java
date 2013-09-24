@@ -73,7 +73,7 @@ public class GenericMessageNodeHandler {
         	String msgBody = new String(body,4,body.length-4,"US-ASCII");	
 
         	node.onRxString(openIGTMessage.getDeviceName(), msgBody);// this is a non functional stub	
-        }else if (messageType.equals("STATUS")) {
+        }else if (messageType.equals("GET_STATUS")) {
         	StatusMessage statMsg = new StatusMessage(head, body);
         	statMsg.UnpackBody();
 			openIGTMessage =(OpenIGTMessage)statMsg;
