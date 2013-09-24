@@ -21,6 +21,9 @@ public class GenericServerResponseHandler extends MessageHandler {
 		capabilityList.add("LOCK");
 		capabilityList.add("STRING");
 		capabilityList.add("STATUS");
+		capabilityList.add("GET_STATUS");
+		capabilityList.add("GET_TRANS");
+		
 		this.server=server;
 	}
 
