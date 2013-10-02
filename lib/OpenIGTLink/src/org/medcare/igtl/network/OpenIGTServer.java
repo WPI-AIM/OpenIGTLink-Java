@@ -106,8 +106,7 @@ public abstract class OpenIGTServer {
        
         private class server extends Thread{
         	public void run(){
-        		while(getKeepAlive()){
-        			//while(socket.isClosed() != true );
+        		{
             		try {
     					startIGT();
     				} catch (IOException e1) {
@@ -154,6 +153,14 @@ public abstract class OpenIGTServer {
         		 getServerThread().start();
         		 currentStatus = ServerStatus.CONNECTED;
         		 Log.debug("IGTLink client connected");
+        		 
+        		 Log.debug("Before waiting for another client, waiting for currnt client to get disconnected");
+        		 while(getServerThread().getAlive() != false); //wait here until client gets disconnected
+        		 Log.debug("IGTLink client Disconnected");
+
+        		 if(getKeepAlive()){
+        			 startServer(port);
+        		 }
       		}catch(Exception e){
       			Log.error("Server died while waiting for client");
       			e.printStackTrace();

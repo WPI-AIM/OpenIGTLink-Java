@@ -159,6 +159,14 @@ public class ServerThread extends Thread {
                 return this.openIGTServer.getCurrentStatus();
         }
 
+		public boolean getAlive() {
+			return alive;
+		}
+
+		public void setAlive(boolean alive) {
+			this.alive = alive;
+		}
+
 
 
 
