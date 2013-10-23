@@ -169,6 +169,7 @@ public abstract class OpenIGTServer {
     				//TODO before sending message it should be packed, should this be done here or in Message itself? 
 					getServerThread().sendMessage(message);
 				} catch (Exception e) {
+					e.printStackTrace();
 					stopServer();
 				}
         		

@@ -220,12 +220,12 @@ public class GenericIGTLinkServer extends OpenIGTServer implements IOpenIgtPacke
 					}
 				}
 				while(getServerThread().isAlive()){
-					try {
+					/*try {
 						Thread.sleep(500);
 					} catch (InterruptedException e1) {
 						// TODO Auto-generated catch block
 						e1.printStackTrace();
-					}
+					}*/
 					//take out a message from Queue and send it
 					try {
 						OpenIGTMessage msg = messageQueue.poll();
