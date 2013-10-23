@@ -121,7 +121,7 @@ public abstract class OpenIGTServer {
 	                		}
 
 	    					startIGT();
-	    					ThreadUtil.wait(500);
+	    					 //ThreadUtil.wait(500);
 		               		 Log.debug("Before waiting for another client, waiting for currnt client to get disconnected");
 		            		 while(getServerThread().getAlive() != false){
 		            			 //wait here until client gets disconnected
