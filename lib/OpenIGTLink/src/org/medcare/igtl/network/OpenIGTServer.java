@@ -52,7 +52,7 @@ public abstract class OpenIGTServer {
         private boolean keepAlive = true;
         private int port;
         
-        public static enum ServerStatus {STOPPED, LISTENING, CONNECTED }; //possible server states
+        public static enum ServerStatus {STOPPED, LISTENING, CONNECTED, DISCONNECTED }; //possible server states
         ServerStatus currentStatus = ServerStatus.STOPPED; //start as stopped status
         /***************************************************************************
          * Default MessageQueueManager constructor.
@@ -68,7 +68,8 @@ public abstract class OpenIGTServer {
             this.errorManager = errorManager;
             this.port = port;
             currentStatus = ServerStatus.STOPPED;
-            startServer(port);
+            server s = new server();
+            s.start();
         }
         
         public void startServer(int port) throws IOException{
@@ -82,8 +83,6 @@ public abstract class OpenIGTServer {
                     errorManager.error("OpenIGTServer Could not listen on port: " + this.port, e, ErrorManager.OPENIGTSERVER_IO_EXCEPTION);
                     throw e;
             }
-            server s = new server();
-            s.start();
         }
 
 		public void stopServer(){
@@ -106,27 +105,36 @@ public abstract class OpenIGTServer {
        
         private class server extends Thread{
         	public void run(){
-        		while(getKeepAlive()){
-        			//while(socket.isClosed() != true );
-            		try {
-    					startIGT();
-    				} catch (IOException e1) {
-    					// TODO Auto-generated catch block
-    					e1.printStackTrace();
-    				} catch (Exception e1) {
-    					// TODO Auto-generated catch block
-    					e1.printStackTrace();
-    				}
-    	        	/*while (!socket.isClosed()){
-    	        		try {
-    	        			System.out.println("Waiting for closing the server...");
-    						Thread.sleep(100);
-    					} catch (InterruptedException e) {
-    						// TODO Auto-generated catch block
-    						e.printStackTrace();
-    					}
-            		}*/
-          		}
+        		{
+        			while(getKeepAlive()){
+	            		try {
+	                  		while( socket==null || socket.isClosed() )
+	                  		{
+	            	        	Log.debug("IGTLink Server Died, restarting");
+	            	        	try {
+	            					startServer(port);
+	            				} catch (IOException e) {
+	            					// TODO Auto-generated catch block
+	            					e.printStackTrace();
+	            					currentStatus = ServerStatus.STOPPED;
+	            				}
+	                		}
+
+	    					startIGT();
+	    					 //ThreadUtil.wait(500);
+		               		 Log.debug("Before waiting for another client, waiting for currnt client to get disconnected");
+		            		 while(getServerThread().getAlive() != false){
+		            			 //wait here until client gets disconnected
+		            			 ThreadUtil.wait(200);
+		            		 }
+		            		 Log.debug("IGTLink client Disconnected");
+		            		 currentStatus = ServerStatus.DISCONNECTED;
+	    				} catch (Exception e1) {
+	    					// TODO Auto-generated catch block
+	    					e1.printStackTrace();
+	    				}
+        			}
+        		}
         	}
         }
         /**
@@ -136,17 +144,6 @@ public abstract class OpenIGTServer {
          */
         private void startIGT() throws IOException, Exception{
      		 
-      		while( socket==null || socket.isClosed() )
-      		{
-	        	Log.debug("IGTLink Server Died, restarting");
-	        	try {
-					startServer(port);
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-					currentStatus = ServerStatus.STOPPED;
-				}
-    		}
       		try{
             	 currentStatus = ServerStatus.LISTENING;
                	 Log.debug("IGTLink Server Waiting for connection");
