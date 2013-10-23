@@ -26,6 +26,8 @@ import org.medcare.igtl.util.ErrorManager;
 import org.medcare.igtl.util.Header;
 import org.medcare.igtl.util.Status;
 
+import com.neuronrobotics.sdk.common.Log;
+
 /**
  * OpenIGTServer create one ServerThread for each client making a connection.
  * ServerThread will add messages received from client to the messageQueue to be
@@ -42,7 +44,8 @@ public class ServerThread extends Thread {
         private MessageQueueManager messageQueue = null;
         private boolean alive;
         public ErrorManager errorManager;
-
+        public static enum ClientStatus {CONNECTED, DISCONNECTED }; //possible client states
+        private ClientStatus currentStatus = ClientStatus.DISCONNECTED; //start as stopped status
         /***************************************************************************
          * Default ServerThread constructor.
          * 
@@ -60,6 +63,8 @@ public class ServerThread extends Thread {
                 this.messageQueue.start();
                 this.outstr = socket.getOutputStream();
                 this.instr = socket.getInputStream();
+                
+                this.currentStatus = ClientStatus.CONNECTED;
         }
 
         /***************************************************************************
@@ -95,7 +100,9 @@ public class ServerThread extends Thread {
                         outstr.close();
                         instr.close();
                         socket.close();
+                        Log.debug("IGTLink client got disconnected, will set alive=false to inform SocketServer");
                 } catch (IOException e) {
+                		e.printStackTrace();
                         errorManager.error("ServerThread IOException", e, ErrorManager.SERVERTHREAD_IO_EXCEPTION);
                 }
                 this.interrupt();
@@ -130,6 +137,7 @@ public class ServerThread extends Thread {
          * Interrupt this thread
          **************************************************************************/
         public void interrupt() {
+        		this.currentStatus  = ClientStatus.DISCONNECTED;
                 alive = false;
                 try {
 					outstr.close();
