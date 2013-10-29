@@ -228,7 +228,7 @@ public class GenericIGTLinkServer extends OpenIGTServer implements IOpenIgtPacke
 					}*/
 					//take out a message from Queue and send it
 					try {
-						if( messageQueue.size() != 0){
+						if( messageQueue.size() > 0){
 							Log.debug("Number of messages in Queue = " + messageQueue.size());
 						}
 						OpenIGTMessage msg = messageQueue.poll();
