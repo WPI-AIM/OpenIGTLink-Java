@@ -211,7 +211,10 @@ public class GenericIGTLinkServer extends OpenIGTServer implements IOpenIgtPacke
 		public void run(){
 			while(true){
 				while(getServerThread()==null || getServerThread().isAlive()==false){
-					messageQueue.clear(); //keep cleaning the message Queue till Clinet connects
+					if( !messageQueue.isEmpty() ){
+						messageQueue.clear(); //keep cleaning the message Queue till Clinet connects
+						Log.debug("Clearing Message Sender Queue ; Number of messages in Queue = " + messageQueue.size());
+					}
 					try {
 						Thread.sleep(500);
 					} catch (InterruptedException e) {
@@ -240,6 +243,10 @@ public class GenericIGTLinkServer extends OpenIGTServer implements IOpenIgtPacke
 							curPos = null;
 						}
 					} catch (Exception e) {
+						if( !messageQueue.isEmpty() ){
+							messageQueue.clear(); //clear message queue if ws not able to send as that is a connection problem
+							Log.debug("Clearing Message Sender Queue ; Number of messages in Queue = " + messageQueue.size());
+						}
 						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
