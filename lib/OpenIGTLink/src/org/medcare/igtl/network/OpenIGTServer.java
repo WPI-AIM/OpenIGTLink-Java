@@ -68,6 +68,7 @@ public abstract class OpenIGTServer {
             this.errorManager = errorManager;
             this.port = port;
             currentStatus = ServerStatus.STOPPED;
+            
             server s = new server();
             s.start();
         }
@@ -79,12 +80,26 @@ public abstract class OpenIGTServer {
             	ServerSocketFactory serverSocketFactory = ServerSocketFactory.getDefault();
                 socket = serverSocketFactory.createServerSocket(this.port);
                 Log.debug("Server Socket created");
+ 
             } catch (IOException e) {
                     errorManager.error("OpenIGTServer Could not listen on port: " + this.port, e, ErrorManager.OPENIGTSERVER_IO_EXCEPTION);
                     throw e;
             }
         }
-
+        public void startListening(int port){
+        	this.port = port;
+        	try {
+				startServer(this.port);
+		        server s = new server();
+		        s.start();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+        	
+  
+        	
+        }
 		public void stopServer(){
 			Log.debug("Stopping the IGTLink Server");
 			if(getServerThread()!=null)
@@ -99,8 +114,8 @@ public abstract class OpenIGTServer {
 					e.printStackTrace();
 				}
 			}
-			//socket = null;
-			//currentStatus = ServerStatus.STOPPED;
+			socket = null;
+			currentStatus = ServerStatus.STOPPED;
 		}
        
         private class server extends Thread{
@@ -125,10 +140,10 @@ public abstract class OpenIGTServer {
 		               		 Log.debug("Before waiting for another client, waiting for currnt client to get disconnected");
 		            		 while(getServerThread().getAlive() != false){
 		            			 //wait here until client gets disconnected
-		            			 ThreadUtil.wait(200);
+		            			 ThreadUtil.wait(500);
 		            		 }
 		            		 Log.debug("IGTLink client Disconnected");
-		            		 currentStatus = ServerStatus.DISCONNECTED;
+		            		 //currentStatus = ServerStatus.DISCONNECTED;
 	    				} catch (Exception e1) {
 	    					// TODO Auto-generated catch block
 	    					e1.printStackTrace();

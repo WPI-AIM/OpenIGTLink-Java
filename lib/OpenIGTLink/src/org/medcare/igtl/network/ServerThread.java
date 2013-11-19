@@ -97,10 +97,11 @@ public class ServerThread extends Thread {
                                         messageQueue.addMessage(openIGTServer.getMessageHandler(header, bodyBuf, this));
                                 }
                         } while (alive && ret_read >= 0);
+                        
+                        Log.debug("IGTLink client got disconnected, will set alive=false to inform SocketServer and interrupt this thread");
                         outstr.close();
                         instr.close();
                         socket.close();
-                        Log.debug("IGTLink client got disconnected, will set alive=false to inform SocketServer");
                 } catch (IOException e) {
                 		e.printStackTrace();
                         errorManager.error("ServerThread IOException", e, ErrorManager.SERVERTHREAD_IO_EXCEPTION);
@@ -137,7 +138,7 @@ public class ServerThread extends Thread {
          * Interrupt this thread
          **************************************************************************/
         public void interrupt() {
-        		this.currentStatus  = ClientStatus.DISCONNECTED;
+        		//this.currentStatus  = ClientStatus.DISCONNECTED;
                 alive = false;
                 try {
 					outstr.close();
