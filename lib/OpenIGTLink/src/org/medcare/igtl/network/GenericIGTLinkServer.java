@@ -216,7 +216,7 @@ public class GenericIGTLinkServer extends OpenIGTServer implements IOpenIgtPacke
 						Log.debug("Clearing Message Sender Queue ; Number of messages in Queue = " + messageQueue.size());
 					}
 					try {
-						Thread.sleep(500);
+						Thread.sleep(200);
 					} catch (InterruptedException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
