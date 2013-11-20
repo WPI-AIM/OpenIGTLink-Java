@@ -177,7 +177,7 @@ public abstract class OpenIGTServer {
          * @param messageHandler
          * @throws Exception 
          */
-        public void sendMessage(OpenIGTMessage message){
+        public void sendMessage(OpenIGTMessage message) throws Exception{
         	if(getServerThread()!=null){
         		
         		try {
@@ -186,6 +186,7 @@ public abstract class OpenIGTServer {
 				} catch (Exception e) {
 					e.printStackTrace();
 					stopServer();
+					throw e;
 				}
         		
         		//Log.info("Pushing upstream IGTLink packet "+message);
