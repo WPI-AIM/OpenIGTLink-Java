@@ -139,11 +139,11 @@ public class ServerThread extends Thread {
         public void interrupt() {
         		this.currentStatus  = ClientStatus.DISCONNECTED;
                 alive = false;
+                messageQueue.destroy();
                 try {
 					outstr.close();
 					instr.close();
 	                socket.close();
-	                messageQueue.destroy();
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
