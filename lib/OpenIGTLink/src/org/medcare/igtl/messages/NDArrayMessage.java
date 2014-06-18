@@ -122,6 +122,13 @@ public class NDArrayMessage extends OpenIGTMessage {
         	  this.data.add(val);
           }
       }
+      public float[] get1DFloatData(){
+    	  float floatData[] = new float[data.size()];
+    	  for(int i=0;i<data.size();i++){
+    		  floatData[i] = ((Float)data.get(i)).floatValue();
+    	  }
+    	  return floatData;
+      }
 /**
        *** To create body from body array
        * 

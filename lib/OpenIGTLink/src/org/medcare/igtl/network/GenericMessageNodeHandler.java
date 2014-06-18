@@ -4,6 +4,7 @@ import java.nio.ByteBuffer;
 
 import org.medcare.igtl.messages.DataArrayMessage;
 import org.medcare.igtl.messages.ImageMessage;
+import org.medcare.igtl.messages.NDArrayMessage;
 import org.medcare.igtl.messages.OpenIGTMessage;
 import org.medcare.igtl.messages.PositionMessage;
 import org.medcare.igtl.messages.StatusMessage;
@@ -85,6 +86,11 @@ public class GenericMessageNodeHandler {
 			openIGTMessage =(OpenIGTMessage)statMsg;
 			System.out.println("Received Get_Status request");
         	node.onGetStatus(openIGTMessage.getDeviceName());// this is a non functional stub	
+        }else if (messageType.equals("NDARRAY")) {
+        	NDArrayMessage ndArrayMsg = new NDArrayMessage(head, body);
+        	ndArrayMsg.UnpackBody();
+			openIGTMessage =(OpenIGTMessage)ndArrayMsg;
+        	node.onRxNDArray(openIGTMessage.getDeviceName(), ndArrayMsg.get1DFloatData());// this is a non functional stub	
         }else {
         	
                 Log.debug("Message Type : " + messageType + " not implemented");

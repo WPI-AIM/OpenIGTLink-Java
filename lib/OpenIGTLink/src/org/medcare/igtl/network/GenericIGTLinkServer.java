@@ -254,4 +254,16 @@ public class GenericIGTLinkServer extends OpenIGTServer implements IOpenIgtPacke
 			}
 		}
 	}
+
+	@Override
+	public void onTxNDArray(String name) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void onRxNDArray(String name, float[] data) {
+		// TODO Auto-generated method stub
+		
+	}
 }

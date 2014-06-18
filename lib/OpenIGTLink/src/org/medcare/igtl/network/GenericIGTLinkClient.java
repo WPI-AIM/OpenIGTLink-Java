@@ -143,6 +143,20 @@ public class GenericIGTLinkClient extends OpenIGTClient implements IOpenIgtPacke
 			listeners.remove(l);
 	}
 
+	@Override
+	public void onTxNDArray(String name) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void onRxNDArray(String name, float[] data) {
+		// TODO Auto-generated method stub
+		for(IOpenIgtPacketListener l:listeners){
+			l.onRxNDArray(name, data);
+		}
+	}
+
 }
 
 

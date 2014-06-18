@@ -16,11 +16,13 @@ public class ClientSample implements IOpenIgtPacketListener {
 	public static void main(String[] args) {
 		GenericIGTLinkClient client;
 		try {
+			Log.enableDebugPrint(true);
+			Log.enableSystemPrint(true);
 			Log.debug("Starting client");
 			client = new GenericIGTLinkClient ("127.0.0.1",18944);
 			client.addIOpenIgtOnPacket(new ClientSample());	
 			
-			for(int i=0;i<5;i++){
+			for(int i=0;i<50;i++){
 				Thread.sleep(1000);
 			}
 			client.stopClient();
@@ -95,5 +97,20 @@ public class ClientSample implements IOpenIgtPacketListener {
 	public void onRxImage(String name, ImageMessage image) {
 		// TODO Auto-generated method stub
 		
+	}
+
+	@Override
+	public void onTxNDArray(String name) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void onRxNDArray(String name, float[] data) {
+		// TODO Auto-generated method stub
+		Log.debug("Name" + name);
+		for(int i=0;i<data.length;i++){
+			Log.debug("Data[" + i + "]=" + data[i]);
+		}
 	}
 }

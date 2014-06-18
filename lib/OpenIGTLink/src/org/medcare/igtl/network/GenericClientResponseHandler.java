@@ -18,6 +18,7 @@ public class GenericClientResponseHandler extends ResponseHandler{
 		getCapabilityList().add("POSITION");
 		getCapabilityList().add("IMAGE");
 		getCapabilityList().add("STATUS");
+		getCapabilityList().add("NDARRAY");
 		this.client = openIGTClient;
 	}
 

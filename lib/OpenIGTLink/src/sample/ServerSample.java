@@ -1,9 +1,11 @@
 package sample;
 import com.neuronrobotics.sdk.common.Log;
 import org.medcare.igtl.messages.ImageMessage;
+import org.medcare.igtl.messages.NDArrayMessage;
 import org.medcare.igtl.messages.StringMessage;
 import org.medcare.igtl.network.GenericIGTLinkServer;
 import org.medcare.igtl.network.IOpenIgtPacketListener;
+import org.medcare.igtl.util.Header;
 import org.medcare.igtl.util.Status;
 
 import Jama.Matrix;
@@ -17,6 +19,9 @@ public class ServerSample implements IOpenIgtPacketListener {
 	 */
 	public static void main(String[] args) {
 		GenericIGTLinkServer server;
+		Log.enableDebugPrint(true);
+		Log.enableSystemPrint(true);
+
 		try {
 			//Set up server
 			server = new GenericIGTLinkServer (18944);
@@ -35,8 +40,10 @@ public class ServerSample implements IOpenIgtPacketListener {
 			while(true){
 				Thread.sleep(1000);
 				if(server.isConnected()){
-					Log.debug("Push");
-					server.pushPose("TransformPush", t);
+					//Log.debug("Push");
+					//server.pushPose("TransformPush", t);
+					float data[] = {(float) 1.0, (float) 2.12231233, (float) 4.5};
+					server.sendMessage(new NDArrayMessage("TEMP", data) );
 				}else{
 					Log.debug("Wait");
 				}
@@ -107,6 +114,18 @@ public class ServerSample implements IOpenIgtPacketListener {
 
 	@Override
 	public void onRxImage(String name, ImageMessage image) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void onTxNDArray(String name) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void onRxNDArray(String name, float[] data) {
 		// TODO Auto-generated method stub
 		
 	}
