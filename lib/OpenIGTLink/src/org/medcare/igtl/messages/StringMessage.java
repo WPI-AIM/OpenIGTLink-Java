@@ -64,7 +64,7 @@ public class StringMessage extends OpenIGTMessage{
 		length = ByteBuffer.wrap(getBody(), 2,2).getShort();
 		message = new String(getBody() , 4, getBody().length-4);
 		
-		return false;
+		return true;
 	}
 
 	@Override

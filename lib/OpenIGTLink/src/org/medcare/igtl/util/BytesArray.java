@@ -213,14 +213,14 @@ public class BytesArray {
 	 *** Write an array of bytes to the bytesArray
 	 *** 
 	 * @param n
-	 *            The bytes to write to the bytesArray 要写入的字符
+	 *            The bytes to write to the bytesArray è¦�å†™å…¥çš„å­—ç¬¦
 	 *** @param nOfs
-	 *            The offset into <code>n</code> to start reading from 写开始的位置
+	 *            The offset into <code>n</code> to start reading from å†™å¼€å§‹çš„ä½�ç½®
 	 *** @param nLen
-	 *            The number of bytes to write from <code>n</code> 写入的长度
+	 *            The number of bytes to write from <code>n</code> å†™å…¥çš„é•¿åº¦
 	 *** @return The number of bytes written
 	 **/
-	// 三种putBytes 形式，第一种是最全的
+	// ä¸‰ç§�putBytes å½¢å¼�ï¼Œç¬¬ä¸€ç§�æ˜¯æœ€å…¨çš„
 	public int putBytes(byte n[], int nOfs, int nLen) {
 		/* check for nothing to write */
 		if (nLen > 0 && nOfs >= 0 && n != null && (n.length - nOfs >= nLen)) {
@@ -246,6 +246,20 @@ public class BytesArray {
 		return this.putBytes(n, this.index, nLen);
 	}
 
+	/**
+	 *** Write an array of bytes to the bytesArray
+	 *** 
+	 * @param n
+	 *            The bytes to write to the bytesArray
+	 *** @param nLen
+	 *            The number of bytes to write from <code>n</code>
+	 *** @return The number of bytes written
+	 **/
+	public int putByte(byte n) {
+		byte []data = new byte[1];
+		data[0] = n;
+		return this.putBytes(data, this.index, 1);
+	}
 	/**
 	 *** Write an array of bytes to the bytesArray
 	 *** 
@@ -301,7 +315,7 @@ public class BytesArray {
 		// return the full copy bytesArray (regardless of the state of
 		// 'this.index')
 		byte n[] = new byte[this.size];
-		// 源文件，起始位置，目标文件，起始位置， 复制的字节长度
+		// æº�æ–‡ä»¶ï¼Œèµ·å§‹ä½�ç½®ï¼Œç›®æ ‡æ–‡ä»¶ï¼Œèµ·å§‹ä½�ç½®ï¼Œ å¤�åˆ¶çš„å­—èŠ‚é•¿åº¦
 		System.arraycopy(bytesArray, 0, n, 0, this.size);
 		return n;
 	}
@@ -414,7 +428,7 @@ public class BytesArray {
 	 *            on a null)
 	 *** @return The read String
 	 **/
-	// 2种getString版本
+	// 2ç§�getStringç‰ˆæœ¬
 	public String getString(int length, boolean varLength) {
 		// Read until (whichever comes first):
 		// 1) length bytes have been read
@@ -436,7 +450,7 @@ public class BytesArray {
 
 	/**
 	 *** Converts the byte array to a String based on the US-ASCII character set.
-	 *字符数组转换成字符串
+	 *å­—ç¬¦æ•°ç»„è½¬æ�¢æˆ�å­—ç¬¦ä¸²
 	 *** 
 	 *** @param len
 	 *            The number of bytes to convert to a String

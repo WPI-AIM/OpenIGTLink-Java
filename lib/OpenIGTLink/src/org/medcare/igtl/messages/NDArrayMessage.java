@@ -16,6 +16,10 @@ PURPOSE.  See the above copyright notices for more information.
 Author: Nirav Patel: napatel@wpi.edu
 =========================================================================*/
 
+import java.nio.ByteBuffer;
+import java.util.ArrayList;
+import java.util.List;
+
 import org.medcare.igtl.util.BytesArray;
 import org.medcare.igtl.util.Header;
 //import com.neuronrobotics.sdk.common.ByteList;
@@ -34,24 +38,18 @@ public class NDArrayMessage extends OpenIGTMessage {
     private byte type;
     private byte dim;
     private short size[]; 
-    private byte data[];
+    private byte byteData[];
+    private ArrayList data;
     
-    enum DATA_TYPE { TYPE_INT8(2),  
-    		TYPE_UINT8(3),
-    	    TYPE_INT16(4),
-    	    TYPE_UINT16(5),
-    	    TYPE_INT32(6),
-    	    TYPE_UINT32(7),
-    	    TYPE_FLOAT32(10),
-    	    TYPE_FLOAT64(11),
-    	    TYPE_COMPLEX(13) ;
-    
-	    private byte value;
-	
-	    private DATA_TYPE(int value) {
-	            this.value = (byte)(value & 0xFF);
-	    }
-    };
+    private static byte TYPE_INT8 = 2 , 
+    		TYPE_UINT8=3,
+    	    TYPE_INT16=4,
+    	    TYPE_UINT16=5,
+    	    TYPE_INT32=6,
+    	    TYPE_UINT32=7,
+    	    TYPE_FLOAT32=10,
+    	    TYPE_FLOAT64=11,
+    	    TYPE_COMPLEX=13 ;
 	
       /**
        *** Constructor to be used to create message to send them with this
@@ -81,13 +79,50 @@ public class NDArrayMessage extends OpenIGTMessage {
       		//System.out.println("Transform: Calculated CRC=" + calculated_crc + "REceived CRC=" + recvd_crc );
       }
 
+      public NDArrayMessage(String deviceName,  float[] data) {
+    	  super(deviceName);
+    	  //This implements 1D Float array
+    	  
+    	  set1D_FloatData( data );
+
+    	  //set the data from the array
+      		PackBody();
+      		setHeader(new Header(VERSION, "NDARRAY", deviceName, getBody()));
+      }
+
       public NDArrayMessage(String deviceName, byte type, byte dim, short[] size, float[] data) {
       	super(deviceName);
-      	//set the data from the array
-      	PackBody();
-		}
+      	//THIS IS FOR NDimensional Array Implementation and its not implemented yet
+      }
 
-		/**
+      public void set1D_FloatData( float[] data){
+    	  this.type = TYPE_FLOAT32;  
+    	  this.dim = 1;
+    	  this.size = new short[dim]; 
+    	  this.size[0] = (short)data.length;
+    	  
+    	  this.data = new ArrayList<Float>();
+    	  
+    	  BytesArray bytesArray = new BytesArray();
+          for (int i = 0; i < data.length; i++){
+        	  bytesArray.putDouble(data[i], 4);
+        	  this.data.add(data[i]);
+          }
+          this.byteData = bytesArray.getBytes();
+          
+      }
+
+      public void set1D_FloatData(){
+    	  this.data = new ArrayList<Float>();
+    	  
+    	  BytesArray bytesArray = new BytesArray();
+    	  bytesArray.putBytes(byteData);
+          for (int i = 0; i < byteData.length/4; i++){
+        	  float val = (float)bytesArray.getDouble(4);
+        	  this.data.add(val);
+          }
+      }
+/**
        *** To create body from body array
        * 
        *** 
@@ -95,7 +130,19 @@ public class NDArrayMessage extends OpenIGTMessage {
        */
       @Override
       public boolean UnpackBody() throws Exception {
-              return true;
+  		type  = ByteBuffer.wrap(getBody(), 0,1).get();
+  		dim = ByteBuffer.wrap(getBody(), 1,1).get();
+  		size = new short[dim];
+  		for( int i=0;i<dim;i++){
+  			size[i] = ByteBuffer.wrap(getBody(), 2 + 2*i,2).getShort();
+  		}
+  		BytesArray b = new BytesArray();
+  		b.putBytes(getBody(), 4, getBody().length-4);
+  		byteData = b.getBytes();// ByteBuffer.wrap(getBody(), 4 , getBody().length - (2 + dim*2) ).array();
+  		if( type == TYPE_FLOAT32 ){
+  			set1D_FloatData();
+  		}
+  		return true;
       }
 
       /**
@@ -107,9 +154,15 @@ public class NDArrayMessage extends OpenIGTMessage {
        */
       @Override
       public byte[] PackBody() {
-    	  
-    	  //we need to preapre bopdy here
-              return getBytes();
+  		BytesArray body = new BytesArray();
+  		body.putByte(this.type);
+  		body.putByte(this.dim);
+  		for(int i=0;i<this.size.length;i++){
+  			body.putShort(this.size[i]);
+  		}
+  		body.putBytes(this.byteData);
+  		setBody(body.getBytes());
+  		return getBody();
       }
 
 
@@ -121,6 +174,14 @@ public class NDArrayMessage extends OpenIGTMessage {
       @Override
       public String toString() {
               String transformString = "NDArray Device Name           : " + getDeviceName();
+              transformString = transformString + "NDArray Type           : " + type + " ";
+              transformString = transformString + "NDArray Dim           : " + dim + " ";
+              for(int i=0;i<dim;i++){
+                  transformString = transformString + "Dim[" + i + "]=" + size[i] + " ";
+              }
+              for(int i=0;i<data.size();i++){
+                  transformString = transformString + "Data[" + i + "]=" + data.get(i) + " ";
+              }
               return transformString;
       }
       
