@@ -27,10 +27,10 @@ import org.medcare.igtl.util.Header;
 import com.neuronrobotics.sdk.common.Log;
 
 /**
-*** This class create an Transform object from bytes received or help to generate
+*** This class create an NDArray object from bytes received or help to generate
 * bytes to send from it
 * 
-* @author Andre Charles Legendre
+* @author Nirav Patel
 * 
 */
 public class NDArrayMessage extends OpenIGTMessage {
@@ -130,28 +130,23 @@ public class NDArrayMessage extends OpenIGTMessage {
        */
       @Override
       public boolean UnpackBody() throws Exception {
-  		type  = ByteBuffer.wrap(getBody(), 0,1).get();
-  		dim = ByteBuffer.wrap(getBody(), 1,1).get();
+    	  ByteBuffer body = ByteBuffer.wrap(getBody());
+    	  
+  		type  = body.get();
+  		dim = body.get();
   		size = new short[dim];
   		for( int i=0;i<dim;i++){
-  			size[i] = ByteBuffer.wrap(getBody(), 2 + 2*i,2).getShort();
+  			size[i] = body.getShort();
   		}
-  		BytesArray b = new BytesArray();
-  		b.putBytes(getBody(), 4, getBody().length-4);
-  		byteData = b.getBytes();// ByteBuffer.wrap(getBody(), 4 , getBody().length - (2 + dim*2) ).array();
+  		int dataLen = getBody().length-(2+2*dim);
+  		byteData = new byte[dataLen];
+  		body.get(byteData, 0 , dataLen-1);
   		if( type == TYPE_FLOAT32 ){
   			set1D_FloatData();
   		}
   		return true;
       }
 
-      /**
-       *** To create body from image_header and image_data
-       *  SetTransformData must have called first
-       * 
-       *** 
-       * @return the bytes array containing the body
-       */
       @Override
       public byte[] PackBody() {
   		BytesArray body = new BytesArray();
@@ -166,11 +161,6 @@ public class NDArrayMessage extends OpenIGTMessage {
       }
 
 
-      /**
-       *** To get transform String
-       *** 
-       * @return the transform String
-       */
       @Override
       public String toString() {
               String transformString = "NDArray Device Name           : " + getDeviceName();
@@ -185,13 +175,5 @@ public class NDArrayMessage extends OpenIGTMessage {
               return transformString;
       }
       
-      public void printDoubleDataArray(double[][] matrixArray) {
-  		for (int i = 0; i < matrixArray.length; i++) {
-  			for (int j = 0; j < matrixArray[0].length; j++) {
-  				System.out.print(matrixArray[i][j] + " ");
-  			}
-  			Log.debug("\n");
-  		}
-  	}
 }
 
