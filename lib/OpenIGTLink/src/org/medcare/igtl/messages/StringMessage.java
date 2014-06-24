@@ -50,7 +50,7 @@ public class StringMessage extends OpenIGTMessage{
 		long calculated_crc = BytesArray.crc64(body, body.length, 0L);
 		long recvd_crc = head.getCrc();
 		
-		//System.out.println("String: Calculated CRC=" + calculated_crc + "REceived CRC=" + recvd_crc );
+		System.out.println("String: Calculated CRC=" + calculated_crc + "REceived CRC=" + recvd_crc );
 	}
 	
 	void setMessage(String msg){
@@ -62,7 +62,8 @@ public class StringMessage extends OpenIGTMessage{
 		// TODO Auto-generated method stub
 		encoding  = ByteBuffer.wrap(getBody(), 0,2).getShort();
 		length = ByteBuffer.wrap(getBody(), 2,2).getShort();
-		message = new String(getBody() , 4, getBody().length-4);
+		//TODO always US-ASCII may be need to update if required
+		message = new String(getBody() , 4, getBody().length-4, "US-ASCII");
 		message = message.trim();
 		return true;
 	}

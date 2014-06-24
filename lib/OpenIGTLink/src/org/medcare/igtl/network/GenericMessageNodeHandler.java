@@ -77,7 +77,7 @@ public class GenericMessageNodeHandler {
         	*/
         	//For string message we have to skip first 4 bytes as 0-1:ENcodinng and 1-2:Length
         	//currently using only US-ASCII encoding and we don't need length
-        	String msgBody = new String(body,4,body.length-4,"US-ASCII");	
+        	String msgBody = strMsg.getMessage(); //new String(body,4,body.length-4,"US-ASCII");	
 
         	node.onRxString(openIGTMessage.getDeviceName(), msgBody);// this is a non functional stub	
         }else if (messageType.equals("GET_STATUS")) {
