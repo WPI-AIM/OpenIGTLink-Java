@@ -43,7 +43,7 @@ public class ServerSample implements IOpenIgtPacketListener {
 					//Log.debug("Push");
 					//server.pushPose("TransformPush", t);
 					float data[] = {(float) 1.0, (float) 2.12231233, (float) 4.5};
-					server.sendMessage(new NDArrayMessage("TEMP", data) );
+					//server.sendMessage(new NDArrayMessage("TEMP", data) );
 				}else{
 					Log.debug("Wait");
 				}
@@ -92,6 +92,7 @@ public class ServerSample implements IOpenIgtPacketListener {
 	@Override
 	public void onRxString(String name, String body) {
 		// TODO Auto-generated method stub
+		System.out.println("Device Name = " + name + " body=" + body);
 	}
 
 	@Override

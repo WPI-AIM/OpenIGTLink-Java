@@ -63,7 +63,7 @@ public class StringMessage extends OpenIGTMessage{
 		encoding  = ByteBuffer.wrap(getBody(), 0,2).getShort();
 		length = ByteBuffer.wrap(getBody(), 2,2).getShort();
 		message = new String(getBody() , 4, getBody().length-4);
-		
+		message = message.trim();
 		return true;
 	}
 
