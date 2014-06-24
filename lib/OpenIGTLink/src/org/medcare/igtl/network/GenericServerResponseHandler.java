@@ -23,6 +23,7 @@ public class GenericServerResponseHandler extends MessageHandler {
 		capabilityList.add("STATUS");
 		capabilityList.add("GET_STATUS");
 		capabilityList.add("GET_TRANS");
+		capabilityList.add("NDARRAY");
 		
 		this.server=server;
 	}

@@ -91,44 +91,8 @@ public class ClientSample implements IOpenIgtPacketListener {
 
 	public static void parseXMLStringMessage(String msg){
 		// TODO Auto-generated method stub
-		 DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-		    DocumentBuilder builder;
-			try {
-				builder = factory.newDocumentBuilder();
-			    InputSource is = new InputSource(new StringReader(msg));
-			    Document data = builder.parse(is);
-			    Element xmlNode = data.getDocumentElement();
-			    StringBuffer treeData = new StringBuffer();
-			    traverseNode(xmlNode, treeData);
-			    System.out.println("TreeData = " + treeData.toString());
-			} catch (Exception e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
 	}
 	
-	public static void traverseNode (Node n, StringBuffer treeData)
-	  {
-	    String nodename = n.getNodeName();
-	    String test = n.getNodeValue();
-	    System.out.println ("Node: " + n.getNodeName());
-	    treeData.append("Node: " + n.getNodeName());
-	    NamedNodeMap atts = n.getAttributes();
-	    
-	    for( int i=0;i<atts.getLength();i++){
-	    	Node tempNode = atts.item(i);
-	    	System.out.println( "Name ="+ tempNode.getNodeName() + " : Value = " + tempNode.getNodeValue());
-	    	treeData.append("Name ="+ tempNode.getNodeName() + " : Value = " + tempNode.getNodeValue());
-	    }
-
-	    if (n.hasChildNodes()) {
-	      NodeList nl = n.getChildNodes();
-	      int size = nl.getLength();
-	      for (int i=0; i<size; i++){
-	    	  traverseNode (nl.item(i), treeData);
-	      }
-	    }
-	  }
 
 	@Override
 	public String onTxString(String name) {
