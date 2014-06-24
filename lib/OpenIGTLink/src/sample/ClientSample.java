@@ -1,9 +1,21 @@
 package sample;
+import java.io.StringReader;
+
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+
 import com.neuronrobotics.sdk.common.Log;
 import org.medcare.igtl.messages.ImageMessage;
 import org.medcare.igtl.network.GenericIGTLinkClient;
 import org.medcare.igtl.network.IOpenIgtPacketListener;
 import org.medcare.igtl.util.Status;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.NamedNodeMap;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+import org.xml.sax.InputSource;
 
 import Jama.Matrix;
 
@@ -14,10 +26,14 @@ public class ClientSample implements IOpenIgtPacketListener {
 	 * @param args
 	 */
 	public static void main(String[] args) {
+		String msg = "<Command Name=\"SomeCommandName\" SomeAttribute1=\"attribute value 1\" SomeAttribute2=\"123\"><Param name=\"Param1\"/><Param name=\"Param2\"/></Command>";
+
+		ClientSample.parseXMLStringMessage(msg);
 		GenericIGTLinkClient client;
 		try {
 			Log.enableDebugPrint(true);
 			Log.enableSystemPrint(true);
+			
 			Log.debug("Starting client");
 			client = new GenericIGTLinkClient ("127.0.0.1",18944);
 			client.addIOpenIgtOnPacket(new ClientSample());	
@@ -71,9 +87,48 @@ public class ClientSample implements IOpenIgtPacketListener {
 
 	@Override
 	public void onRxString(String name, String body) {
+	}	
+
+	public static void parseXMLStringMessage(String msg){
 		// TODO Auto-generated method stub
-		
+		 DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+		    DocumentBuilder builder;
+			try {
+				builder = factory.newDocumentBuilder();
+			    InputSource is = new InputSource(new StringReader(msg));
+			    Document data = builder.parse(is);
+			    Element xmlNode = data.getDocumentElement();
+			    StringBuffer treeData = new StringBuffer();
+			    traverseNode(xmlNode, treeData);
+			    System.out.println("TreeData = " + treeData.toString());
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 	}
+	
+	public static void traverseNode (Node n, StringBuffer treeData)
+	  {
+	    String nodename = n.getNodeName();
+	    String test = n.getNodeValue();
+	    System.out.println ("Node: " + n.getNodeName());
+	    treeData.append("Node: " + n.getNodeName());
+	    NamedNodeMap atts = n.getAttributes();
+	    
+	    for( int i=0;i<atts.getLength();i++){
+	    	Node tempNode = atts.item(i);
+	    	System.out.println( "Name ="+ tempNode.getNodeName() + " : Value = " + tempNode.getNodeValue());
+	    	treeData.append("Name ="+ tempNode.getNodeName() + " : Value = " + tempNode.getNodeValue());
+	    }
+
+	    if (n.hasChildNodes()) {
+	      NodeList nl = n.getChildNodes();
+	      int size = nl.getLength();
+	      for (int i=0; i<size; i++){
+	    	  traverseNode (nl.item(i), treeData);
+	      }
+	    }
+	  }
 
 	@Override
 	public String onTxString(String name) {
