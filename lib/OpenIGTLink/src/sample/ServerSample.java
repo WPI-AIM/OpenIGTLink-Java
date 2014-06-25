@@ -177,7 +177,7 @@ public class ServerSample implements IOpenIgtPacketListener {
 		// TODO Auto-generated method stub
 		Log.debug("Name" + name);
 		for(int i=0;i<data.length;i++){
-			Log.debug("Data[" + i + "]=" + data[i]);
+			Log.debug("Data[" + i + "]=" + (double)data[i]);
 		}
 	}
 

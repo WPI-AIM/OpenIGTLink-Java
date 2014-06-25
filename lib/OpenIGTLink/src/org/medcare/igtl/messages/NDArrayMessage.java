@@ -151,7 +151,6 @@ public class NDArrayMessage extends OpenIGTMessage {
   		if( type == TYPE_FLOAT32 ){
   			set1D_FloatData();
   		}
-  		System.out.println("NDARRAY MESSAGE=" + toString());
   		return true;
       }
 

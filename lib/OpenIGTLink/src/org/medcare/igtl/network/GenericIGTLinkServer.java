@@ -264,6 +264,8 @@ public class GenericIGTLinkServer extends OpenIGTServer implements IOpenIgtPacke
 	@Override
 	public void onRxNDArray(String name, float[] data) {
 		// TODO Auto-generated method stub
-		
+		for(IOpenIgtPacketListener l:listeners){
+			l.onRxNDArray(name, data);
+		}		
 	}
 }
