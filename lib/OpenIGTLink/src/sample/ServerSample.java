@@ -1,5 +1,6 @@
 package sample;
 import java.io.StringReader;
+import java.util.HashMap;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -8,9 +9,11 @@ import com.neuronrobotics.sdk.common.Log;
 import org.medcare.igtl.messages.ImageMessage;
 import org.medcare.igtl.messages.NDArrayMessage;
 import org.medcare.igtl.messages.StringMessage;
+import org.medcare.igtl.messages.TransformMessage;
 import org.medcare.igtl.network.GenericIGTLinkServer;
 import org.medcare.igtl.network.IOpenIgtPacketListener;
 import org.medcare.igtl.util.Header;
+import org.medcare.igtl.util.IGTImage;
 import org.medcare.igtl.util.Status;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -28,6 +31,7 @@ public class ServerSample implements IOpenIgtPacketListener {
 	/**
 	 * @param args
 	 */
+	
 	public static void main(String[] args) {
 		GenericIGTLinkServer server;
 		Log.enableDebugPrint(true);
@@ -47,6 +51,7 @@ public class ServerSample implements IOpenIgtPacketListener {
 			Log.debug("Pushing packet");
 			//Create an identify matrix
 			TransformNR t = new TransformNR();
+			
 			//Push a transform object upstream
 			while(true){
 				Thread.sleep(1000);
@@ -54,7 +59,11 @@ public class ServerSample implements IOpenIgtPacketListener {
 					//Log.debug("Push");
 					//server.pushPose("TransformPush", t);
 					float data[] = {(float) 1.0, (float) 2.12231233, (float) 4.5};
-					//server.sendMessage(new NDArrayMessage("TEMP", data) );
+					
+					server.sendMessage(new StringMessage("CMD_001", "Hello World") );
+					double position[] = t.getPositionArray();
+					position[0] = -1.23456;
+					server.sendMessage(new TransformMessage("TGT_001", position , t.getRotationMatrixArray()));
 				}else{
 					Log.debug("Wait");
 				}
@@ -65,10 +74,16 @@ public class ServerSample implements IOpenIgtPacketListener {
 		}
 		
 	}
-
+	HashMap<String, Object> IGTData = null;
+	public ServerSample(){
+		IGTData = new HashMap<String, Object>();
+		
+		IGTData.put("theta", 0);
+		IGTData.put("insertion_depth", 2.0);
+	}
 	@Override
 	public void onRxTransform(String name, TransformNR t) {
-		Log.debug("Received Transform: "+t);  
+		Log.debug("Received Transform with name: " + name + "and transform:" +t);  
 		
 		if(name.equals("RegistrationTransform") || name.equals("CALIBRATION")){
 			System.err.println("Received Registration Transform");
@@ -100,9 +115,11 @@ public class ServerSample implements IOpenIgtPacketListener {
 	}
 	@Override
 	public void onRxString(String name, String body) {
-		// TODO Auto-generated method stub
-		System.out.println("Device Name = " + name + " body=" + body);
-		 DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+		//check if its XML format message
+		if(body.startsWith("<") && body.endsWith("/>")){
+			// TODO Auto-generated method stub
+			System.out.println("Device Name = " + name + " body=" + body);
+			DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
 		    DocumentBuilder builder;
 			try {
 				builder = factory.newDocumentBuilder();
@@ -111,27 +128,28 @@ public class ServerSample implements IOpenIgtPacketListener {
 			    Element xmlNode = data.getDocumentElement();
 			    StringBuffer treeData = new StringBuffer();
 			    traverseNode(xmlNode, treeData);
-			    System.out.println("TreeData = " + treeData.toString());
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
+		}
 	}
-	public static void traverseNode (Node n, StringBuffer treeData)
+	public void traverseNode (Node n, StringBuffer treeData)
 	{
-	    String nodename = n.getNodeName();
-	    String test = n.getNodeValue();
-	    System.out.println ("Node: " + n.getNodeName());
-	    treeData.append("Node: " + n.getNodeName());
-	    NamedNodeMap atts = n.getAttributes();
-	    
 	    if( n.getNodeName().equalsIgnoreCase("command") ){
-		    for( int i=0;i<atts.getLength();i++){
-		    	Node tempNode = atts.item(i);
-		    	System.out.println( "Name ="+ tempNode.getNodeName() + " : Value = " + tempNode.getNodeValue());
-		    	treeData.append("Name ="+ tempNode.getNodeName() + " : Value = " + tempNode.getNodeValue());
+		    NamedNodeMap atts = n.getAttributes();
+	    	Node tempNode = atts.item(0);
+	    	if( tempNode.getNodeName().equalsIgnoreCase("Name")){
+	    		if( tempNode.getNodeValue().equalsIgnoreCase("setVar")){
+				    for( int i=1;i<atts.getLength();i++){
+				    	tempNode = atts.item(i);
+				    	if( IGTData.containsKey(tempNode.getNodeName()) ){
+					    	System.out.println( "Name ="+ tempNode.getNodeName() + " : Value = " + tempNode.getNodeValue());
+				    		IGTData.put(tempNode.getNodeName(), tempNode.getNodeValue());
+				    	}
+				    }
+				}
 		    }
-	
 		    if (n.hasChildNodes()) {
 		      NodeList nl = n.getChildNodes();
 		      int size = nl.getLength();
