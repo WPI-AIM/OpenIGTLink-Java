@@ -60,10 +60,14 @@ public class ServerSample implements IOpenIgtPacketListener {
 					//server.pushPose("TransformPush", t);
 					float data[] = {(float) 1.0, (float) 2.12231233, (float) 4.5};
 					
-					server.sendMessage(new StringMessage("CMD_001", "Hello World") );
+					//server.sendMessage(new StringMessage("CMD_001", "Hello World") );
 					double position[] = t.getPositionArray();
-					position[0] = -1.23456;
-					server.sendMessage(new TransformMessage("TGT_001", position , t.getRotationMatrixArray()));
+					position[0] =position[0]+1;
+					position[1] =position[1]+1;
+					position[2] =Math.random()*100;
+					double rotation[][] = t.getRotationMatrixArray();
+					rotation[0][1] = Math.random();
+					server.sendMessage(new TransformMessage("TGT_001", position ,rotation ));
 				}else{
 					Log.debug("Wait");
 				}
