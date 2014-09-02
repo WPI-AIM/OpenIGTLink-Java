@@ -23,6 +23,7 @@ import java.net.UnknownHostException;
 
 import javax.net.SocketFactory;
 
+import org.medcare.igtl.messages.OpenIGTMessage;
 import org.medcare.igtl.util.ErrorManager;
 import org.medcare.igtl.util.Header;
 import org.medcare.igtl.util.Status;
@@ -160,6 +161,19 @@ public abstract class OpenIGTClient extends Thread {
 	public void setSocketFactory(SocketFactory socketFactory) {
 		this.socketFactory = socketFactory;
 	}
+	
+	public void sendMessage(OpenIGTMessage message) throws Exception {
+		// TODO Auto-generated method stub
+		sendMessage(message.getHeader(), message.getBody());
+		//System.out.println("Message: Header=" + message.getHeader().toString() + " Body=" + message.getBody().toString());
+	}
+	public void sendMessage(Header header, byte[] body) throws Exception {
+		sendBytes(header.getBytes());
+		sendBytes(body);
+		Log.debug("Client Sending Message: Header=" + header.toString() + " Body=" + body.toString());
+	}
+
+
 
 	/***************************************************************************
 	 * Sends bytes
@@ -190,6 +204,12 @@ public abstract class OpenIGTClient extends Thread {
 	 **************************************************************************/
 	public void interrupt() {
 		alive = false;
+		try {
+			socket.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	/**

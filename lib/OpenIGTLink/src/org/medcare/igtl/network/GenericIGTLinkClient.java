@@ -1,8 +1,16 @@
 package org.medcare.igtl.network;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.Queue;
 
 import org.medcare.igtl.messages.ImageMessage;
+import org.medcare.igtl.messages.NDArrayMessage;
+import org.medcare.igtl.messages.OpenIGTMessage;
+import org.medcare.igtl.messages.PositionMessage;
+import org.medcare.igtl.messages.StatusMessage;
+import org.medcare.igtl.messages.StringMessage;
+import org.medcare.igtl.messages.TransformMessage;
 import org.medcare.igtl.util.ErrorManager;
 import org.medcare.igtl.util.Header;
 import org.medcare.igtl.util.Status;
@@ -16,7 +24,7 @@ import Jama.Matrix;
 public class GenericIGTLinkClient extends OpenIGTClient implements IOpenIgtPacketListener
 {
 	ArrayList<IOpenIgtPacketListener> listeners = new ArrayList<IOpenIgtPacketListener>();
-
+	Sender s = new Sender();
 	public GenericIGTLinkClient(String hostName, int port) throws Exception{
 		super(hostName, port, new ErrorManager(){
 
@@ -26,6 +34,8 @@ public class GenericIGTLinkClient extends OpenIGTClient implements IOpenIgtPacke
 			}
 		});
 		Log.debug("GenericIGTLinkClient started");
+		s.start();
+
 	}
 
 	@Override
@@ -34,6 +44,7 @@ public class GenericIGTLinkClient extends OpenIGTClient implements IOpenIgtPacke
 		return new GenericClientResponseHandler(header,bodyBuf,this,this);
 	}
 
+	
 	/**
 	 * This method will be called by the IGT server when a transform is received. Supports:
 	 * TRANSFORM
@@ -128,21 +139,6 @@ public class GenericIGTLinkClient extends OpenIGTClient implements IOpenIgtPacke
 		}
 	}
 	
-	public void stopClient(){
-		interrupt();
-		while(isConnected());
-	}
-
-
-	public void addIOpenIgtOnPacket(IOpenIgtPacketListener l){
-		if(!listeners.contains(l))
-			listeners.add(l);
-	}
-	public void removeIOpenIgtOnPacket(IOpenIgtPacketListener l){
-		if(listeners.contains(l))
-			listeners.remove(l);
-	}
-
 	@Override
 	public void onTxNDArray(String name) {
 		// TODO Auto-generated method stub
@@ -154,9 +150,121 @@ public class GenericIGTLinkClient extends OpenIGTClient implements IOpenIgtPacke
 		// TODO Auto-generated method stub
 		for(IOpenIgtPacketListener l:listeners){
 			l.onRxNDArray(name, data);
-		}
+		}		
 	}
 
+	public void stopClient(){
+		interrupt();
+		while(isConnected());
+		
+		Log.debug("Stopped IGTLink client");
+	}
+
+
+	public void addIOpenIgtOnPacket(IOpenIgtPacketListener l){
+		if(!listeners.contains(l))
+			listeners.add(l);
+	}
+	public void removeIOpenIgtOnPacket(IOpenIgtPacketListener l){
+		if(listeners.contains(l))
+			listeners.remove(l);
+	}
+	
+	public void pushPose(String deviceName, TransformNR pose){
+		PositionMessage  poseMsg = new PositionMessage (deviceName,pose.getPositionArray(), pose.getRotationMatrix());
+		s.onTaskSpaceUpdate(poseMsg);
+	}
+	public void pushStatus(String deviceName, int code, int subCode, String status){
+		StatusMessage statMsg = new StatusMessage(deviceName, code, subCode, status);
+		s.onStatus(statMsg);
+	}
+	public void pushStatus(String deviceName, int code, int subCode, String errorName, String status){
+		StatusMessage statMsg = new StatusMessage(deviceName, code, subCode, errorName, status);
+		s.onStatus(statMsg);
+	}
+	public void pushStringMessage(String deviceName, String msg){
+		StringMessage strMsg = new StringMessage(deviceName , msg);
+		s.onStringMessage(strMsg);
+	}
+	public void pushTransformMessage( String deviceName, TransformNR t){
+		TransformMessage transMsg = new TransformMessage(deviceName, t.getPositionArray(), t.getRotationMatrixArray());
+		transMsg.PackBody();
+		s.onTransformMessage(transMsg);
+	}
+	public void pushNDArrayMessage( String deviceName, float[] data){
+		NDArrayMessage ndArrayMsg = new NDArrayMessage(deviceName, data);				
+		s.onNDArrayMessage(ndArrayMsg);
+	}
+	
+	public class Sender extends Thread{
+		private Queue<OpenIGTMessage> messageQueue = new LinkedList<OpenIGTMessage>();
+		TransformMessage curPos = null;
+		
+		public synchronized void onTaskSpaceUpdate( PositionMessage msg){
+			messageQueue.add(msg);
+		}
+		public void onStatus(StatusMessage msg) {
+			//by pass Queue if its STOP or EMERGENCY message
+			//if( msg.deviceName == "STOP" ||  msg.deviceName == "EMERGENCY"){
+			//	sendMessage(msg);
+			//}else{
+				messageQueue.add(msg);
+			//}
+		}
+		public void onStringMessage(StringMessage msg){
+			//by pass Queue if its STOP or EMERGENCY message
+			//if( msg.getMessage() == "STOP" || msg.getMessage() == "EMERGENCY"){
+			//	sendMessage(msg);
+			//}else{
+				messageQueue.add(msg);
+			//}
+		}
+		public void onTransformMessage(TransformMessage msg){
+			if( msg.deviceName == "CURRENT_POSITION"){
+				curPos = msg;
+			}
+			else{
+				messageQueue.add(msg);
+			}
+		}
+		public void onNDArrayMessage(NDArrayMessage msg){
+				messageQueue.add(msg);
+		}
+		
+		public void run(){
+			while(isConnected()){
+				/*try {
+					Thread.sleep(500);
+				} catch (InterruptedException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}*/
+				//take out a message from Queue and send it
+				try {
+					if( messageQueue.size() > 0){
+						Log.debug("Number of messages in Queue = " + messageQueue.size());
+					}
+					OpenIGTMessage msg = messageQueue.poll();
+					if(msg!=null ){
+						sendMessage(msg);
+					}
+					else if( curPos !=null ){
+						sendMessage(curPos);
+						curPos = null;
+					}
+				} catch (Exception e) {
+					if( !messageQueue.isEmpty() ){
+						messageQueue.clear(); //clear message queue if ws not able to send as that is a connection problem
+						Log.debug("Clearing Message Sender Queue ; Number of messages in Queue = " + messageQueue.size());
+					}
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+			Log.debug("Stopped IGTLink client Sender");
+
+		}
+	}
 }
 
 

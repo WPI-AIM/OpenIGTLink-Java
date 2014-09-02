@@ -12,6 +12,7 @@ import javax.net.ssl.SSLEngineResult.Status;
 
 import org.medcare.igtl.messages.DataArrayMessage;
 import org.medcare.igtl.messages.ImageMessage;
+import org.medcare.igtl.messages.NDArrayMessage;
 import org.medcare.igtl.messages.OpenIGTMessage;
 import org.medcare.igtl.messages.PositionMessage;
 import org.medcare.igtl.messages.StatusMessage;
@@ -145,7 +146,20 @@ public class GenericIGTLinkServer extends OpenIGTServer implements IOpenIgtPacke
 		}
 	}
 	
-	
+	@Override
+	public void onTxNDArray(String name) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void onRxNDArray(String name, float[] data) {
+		// TODO Auto-generated method stub
+		for(IOpenIgtPacketListener l:listeners){
+			l.onRxNDArray(name, data);
+		}		
+	}
+
 	public void addIOpenIgtOnPacket(IOpenIgtPacketListener l){
 		if(!listeners.contains(l))
 			listeners.add(l);
@@ -175,6 +189,10 @@ public class GenericIGTLinkServer extends OpenIGTServer implements IOpenIgtPacke
 		TransformMessage transMsg = new TransformMessage(deviceName, t.getPositionArray(), t.getRotationMatrixArray());
 		transMsg.PackBody();
 		s.onTransformMessage(transMsg);
+	}
+	public void pushNDArrayMessage( String deviceName, float[] data){
+		NDArrayMessage ndArrayMsg = new NDArrayMessage(deviceName, data);				
+		s.onNDArrayMessage(ndArrayMsg);
 	}
 	
 	public class sender extends Thread{
@@ -208,6 +226,10 @@ public class GenericIGTLinkServer extends OpenIGTServer implements IOpenIgtPacke
 				messageQueue.add(msg);
 			}
 		}
+		public void onNDArrayMessage(NDArrayMessage msg){
+				messageQueue.add(msg);
+		}
+		
 		public void run(){
 			while(true){
 				while(getServerThread()==null || getServerThread().isAlive()==false){
@@ -255,17 +277,4 @@ public class GenericIGTLinkServer extends OpenIGTServer implements IOpenIgtPacke
 		}
 	}
 
-	@Override
-	public void onTxNDArray(String name) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void onRxNDArray(String name, float[] data) {
-		// TODO Auto-generated method stub
-		for(IOpenIgtPacketListener l:listeners){
-			l.onRxNDArray(name, data);
-		}		
-	}
 }
