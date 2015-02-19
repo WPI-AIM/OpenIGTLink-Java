@@ -33,14 +33,14 @@ public class ImageMessage extends OpenIGTMessage {
 	public static int IGTL_IMAGE_HEADER_SIZE = 72;
 	public static int IGTL_IMAGE_HEADER_VERSION = 1;
 
-	public static int COORDINATE_LPS = 0;
 	public static int COORDINATE_RAS = 1;
+	public static int COORDINATE_LPS = 2;
 
-	public static int ENDIAN_BIG = 0;
-	public static int ENDIAN_LITTLE = 1;
+	public static int ENDIAN_BIG = 1;
+	public static int ENDIAN_LITTLE = 2;
 
 	public static int DTYPE_SCALAR = 1;
-	public static int DTYPE_VECTOR = 2;
+	public static int DTYPE_VECTOR = 3;
 
 	public static final int TYPE_INT8 = 2;
 	public static final int TYPE_UINT8 = 3;

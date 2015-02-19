@@ -115,7 +115,8 @@ public class ClientSample implements IOpenIgtPacketListener {
 	@Override
 	public void onRxImage(String name, ImageMessage image) {
 		// TODO Auto-generated method stub
-		
+		System.out.println("Received Image Message: Device name : " + name);
+		System.out.println("Data:" + image.toString());
 	}
 
 	@Override
