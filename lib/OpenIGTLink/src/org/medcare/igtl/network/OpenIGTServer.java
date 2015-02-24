@@ -242,6 +242,14 @@ public abstract class OpenIGTServer {
 			this.currentStatus = currentStatus;
 		}
 		
+		public int getPort() {
+			return port;
+		}
+
+		public void setPort(int port) {
+			this.port = port;
+		}
+
 		public boolean isConnected(){
 			if( currentStatus == ServerStatus.CONNECTED ){
 				return true;
