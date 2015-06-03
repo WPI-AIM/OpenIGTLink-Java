@@ -31,7 +31,7 @@ public class ClientSample implements IOpenIgtPacketListener {
 		ClientSample.parseXMLStringMessage(msg);
 		GenericIGTLinkClient client;
 		try {
-			Log.enableDebugPrint(true);
+			Log.enableDebugPrint();
 			Log.enableSystemPrint(true);
 			
 			Log.debug("Starting client");

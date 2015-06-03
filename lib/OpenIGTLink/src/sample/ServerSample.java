@@ -34,7 +34,7 @@ public class ServerSample implements IOpenIgtPacketListener {
 	
 	public static void main(String[] args) {
 		GenericIGTLinkServer server;
-		Log.enableDebugPrint(true);
+		Log.enableDebugPrint();
 		Log.enableSystemPrint(true);
 
 		try {
