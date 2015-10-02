@@ -1,4 +1,5 @@
 package sample;
+import java.io.FileInputStream;
 import java.io.StringReader;
 import java.util.HashMap;
 
@@ -6,6 +7,7 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
 import com.neuronrobotics.sdk.common.Log;
+
 import org.medcare.igtl.messages.ImageMessage;
 import org.medcare.igtl.messages.NDArrayMessage;
 import org.medcare.igtl.messages.StringMessage;
@@ -56,8 +58,43 @@ public class ServerSample implements IOpenIgtPacketListener {
 			while(true){
 				Thread.sleep(1000);
 				if(server.isConnected()){
+					//create an Image message from the PAR/REC file and send it to probably slicer
+					ImageMessage img = new ImageMessage("IMG_003");
+					long dims[] = {288,288,1}; 
+					double org[] = {-125.199996948242, 10.1999998092651, -12.3999996185303};
+					double norms[][] = new double[3][3];
+					norms[0][0] = 1;
+					norms[1][1] = 1;
+					norms[2][2] = 1;
+					
+					long subOffset[] = new long[3]; // Unsigned int 16bits
+					long subDimensions[] = new long[3]; // Unsigned int 16bits
+
+					img.setImageHeader(1, ImageMessage.DTYPE_SCALAR, ImageMessage.TYPE_UINT16, ImageMessage.ENDIAN_LITTLE, ImageMessage.COORDINATE_RAS, dims , org, norms, subOffset, dims);
+					
+					//read data from the file and set as Image Data
+					FileInputStream recFile = new FileInputStream("C:/ImageMsg/img001.REC");
+					int sliceSizeinBytes = (int)(2*dims[0]*dims[1]);
+					byte imageData[] = new byte[sliceSizeinBytes];
+					recFile.skip(sliceSizeinBytes);
+					recFile.read(imageData,0, sliceSizeinBytes);
+					System.out.println("PRINTG *********************************************");
+					recFile.close();
+					
+					for(int i=0;i<imageData.length;i++){
+						imageData[i] = (byte)127;
+						//if(imageData[i]>0)
+								System.out.print(imageData[i] + ",");
+					}
+
+					System.out.println(";");
+					System.out.println("PRINTG *********************************************");
+					
+
+					img.setImageData(imageData);
+					img.PackBody();
 					//Log.debug("Push");
-					//server.pushPose("TransformPush", t);
+/*					//server.pushPose("TransformPush", t);
 					float data[] = {(float) 1.0, (float) 2.12231233, (float) 4.5};
 					
 					//server.sendMessage(new StringMessage("CMD_001", "Hello World") );
@@ -66,8 +103,10 @@ public class ServerSample implements IOpenIgtPacketListener {
 					position[1] =position[1]+1;
 					position[2] =Math.random()*100;
 					double rotation[][] = t.getRotationMatrixArray();
-					rotation[0][1] = Math.random();
-					server.sendMessage(new TransformMessage("TGT_001", position ,rotation ));
+					rotation[0][1] = Math.random();*/
+					
+					//server.sendMessage(new TransformMessage("TGT_001", position ,rotation ));
+					server.sendMessage(img);
 				}else{
 					Log.debug("Wait");
 				}
