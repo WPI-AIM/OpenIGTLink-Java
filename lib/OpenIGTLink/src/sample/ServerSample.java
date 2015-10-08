@@ -1,6 +1,9 @@
 package sample;
 import java.io.FileInputStream;
 import java.io.StringReader;
+import java.nio.ByteBuffer;
+import java.nio.ByteOrder;
+import java.nio.ShortBuffer;
 import java.util.HashMap;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -27,6 +30,7 @@ import org.xml.sax.InputSource;
 import Jama.Matrix;
 
 import com.neuronrobotics.sdk.addons.kinematics.math.TransformNR;
+import com.sun.xml.internal.ws.encoding.MtomCodec.ByteArrayBuffer;
 
 public class ServerSample implements IOpenIgtPacketListener {
 
@@ -59,9 +63,9 @@ public class ServerSample implements IOpenIgtPacketListener {
 				Thread.sleep(1000);
 				if(server.isConnected()){
 					//create an Image message from the PAR/REC file and send it to probably slicer
-					ImageMessage img = new ImageMessage("IMG_003");
-					long dims[] = {288,288,1}; 
-					double org[] = {-125.199996948242, 10.1999998092651, -12.3999996185303};
+					ImageMessage img = new ImageMessage("IMG_004");
+					long dims[] = {1,100,100}; 
+					double org[] = {0,0,0};//dims[0]/2, dims[1]/2, dims[2]/2};
 					double norms[][] = new double[3][3];
 					norms[0][0] = 1;
 					norms[1][1] = 1;
@@ -70,31 +74,30 @@ public class ServerSample implements IOpenIgtPacketListener {
 					long subOffset[] = new long[3]; // Unsigned int 16bits
 					long subDimensions[] = new long[3]; // Unsigned int 16bits
 
-					img.setImageHeader(1, ImageMessage.DTYPE_SCALAR, ImageMessage.TYPE_UINT16, ImageMessage.ENDIAN_LITTLE, ImageMessage.COORDINATE_RAS, dims , org, norms, subOffset, dims);
+					img.setImageHeader(1, ImageMessage.DTYPE_SCALAR, ImageMessage.TYPE_UINT8, ImageMessage.ENDIAN_LITTLE, ImageMessage.COORDINATE_RAS, dims , org, norms, subOffset, dims);
 					
 					//read data from the file and set as Image Data
 					FileInputStream recFile = new FileInputStream("C:/ImageMsg/img001.REC");
-					int sliceSizeinBytes = (int)(2*dims[0]*dims[1]);
-					byte imageData[] = new byte[sliceSizeinBytes];
-					recFile.skip(sliceSizeinBytes);
-					recFile.read(imageData,0, sliceSizeinBytes);
-					System.out.println("PRINTG *********************************************");
-					recFile.close();
-					
-					for(int i=0;i<imageData.length;i++){
-						imageData[i] = (byte)127;
-						//if(imageData[i]>0)
-								System.out.print(imageData[i] + ",");
+					byte imageData16[] = new byte[(int) (dims[0]*dims[1]*dims[2])];
+					for(int i=0;i<imageData16.length;i++){
+						imageData16[i] = (byte) (Math.random()*127);
 					}
-
+					
+				//	byte imageData[] = new byte[imageData16.length*Short.BYTES];
+				//	ByteBuffer.wrap(imageData).order(ByteOrder.LITTLE_ENDIAN).asShortBuffer().put(imageData16);
+					//int sliceSizeinBytes = (int)(1*dims[0]*dims[1]);
+					//recFile.skip(sliceSizeinBytes);
+					//recFile.read(imageData,0, sliceSizeinBytes);
+					System.out.println("PRINTG *********************************************");
+					//recFile.close();
 					System.out.println(";");
 					System.out.println("PRINTG *********************************************");
 					
 
-					img.setImageData(imageData);
+					img.setImageData(imageData16);
 					img.PackBody();
 					//Log.debug("Push");
-/*					//server.pushPose("TransformPush", t);
+				//	server.pushPose("TransformPush", t);
 					float data[] = {(float) 1.0, (float) 2.12231233, (float) 4.5};
 					
 					//server.sendMessage(new StringMessage("CMD_001", "Hello World") );
@@ -103,9 +106,9 @@ public class ServerSample implements IOpenIgtPacketListener {
 					position[1] =position[1]+1;
 					position[2] =Math.random()*100;
 					double rotation[][] = t.getRotationMatrixArray();
-					rotation[0][1] = Math.random();*/
+					rotation[0][1] = Math.random();
 					
-					//server.sendMessage(new TransformMessage("TGT_001", position ,rotation ));
+					server.sendMessage(new TransformMessage("TGT_001", position ,rotation ));
 					server.sendMessage(img);
 				}else{
 					Log.debug("Wait");
@@ -223,7 +226,7 @@ public class ServerSample implements IOpenIgtPacketListener {
 
 	@Override
 	public void onRxImage(String name, ImageMessage image) {
-		// TODO Auto-generated method stub
+		System.out.println(image.toString());
 		
 	}
 

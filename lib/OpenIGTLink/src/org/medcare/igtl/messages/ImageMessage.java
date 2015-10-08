@@ -190,14 +190,14 @@ public class ImageMessage extends OpenIGTMessage {
 		bytesArray.putULong(dimensions[0], 2);
 		bytesArray.putULong(dimensions[1], 2);
 		bytesArray.putULong(dimensions[2], 2);
-		setOrigin(origin);
-		bytesArray.putDouble(origin[0], 4);
-		bytesArray.putDouble(origin[1], 4);
-		bytesArray.putDouble(origin[2], 4);
 		setNormals(normals);
 		for (int i = 0; i < 3; i++)
 			for (int j = 0; j < 3; j++)
 				bytesArray.putDouble(normals[i][j], 4);
+		setOrigin(origin);
+		bytesArray.putDouble(origin[0], 4);
+		bytesArray.putDouble(origin[1], 4);
+		bytesArray.putDouble(origin[2], 4);
 		setMatrix(origin, normals);
 		if (setSubVolume(subDimensions, subOffset)) {
 			bytesArray.putULong(subOffset[0], 2);
