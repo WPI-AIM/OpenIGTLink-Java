@@ -64,41 +64,42 @@ public class ServerSample implements IOpenIgtPacketListener {
 				if(server.isConnected()){
 					//create an Image message from the PAR/REC file and send it to probably slicer
 					ImageMessage img = new ImageMessage("IMG_004");
-					long dims[] = {1,100,100}; 
-					double org[] = {0,0,0};//dims[0]/2, dims[1]/2, dims[2]/2};
+					long dims[] = {288,288,2}; 
+					double org[] = {dims[0]/2, dims[1]/2, dims[2]/2};
 					double norms[][] = new double[3][3];
-					norms[0][0] = 1;
-					norms[1][1] = 1;
-					norms[2][2] = 1;
+					norms[0][0] = 0.417;
+					norms[1][1] = 0.417;
+					norms[2][2] = 6;
 					
 					long subOffset[] = new long[3]; // Unsigned int 16bits
 					long subDimensions[] = new long[3]; // Unsigned int 16bits
 
-					img.setImageHeader(1, ImageMessage.DTYPE_SCALAR, ImageMessage.TYPE_UINT8, ImageMessage.ENDIAN_LITTLE, ImageMessage.COORDINATE_RAS, dims , org, norms, subOffset, dims);
+					img.setImageHeader(1, ImageMessage.DTYPE_SCALAR, ImageMessage.TYPE_UINT16, ImageMessage.ENDIAN_LITTLE, ImageMessage.COORDINATE_RAS, dims , org, norms, subOffset, dims);
 					
 					//read data from the file and set as Image Data
 					FileInputStream recFile = new FileInputStream("C:/ImageMsg/img001.REC");
-					byte imageData16[] = new byte[(int) (dims[0]*dims[1]*dims[2])];
+					/*byte imageData16[] = new byte[(int) (dims[0]*dims[1]*dims[2])];
 					for(int i=0;i<imageData16.length;i++){
 						imageData16[i] = (byte) (Math.random()*127);
-					}
+					}*/
 					
-				//	byte imageData[] = new byte[imageData16.length*Short.BYTES];
+					byte imageData[] = new byte[(int)(dims[0]*dims[1]*dims[2])*Short.BYTES];
+					System.out.println("Size of ImageData=" + imageData.length);
 				//	ByteBuffer.wrap(imageData).order(ByteOrder.LITTLE_ENDIAN).asShortBuffer().put(imageData16);
 					//int sliceSizeinBytes = (int)(1*dims[0]*dims[1]);
 					//recFile.skip(sliceSizeinBytes);
-					//recFile.read(imageData,0, sliceSizeinBytes);
+					recFile.read(imageData,0, imageData.length);
 					System.out.println("PRINTG *********************************************");
 					//recFile.close();
 					System.out.println(";");
 					System.out.println("PRINTG *********************************************");
 					
 
-					img.setImageData(imageData16);
+					img.setImageData(imageData);
 					img.PackBody();
 					//Log.debug("Push");
 				//	server.pushPose("TransformPush", t);
-					float data[] = {(float) 1.0, (float) 2.12231233, (float) 4.5};
+					/*float data[] = {(float) 1.0, (float) 2.12231233, (float) 4.5};
 					
 					//server.sendMessage(new StringMessage("CMD_001", "Hello World") );
 					double position[] = t.getPositionArray();
@@ -108,7 +109,7 @@ public class ServerSample implements IOpenIgtPacketListener {
 					double rotation[][] = t.getRotationMatrixArray();
 					rotation[0][1] = Math.random();
 					
-					server.sendMessage(new TransformMessage("TGT_001", position ,rotation ));
+					server.sendMessage(new TransformMessage("TGT_001", position ,rotation ));*/
 					server.sendMessage(img);
 				}else{
 					Log.debug("Wait");
