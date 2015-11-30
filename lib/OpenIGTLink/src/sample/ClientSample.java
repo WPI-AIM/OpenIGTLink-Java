@@ -40,6 +40,8 @@ public class ClientSample implements IOpenIgtPacketListener {
 			
 			for(int i=0;i<50;i++){
 				Thread.sleep(1000);
+				client.pushStringMessage("CMD_0001"   , "SET_MODE");
+
 			}
 			client.stopClient();
 			Log.debug("Client disconnected");
