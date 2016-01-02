@@ -16,9 +16,11 @@
 
 package org.medcare.igtl.network;
 
+import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+
 import org.medcare.igtl.messages.OpenIGTMessage;
 import org.medcare.igtl.network.OpenIGTServer.ServerStatus;
 //import org.medcare.igtl.util.BytesArray;
@@ -85,9 +87,10 @@ public class ServerThread extends Thread {
                                         byte[] bodyBuf = new byte[(int) header.getBody_size()];
                                         //System.out.print("ServerThread Header deviceName : " + header.getDeviceName() + " Type : " + header.getDataType() + " bodySize " + header.getBody_size() + "\n");
                                         if ((int) header.getBody_size() > 0) {
-                                                ret_read = instr.read(bodyBuf);
+                                                ret_read = (new BufferedInputStream(instr)).read(bodyBuf, 0, (int) header.getBody_size());
                                                 if (ret_read !=header.getBody_size()) {
                                                         errorManager.error("ServerThread bodyBuf in ServerThread ret_read = " + ret_read, new Exception("Abnormal return from reading"), ErrorManager.SERVERTHREAD_ABNORMAL_ANSWER);
+                                                        Log.debug("ServerThread bodyBuf in ServerThread ret_read = " + ret_read + " While expecting " +(int) header.getBody_size() + " number of bytes" + " Abnormal return from reading " + ErrorManager.SERVERTHREAD_ABNORMAL_ANSWER);
                                                 }
                                         }
 //                                        Log.debug("New Header: "+header);
