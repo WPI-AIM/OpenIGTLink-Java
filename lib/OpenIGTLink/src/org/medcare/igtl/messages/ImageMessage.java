@@ -136,7 +136,7 @@ public class ImageMessage extends OpenIGTMessage {
 	}
 	public int getImageDataSize()
 	{
-		return (int) (subDimensions[0]*subDimensions[1]*subDimensions[2]*1*1); // assuming pixel size is 1 bytes and number of scalarcompents as 1
+		return (int) (subDimensions[0]*subDimensions[1]*subDimensions[2]*2*1); // assuming pixel size is 1 bytes and number of scalarcompents as 1
 
 	}
 	/**

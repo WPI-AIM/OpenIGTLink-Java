@@ -84,15 +84,23 @@ public class ServerThread extends Thread {
                                 ret_read = instr.read(headerBuff);
                                 if (ret_read > 0) {
                                         Header header = new Header(headerBuff);
-                                        byte[] bodyBuf = new byte[(int) header.getBody_size()];
-                                        //System.out.print("ServerThread Header deviceName : " + header.getDeviceName() + " Type : " + header.getDataType() + " bodySize " + header.getBody_size() + "\n");
-                                        if ((int) header.getBody_size() > 0) {
+                                        System.out.print("ServerThread Header deviceName : " + header.getDeviceName() + " Type : " + header.getDataType() + " bodySize " + header.getBody_size() + "\n");
+                                      //  byte[] bodyBuf = new byte[(int) header.getBody_size()];
+                                        byte[] bodyBuf= readNBytesWithTimeout(instr, (int) header.getBody_size(), 100);
+                                    	Log.debug("red message body with size=" + bodyBuf.length);
+                                        if(bodyBuf.length != (int) header.getBody_size()){
+                                            errorManager.error("ServerThread bodyBuf in ServerThread ret_read = " + ret_read, new Exception("Abnormal return from reading"), ErrorManager.SERVERTHREAD_ABNORMAL_ANSWER);
+                                            Log.debug("ServerThread bodyBuf in ServerThread ret_read = " + ret_read + " While expecting " +(int) header.getBody_size() + " number of bytes" + " Abnormal return from reading " + ErrorManager.SERVERTHREAD_ABNORMAL_ANSWER);
+                                        }else{
+                                        	Log.debug("red message body with size=" + bodyBuf.length);
+                                        }
+                                        /*if ((int) header.getBody_size() > 0) {
                                                 ret_read = (new BufferedInputStream(instr)).read(bodyBuf, 0, (int) header.getBody_size());
                                                 if (ret_read !=header.getBody_size()) {
                                                         errorManager.error("ServerThread bodyBuf in ServerThread ret_read = " + ret_read, new Exception("Abnormal return from reading"), ErrorManager.SERVERTHREAD_ABNORMAL_ANSWER);
                                                         Log.debug("ServerThread bodyBuf in ServerThread ret_read = " + ret_read + " While expecting " +(int) header.getBody_size() + " number of bytes" + " Abnormal return from reading " + ErrorManager.SERVERTHREAD_ABNORMAL_ANSWER);
                                                 }
-                                        }
+                                        }*/
 //                                        Log.debug("New Header: "+header);
 //                                        BytesArray b = new BytesArray(); 
 //                                        b.putBytes(bodyBuf);
@@ -109,6 +117,40 @@ public class ServerThread extends Thread {
                         errorManager.error("ServerThread IOException", e, ErrorManager.SERVERTHREAD_IO_EXCEPTION);
                 }
                 this.interrupt();
+        }
+        public byte[] readNBytesWithTimeout(InputStream in, int N, int timeout){
+        	byte[] data = new byte[N];
+        	int index = 0;
+        	long time = System.currentTimeMillis();
+        	do{
+        		try{
+               		byte[] buf = new byte[N];
+            		int ret_read=(new BufferedInputStream(instr)).read(buf, 0, N);
+            		if(ret_read == -1){
+            			return data;
+            		}else if(ret_read==0){
+            			continue;
+            		}else{
+            			int bytesLeft = ((N-1)-index);
+            			int length = ret_read>=bytesLeft?bytesLeft:ret_read;
+            			System.arraycopy(buf, 0, data, index, length);
+            			index +=length;
+            			time = System.currentTimeMillis();
+            		}
+        		}catch(Exception ex){
+        			ex.printStackTrace();
+        		}
+        	}while(index!=(N-1) && (System.currentTimeMillis()-time)<timeout);
+        	/*
+            if ((int) header.getBody_size() > 0) {
+                ret_read = (new BufferedInputStream(instr)).read(bodyBuf, 0, (int) header.getBody_size());
+                if (ret_read !=header.getBody_size()) {
+                        errorManager.error("ServerThread bodyBuf in ServerThread ret_read = " + ret_read, new Exception("Abnormal return from reading"), ErrorManager.SERVERTHREAD_ABNORMAL_ANSWER);
+                        Log.debug("ServerThread bodyBuf in ServerThread ret_read = " + ret_read + " While expecting " +(int) header.getBody_size() + " number of bytes" + " Abnormal return from reading " + ErrorManager.SERVERTHREAD_ABNORMAL_ANSWER);
+                }
+        	}*/
+
+        	return data;
         }
 		public void sendMessage(OpenIGTMessage message) throws Exception {
 			// TODO Auto-generated method stub
