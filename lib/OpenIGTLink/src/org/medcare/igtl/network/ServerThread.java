@@ -82,12 +82,12 @@ public class ServerThread extends Thread {
                         byte[] headerBuff = new byte[Header.LENGTH];
                         do {
                                 //ret_read = instr.read(headerBuff);
-                                headerBuff = readNBytesWithTimeout(instr, Header.LENGTH, 2000);
+                                headerBuff = readNBytesWithTimeout(instr, Header.LENGTH, 200);
                                 if (headerBuff != null) {
                                         Header header = new Header(headerBuff);
                                         System.out.print("ServerThread Header deviceName : " + header.getDeviceName() + " Type : " + header.getDataType() + " bodySize " + header.getBody_size() + "\n");
                                       //  byte[] bodyBuf = new byte[(int) header.getBody_size()];
-                                        byte[] bodyBuf= readNBytesWithTimeout(instr, (int) header.getBody_size(), 2000);
+                                        byte[] bodyBuf= readNBytesWithTimeout(instr, (int) header.getBody_size(), 200);
                                     	if( bodyBuf!=null){
                                     		
                                             Log.debug("red message body with size=" + bodyBuf.length);
@@ -136,8 +136,9 @@ public class ServerThread extends Thread {
         	long time = System.currentTimeMillis();
         	do{
         		try{
-               		byte[] buf = new byte[N];
-            		int ret_read=instr.read(buf, 0, N);
+               		int bytesToRead = N-index;
+               		byte[] buf = new byte[bytesToRead];
+            		int ret_read=instr.read(buf, 0, bytesToRead);
             		if(ret_read == -1){
                     	//Log.debug("EOF encountered");
                     	if((System.currentTimeMillis()-time)<timeout)
@@ -151,19 +152,17 @@ public class ServerThread extends Thread {
                     	else
                     		break;
             		}else{
-            			int bytesLeft = ((N-1)-index);
-            			int length = ret_read>=bytesLeft?bytesLeft:ret_read;
-            			System.arraycopy(buf, 0, data, index, length);
-            			index +=length;
+            			System.arraycopy(buf, 0, data, index, ret_read);
+            			index +=ret_read;
             			time = System.currentTimeMillis();
                     	//Log.debug("While loop index=" + index + " N- " + N);
             		}
         		}catch(Exception ex){
-        			ex.printStackTrace();
+        			//ex.printStackTrace();
         			return null;
         		}
-            	//Log.debug("While loop index=" + index + " N- " + N);
-        	}while(index!=(N-1) && (System.currentTimeMillis()-time)<timeout);
+            	//Log.debug("While loop index=" + index + " N= " + N);
+        	}while(index!=N && (System.currentTimeMillis()-time)<timeout);
         	/*
             if ((int) header.getBody_size() > 0) {
                 ret_read = (new BufferedInputStream(instr)).read(bodyBuf, 0, (int) header.getBody_size());
@@ -173,7 +172,7 @@ public class ServerThread extends Thread {
                 }
         	}*/
         	//Log.debug("red  " + (index+1) + " bytes of " + N + "bytes");
-        	if(index!=(N-1)){
+        	if(index!=N){
         		return null;
         	}
         	else{
