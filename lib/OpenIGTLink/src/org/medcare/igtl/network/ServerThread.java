@@ -81,6 +81,10 @@ public class ServerThread extends Thread {
                         int ret_read = 0;
                         byte[] headerBuff = new byte[Header.LENGTH];
                         do {
+                        		//First check if still someone is connected with this socket and havent closd read-end point
+                        		if( this.socket.isClosed() || this.socket.isInputShutdown() ){
+                        			break;
+                        		}
                                 //ret_read = instr.read(headerBuff);
                                 headerBuff = readNBytesWithTimeout(instr, Header.LENGTH, 200);
                                 if (headerBuff != null) {
@@ -126,7 +130,7 @@ public class ServerThread extends Thread {
                 }
                 this.interrupt();
         }
-        public byte[] readNBytesWithTimeout(InputStream in, int N, int timeout){
+        public byte[] readNBytesWithTimeout(InputStream in, int N, int timeout) throws IOException{
         	if (N<=0){
         		return null;
         	}
@@ -135,7 +139,6 @@ public class ServerThread extends Thread {
         	int index = 0;
         	long time = System.currentTimeMillis();
         	do{
-        		try{
                		int bytesToRead = N-index;
                		byte[] buf = new byte[bytesToRead];
             		int ret_read=instr.read(buf, 0, bytesToRead);
@@ -155,23 +158,11 @@ public class ServerThread extends Thread {
             			System.arraycopy(buf, 0, data, index, ret_read);
             			index +=ret_read;
             			time = System.currentTimeMillis();
-                    	//Log.debug("While loop index=" + index + " N- " + N);
+                    	Log.debug("While loop index=" + index + " N- " + N);
             		}
-        		}catch(Exception ex){
-        			//ex.printStackTrace();
-        			return null;
-        		}
             	//Log.debug("While loop index=" + index + " N= " + N);
         	}while(index!=N && (System.currentTimeMillis()-time)<timeout);
-        	/*
-            if ((int) header.getBody_size() > 0) {
-                ret_read = (new BufferedInputStream(instr)).read(bodyBuf, 0, (int) header.getBody_size());
-                if (ret_read !=header.getBody_size()) {
-                        errorManager.error("ServerThread bodyBuf in ServerThread ret_read = " + ret_read, new Exception("Abnormal return from reading"), ErrorManager.SERVERTHREAD_ABNORMAL_ANSWER);
-                        Log.debug("ServerThread bodyBuf in ServerThread ret_read = " + ret_read + " While expecting " +(int) header.getBody_size() + " number of bytes" + " Abnormal return from reading " + ErrorManager.SERVERTHREAD_ABNORMAL_ANSWER);
-                }
-        	}*/
-        	//Log.debug("red  " + (index+1) + " bytes of " + N + "bytes");
+        	//Log.debug("Finished reading  " + (index+1) + " bytes of " + N + "bytes");
         	if(index!=N){
         		return null;
         	}
