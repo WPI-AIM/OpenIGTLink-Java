@@ -15,8 +15,10 @@ import org.medcare.igtl.messages.ImageMessage;
 import org.medcare.igtl.messages.NDArrayMessage;
 import org.medcare.igtl.messages.StringMessage;
 import org.medcare.igtl.messages.TransformMessage;
+import org.medcare.igtl.network.GenericIGTLinkClient;
 import org.medcare.igtl.network.GenericIGTLinkServer;
 import org.medcare.igtl.network.IOpenIgtPacketListener;
+import org.medcare.igtl.network.OpenIGTClient;
 import org.medcare.igtl.util.Header;
 import org.medcare.igtl.util.IGTImage;
 import org.medcare.igtl.util.Status;
@@ -45,7 +47,7 @@ public class ServerSample implements IOpenIgtPacketListener {
 
 		try {
 			//Set up server
-			server = new GenericIGTLinkServer (18944);
+			server = new GenericIGTLinkServer (18945);
 
 			//Add local event listener
 			server.addIOpenIgtOnPacket(new ServerSample());
@@ -61,7 +63,7 @@ public class ServerSample implements IOpenIgtPacketListener {
 			//Push a transform object upstream
 			while(true){
 				Thread.sleep(1000);
-				if(server.isConnected()){
+				if(!server.isConnected()){
 					//create an Image message from the PAR/REC file and send it to probably slicer
 					ImageMessage img = new ImageMessage("IMG_004");
 					long dims[] = {288,288,2}; 
@@ -112,7 +114,7 @@ public class ServerSample implements IOpenIgtPacketListener {
 					server.sendMessage(new TransformMessage("TGT_001", position ,rotation ));*/
 					server.sendMessage(img);
 				}else{
-					Log.debug("Wait");
+					//Log.debug("Wait");
 				}
 			}
 		} catch (Exception e) {
@@ -227,6 +229,65 @@ public class ServerSample implements IOpenIgtPacketListener {
 
 	@Override
 	public void onRxImage(String name, ImageMessage image) {
+		try {
+			GenericIGTLinkClient clnt = new GenericIGTLinkClient("127.0.0.1", 18944);
+
+			ImageMessage img = new ImageMessage("IMG_004");
+			long dims[] = {288,288,1}; 
+			double org[] = {dims[0]/2, dims[1]/2, dims[2]/2};
+			double norms[][] = new double[3][3];
+			norms[0][0] = 0.417;
+			norms[1][1] = 0.417;
+			norms[2][2] = 6;
+			
+			long subOffset[] = new long[3]; // Unsigned int 16bits
+			long subDimensions[] = new long[3]; // Unsigned int 16bits
+
+			img.setImageHeader(1, ImageMessage.DTYPE_SCALAR, ImageMessage.TYPE_UINT16, ImageMessage.ENDIAN_LITTLE, ImageMessage.COORDINATE_RAS, dims , org, norms, subOffset, dims);
+			
+			//read data from the file and set as Image Data
+			FileInputStream recFile = new FileInputStream("C:/ImageMsg/img001.REC");
+			/*byte imageData16[] = new byte[(int) (dims[0]*dims[1]*dims[2])];
+			for(int i=0;i<imageData16.length;i++){
+				imageData16[i] = (byte) (Math.random()*127);
+			}*/
+			
+			byte imageData[] = new byte[(int)(dims[0]*dims[1]*dims[2])*Short.BYTES];
+			System.out.println("Size of ImageData=" + imageData.length);
+		//	ByteBuffer.wrap(imageData).order(ByteOrder.LITTLE_ENDIAN).asShortBuffer().put(imageData16);
+			//int sliceSizeinBytes = (int)(1*dims[0]*dims[1]);
+			//recFile.skip(sliceSizeinBytes);
+			recFile.read(imageData,0, imageData.length);
+			System.out.println("PRINTG *********************************************");
+			//recFile.close();
+			System.out.println(";");
+			System.out.println("PRINTG *********************************************");
+			
+
+			img.setImageData(imageData);
+			img.PackBody();
+			//Log.debug("Push");
+		//	server.pushPose("TransformPush", t);
+			/*float data[] = {(float) 1.0, (float) 2.12231233, (float) 4.5};
+			
+			//server.sendMessage(new StringMessage("CMD_001", "Hello World") );
+			double position[] = t.getPositionArray();
+			position[0] =position[0]+1;
+			position[1] =position[1]+1;
+			position[2] =Math.random()*100;
+			double rotation[][] = t.getRotationMatrixArray();
+			rotation[0][1] = Math.random();
+			
+			server.sendMessage(new TransformMessage("TGT_001", position ,rotation ));*/
+			//clnt.sendMessage(img);
+			image.PackBody();
+			clnt.sendMessage(image);
+			Thread.sleep(1000);
+			clnt.stopClient();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		System.out.println(image.toString());
 		
 	}
