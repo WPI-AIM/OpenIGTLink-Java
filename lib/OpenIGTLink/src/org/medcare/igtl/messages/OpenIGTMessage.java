@@ -118,7 +118,11 @@ public abstract class OpenIGTMessage {
                 return this.deviceName;
         }
 
-        /**
+        public void setDeviceName(String deviceName) {
+			this.deviceName = deviceName;
+		}
+
+		/**
          *** header.
          *** 
          * @return bytes array containing the header of the message

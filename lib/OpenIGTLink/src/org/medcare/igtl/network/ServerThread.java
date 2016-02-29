@@ -89,7 +89,7 @@ public class ServerThread extends Thread {
                                 headerBuff = readNBytesWithTimeout(instr, Header.LENGTH, 200);
                                 if (headerBuff != null) {
                                         Header header = new Header(headerBuff);
-                                        System.out.print("ServerThread Header deviceName : " + header.getDeviceName() + " Type : " + header.getDataType() + " bodySize " + header.getBody_size() + "\n");
+                                        Log.debug("ServerThread Header deviceName : " + header.getDeviceName() + " Type : " + header.getDataType() + " bodySize " + header.getBody_size() + "\n");
                                       //  byte[] bodyBuf = new byte[(int) header.getBody_size()];
                                         byte[] bodyBuf= readNBytesWithTimeout(instr, (int) header.getBody_size(), 200);
                                     	if( bodyBuf!=null){
@@ -131,11 +131,11 @@ public class ServerThread extends Thread {
                 this.interrupt();
         }
         public byte[] readNBytesWithTimeout(InputStream in, int N, int timeout) throws IOException{
+        	byte[] data = new byte[N];
         	if (N<=0){
-        		return null;
+        		return data;
         	}
         	//Log.debug("Reading " + N + " bytes with timeout");
-        	byte[] data = new byte[N];
         	int index = 0;
         	long time = System.currentTimeMillis();
         	do{
@@ -158,7 +158,7 @@ public class ServerThread extends Thread {
             			System.arraycopy(buf, 0, data, index, ret_read);
             			index +=ret_read;
             			time = System.currentTimeMillis();
-                    	Log.debug("While loop index=" + index + " N- " + N);
+                    	//Log.debug("While loop index=" + index + " N- " + N);
             		}
             	//Log.debug("While loop index=" + index + " N= " + N);
         	}while(index!=N && (System.currentTimeMillis()-time)<timeout);
