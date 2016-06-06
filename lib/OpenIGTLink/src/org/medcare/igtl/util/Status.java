@@ -1,5 +1,7 @@
 package org.medcare.igtl.util;
 
+import org.medcare.igtl.messages.StatusMessage;
+
 public class Status {
 
         public static int STATUS_INVALID = 0;
@@ -55,7 +57,7 @@ public class Status {
         public Status(int code, int subCode, String errorName, String statusString) {
                 this.code = code;
                 this.subCode = subCode;
-                this.errorName = errorName + '\0';
+                this.errorName = errorName + new String(new char[StatusMessage.IGTL_STATUS_ERROR_NAME_LENGTH-errorName.length()-1]) + '\0';
                 this.statusString = statusString + '\0';
         }
 
