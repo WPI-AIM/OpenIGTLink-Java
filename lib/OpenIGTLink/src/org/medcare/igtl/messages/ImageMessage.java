@@ -253,7 +253,7 @@ public class ImageMessage extends OpenIGTMessage {
 		normals = new double[3][3];
 		for (int i = 0; i < 3; i++)
 			for (int j = 0; j < 3; j++)
-				normals[i][j] = bytesArray.getDouble(4); // float32
+				normals[j][i] = bytesArray.getDouble(4); // float32
 
 		setNormals(normals);
 		origin = new double[3];
@@ -575,6 +575,7 @@ public class ImageMessage extends OpenIGTMessage {
 		this.matrix = matrix;
 
 		Log.debug(matrix.toString());
+		System.out.println(matrix.toString());
 		norm_i = new double[3];
 		norm_j = new double[3];
 		norm_k = new double[3];
@@ -772,11 +773,22 @@ public class ImageMessage extends OpenIGTMessage {
 	@Override
 	public String toString() {
 		String imageString = "IMAGE Device Name           : " + getDeviceName() + "\n";
+		imageString = imageString + "CoOrdinate System=   : " + (coordinate_type==COORDINATE_RAS?"RAS":"LPS") + "\n";
 		imageString = imageString + "Scalar Type           : " + getScalarType() + "\n";
 		imageString = imageString + "Dimensions            : (" + dimensions[0] + ", " + dimensions[1] + ", " + dimensions[2] + ")\n";
-		imageString = imageString + "Spacing            : (" + spacing[0] + ", " + spacing[1] + ", " + spacing[2] + ")";
+		imageString = imageString + "Spacing               : (" + spacing[0] + ", " + spacing[1] + ", " + spacing[2] + ")\n";
 		imageString = imageString + "Sub-Volume dimensions : (" + subDimensions[0] + ", " + subDimensions[1] + ", " + subDimensions[2] + ")\n";
 		imageString = imageString + "Sub-Volume offset     : (" + subOffset[0] + ", " + subOffset[1] + ", " + subOffset[2] + ")\n";
+		imageString = imageString + "Origin                : (" + origin[0] + "," + origin[1] + "," + origin[2] + ")\n";
+		imageString = imageString + "Transverse vector(I)  : (" + normals[0][0] + "," + normals[0][1] + "," + normals[0][2] + ")\n";
+		imageString = imageString + "Transverse vector(J)  : (" + normals[1][0] + "," + normals[1][1] + "," + normals[1][2] + ")\n";
+		imageString = imageString + "Transverse vector(K)  : (" + normals[2][0] + "," + normals[2][1] + "," + normals[2][2] + ")\n";
+		for(int i=0;i<4;i++){
+			for(int j=0;j<4;j++){
+				imageString = imageString + matrix[i][j] + " , "; 
+			}
+			imageString = imageString + "\n";
+		}
 		return imageString;
 	}
 }
