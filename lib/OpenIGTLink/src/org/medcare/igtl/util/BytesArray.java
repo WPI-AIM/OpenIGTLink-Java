@@ -366,7 +366,18 @@ public class BytesArray {
 			return val;
 		}
 	}
-
+	public long getLong(int length, boolean signed) {
+		int maxLen = ((this.index + length) <= this.size) ? length
+				: (this.size - this.index);
+		if (maxLen <= 0) {
+			// nothing to read
+			return 0L;
+		} else {
+			byte n[] = getBytes(maxLen);
+			long val = decodeLong(n, 0, signed);
+			return val;
+		}
+	}
 	// ------------------------------------------------------------------------
 
 	/**
