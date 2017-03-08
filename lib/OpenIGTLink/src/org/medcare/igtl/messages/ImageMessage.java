@@ -132,6 +132,8 @@ public class ImageMessage extends OpenIGTMessage {
 		int size =  getImageDataSize();
 		image_data = new byte[size];
 		System.arraycopy(getBody(),IGTL_IMAGE_HEADER_SIZE , image_data, 0, size);
+  		long calculated_crc = BytesArray.crc64(getBody(), getBody().length, 0L);
+  		System.out.println("Calculated CRC is=" + calculated_crc);
 		return true;
 	}
 	public int getImageDataSize()
@@ -789,6 +791,7 @@ public class ImageMessage extends OpenIGTMessage {
 			}
 			imageString = imageString + "\n";
 		}
+		imageString = imageString + getHeader().toString() + "\n";
 		return imageString;
 	}
 }
