@@ -89,12 +89,12 @@ public class ServerThread extends Thread {
                                 headerBuff = readNBytesWithTimeout(instr, Header.LENGTH, 200);
                                 if (headerBuff != null) {
                                         Header header = new Header(headerBuff);
-                                        Log.debug("ServerThread Header deviceName : " + header.getDeviceName() + " Type : " + header.getDataType() + " bodySize " + header.getBody_size() + "\n");
+                                        //Log.debug("ServerThread Header deviceName : " + header.getDeviceName() + " Type : " + header.getDataType() + " bodySize " + header.getBody_size() + "\n");
                                       //  byte[] bodyBuf = new byte[(int) header.getBody_size()];
                                         byte[] bodyBuf= readNBytesWithTimeout(instr, (int) header.getBody_size(), 200);
                                     	if( bodyBuf!=null){
                                     		
-                                            Log.debug("red message body with size=" + bodyBuf.length);
+                                           // Log.debug("red message body with size=" + bodyBuf.length);
                                             if(bodyBuf.length != (int) header.getBody_size()){
                                                 errorManager.error("ServerThread bodyBuf in ServerThread ret_read = " + ret_read, new Exception("Abnormal return from reading"), ErrorManager.SERVERTHREAD_ABNORMAL_ANSWER);
                                                 Log.debug("ServerThread bodyBuf in ServerThread ret_read = " + ret_read + " While expecting " +(int) header.getBody_size() + " number of bytes" + " Abnormal return from reading " + ErrorManager.SERVERTHREAD_ABNORMAL_ANSWER);
@@ -178,7 +178,7 @@ public class ServerThread extends Thread {
 		public void sendMessage(Header header, byte[] body) throws Exception {
 			sendBytes(header.getBytes());
 			sendBytes(body);
-			Log.debug("Sending Message: Header=" + header.toString() + " Body=" + body.toString());
+			//Log.debug("Sending Message: Header=" + header.toString() + " Body=" + body.toString());
 		}
 
         /***************************************************************************

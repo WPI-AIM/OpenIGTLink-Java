@@ -26,7 +26,7 @@ public class GenericMessageNodeHandler {
 		//TODO - GSF: Need to add complete set of new IGTLInk commands for BRP robot
 		//http://wiki.ncigt.org/index.php/P41:Prostate:BRP:MRI_New_BRP_OpenIGTLink_Protocol_2012_Mar
 		//Should support both TRANSFORM and QTRANSFORM packets
-		Log.debug("Perform messageType : " + messageType );
+		//Log.debug("Perform messageType : " + messageType );
 		if  (messageType.equals("TRANSFORM")) {
                 openIGTMessage = new TransformMessage(head, body);   
         		TransformMessage transform = (TransformMessage) openIGTMessage;
@@ -84,7 +84,7 @@ public class GenericMessageNodeHandler {
         	StatusMessage statMsg = new StatusMessage(head, body);
         	statMsg.UnpackBody();
 			openIGTMessage =(OpenIGTMessage)statMsg;
-			System.out.println("Received Get_Status request");
+			//System.out.println("Received Get_Status request");
         	node.onGetStatus(openIGTMessage.getDeviceName());// this is a non functional stub	
         }else if (messageType.equals("NDARRAY")) {
         	NDArrayMessage ndArrayMsg = new NDArrayMessage(head, body);

@@ -241,6 +241,9 @@ public abstract class OpenIGTClient extends Thread {
 	public abstract ResponseHandler getResponseHandler(Header header, byte[] bodyBuf);
 	
 	public boolean isConnected() {
-		return alive && !socket.isClosed();
+		if(socket!=null)
+			return alive && !socket.isClosed();
+		else
+			return false;
 	}
 }

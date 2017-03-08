@@ -54,7 +54,7 @@ public abstract class MessageHandler {
         public boolean performRequest() throws Exception {
         	// extract message type from header
                 String messageType = this.getHeader().getDataType();
-                System.out.println("Receiv ed message with capability value=" + messageType);
+               // System.out.println("Receiv ed message with capability value=" + messageType);
                 Iterator<String> it = capabilityList.iterator();
                 while (it.hasNext()) {
                         String capab = (String) it.next();

@@ -73,7 +73,7 @@ public class MessageQueueManager extends Thread {
                                                 	e.printStackTrace();
                                                     errorManager.error("PB messageHandler ", e, ErrorManager.MESSAGE_EXCEPTION);
                                                 } finally {
-                                                        Log.debug("MessageQueueManager messageHandler.performRequest OK");
+                                                        //Log.debug("MessageQueueManager messageHandler.performRequest OK");
                                                 }
 
                                         } else {

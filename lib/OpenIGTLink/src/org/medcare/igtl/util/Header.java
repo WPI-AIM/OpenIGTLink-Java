@@ -146,7 +146,7 @@ public class Header {
                 bytesArray = new BytesArray();
                 bytesArray.putBytes(bytes);
                 populate();
-                Log.debug("New header: "+this);
+               // Log.debug("New header: "+this);
         }
         
         private void populate(){
